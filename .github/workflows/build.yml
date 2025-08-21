@@ -1,0 +1,99 @@
+name: Build
+
+on:
+  release:
+    types:
+      - published
+  push:
+    branches:
+      - '**'
+    tags-ignore:
+      - '**'
+  pull_request:
+
+permissions:
+  id-token: write
+  attestations: write
+  contents: write
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: JDK Setup
+        uses: actions/setup-java@v4
+        with:
+          java-version: 21
+          distribution: 'temurin'
+
+      - name: Loom Cache
+        uses: actions/cache@v4
+        with:
+          path: "**/.gradle/loom-cache"
+          key: "${{ runner.os }}-gradle-${{ hashFiles('**/libs.versions.*', '**/*.gradle*', '**/gradle-wrapper.properties') }}"
+          restore-keys: "${{ runner.os }}-gradle-"
+
+      - name: Gradle Setup
+        uses: gradle/actions/setup-gradle@v4
+        with:
+          validate-wrappers: true
+
+      - name: Gradle Setup
+        uses: gradle/actions/setup-gradle@v4
+        with:
+          validate-wrappers: true
+
+      - name: Enable gradlew execution
+        run: chmod +x ./gradlew
+
+      - name: Gradle Build
+        run: ./gradlew build
+
+      - name: Attest Build Provenance
+        uses: actions/attest-build-provenance@v2
+        with:
+          subject-path: 'build/libs/*.jar, !build/libs/*-sources.jar'
+
+      - name: Upload Artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: Artifacts
+          path: |
+            build/libs/*.jar
+            !build/libs/*-sources.jar
+
+      - name: Maven Publish
+        if: github.event_name == 'release' && github.event.action == 'published'
+        run: ./gradlew publish
+
+      - name: Github Publish
+        if: github.event_name == 'release' && github.event.action == 'published'
+        uses: AButler/upload-release-assets@v2.0
+        with:
+          files: 'build/libs/*.jar;!build/libs/*-sources.jar'
+          repo-token: ${{ secrets.GITHUB_TOKEN }}
+
+      # set modrinth release type if tag matches v#.#.#-(alpha|beta).*
+      - name: Detect Release Type
+        id: detect-release-type
+        run: |
+          if [[ ${{ github.ref }} =~ ^refs/tags/v[0-9]+\.[0-9]+\.[0-9]+-alpha\. ]]; then
+              echo "type=alpha" >> $GITHUB_OUTPUT
+          elif [[ ${{ github.ref }} =~ ^refs/tags/v[0-9]+\.[0-9]+\.[0-9]+-beta\. ]]; then
+              echo "type=beta" >> $GITHUB_OUTPUT
+          else
+              echo "type=release" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Modrinth Publish
+        env:
+          MODRINTH_TOKEN: ${{ secrets.MODRINTH_TOKEN }}
+          CHANGELOG: ${{ github.event.release.body }}
+          RELEASE_TYPE: ${{ steps.detect-release-type.outputs.type }}
+        if: ${{ github.event_name == 'release' && github.event.action == 'published' && env.MODRINTH_TOKEN != '' }}
+        run: |
+          ./gradlew --no-configuration-cache modrinth
+          ./gradlew --no-configuration-cache modrinthSyncBody
