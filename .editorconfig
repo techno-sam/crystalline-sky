@@ -4,6 +4,10 @@ indent_style = tab
 tab_width = 4
 insert_final_newline = true
 
+[{*.py,*.ipynb}]
+indent_size = 4
+indent_style = space
+
 [*.yml]
 indent_size = 2
 indent_style = space
@@ -22,3 +26,5 @@ ij_groovy_method_brace_style = end_of_line
 
 [{*.har,*.json,*.png.mcmeta,mcmod.info,pack.mcmeta}]
 ij_json_array_wrapping = split_into_lines
+indent_size = 2
+indent_style = space

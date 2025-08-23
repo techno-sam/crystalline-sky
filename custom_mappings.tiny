@@ -1,0 +1,81 @@
+tiny	2	0	official	intermediary	named
+c	fac	net/minecraft/class_3558	net/minecraft/world/chunk/light/ChunkLightProvider
+	f	I	a	field_44729	MAX_LEVEL
+	f	I	b	field_44730	MIN_OPACITY
+	f	J	c	field_44731	PULL_LIGHT_IN_ENTRY
+	f	I	g	field_44732	MIN_QUEUE_SIZE
+	f	Lit/unimi/dsi/fastutil/longs/LongArrayFIFOQueue;	i	field_44734	decreaseQueue
+	f	Lit/unimi/dsi/fastutil/longs/LongArrayFIFOQueue;	j	field_44735	increaseQueue
+	f	I	k	field_31709	CACHE_SIZE
+	m	(J)V	a	method_51529	checkNode
+	m	(JJ)V	a	method_51530	propagateDecrease
+	m	(JJI)V	a	method_51531	propagateIncrease
+	m	(JJ)V	b	method_51565	enqueueDecrease
+	m	(JJ)V	c	method_51566	enqueueIncrease
+	m	()I	d	method_51567	propagateIncreases
+	m	()I	e	method_51570	propagateDecreases
+
+c	fac$a	net/minecraft/class_3558$class_8531	net/minecraft/world/chunk/light/ChunkLightProvider$QueueEntry
+	m	(IZ)J	a	method_51573	increaseLightFromEmission
+	m	(ZZZZZ)J	a	method_51578	increaseSkySourceInDirections
+	m	(IZLjh;)J	b	method_51579	increaseOnlyOneDirection
+	m	(J)Z	c	method_51582	isIncreaseFromEmission
+
+c	fae	net/minecraft/class_3572	net/minecraft/world/chunk/light/ChunkSkyLightProvider
+	f	J	g	field_44743	REMOVE_TOP_SKY_SOURCE_ENTRY
+	f	J	h	field_44744	REMOVE_SKY_SOURCE_ENTRY
+	f	J	i	field_44745	ADD_SKY_SOURCE_ENTRY
+	f	Ljb$a;	j	field_44746	scratchPos
+	m	(IIII)V	a	method_51586	removeSourcesBelow
+	m	(JLjh;IZI)V	a	method_51587	propagateFromEmptySections
+			p	0			blockPos
+			p	1			direction
+			p	2			lightLevel
+			p	3			shouldIncrease
+			p	4			emptySections
+	m	(III)V	b	method_51590	updateSourcesInColumn
+	m	(IIII)V	b	method_51591	addSourcesAbove
+	m	(J)V	a	method_51529	checkNode
+		v	3	5	-1	_	_	x
+		v	4	11	-1	_	_	y
+		v	5	17	-1	_	_	z
+		v	6	23	-1	_	_	sectionPos
+		v	8	54	-1	_	_	lowestSourceY
+		v	9	100	-1	_	_	aboveLowest
+		v	10	137	-1	_	_	storedLightLevel
+	m	(JJI)V	a	method_51531	propagateIncrease
+		v	6	3	-1	_	_	blockState
+		v	7	10	-1	_	_	emptySectionsBelow
+		v	11	37	-1	_	_	direction
+		v	12	57	-1	_	_	targetPos
+		v	14	92	-1	_	_	storedLightLevel
+		v	15	98	-1	_	_	baseLevelToPropagate
+		v	16	128	-1	_	_	targetState
+		v	17	139	-1	_	_	trueLevelToPropagate
+	m	(Ldlz;)V	b	method_51471	propagateLight
+		v	2	12	-1	_	_	packedZeroPos
+		v	4	48	-1	_	_	sourcesO
+		v	5	74	-1	_	_	sourcesZN
+		v	6	100	-1	_	_	sourcesZP
+		v	7	126	-1	_	_	sourcesXN
+		v	8	152	-1	_	_	sourcesXP
+		v	9	165	-1	_	_	topSectionY
+		v	10	177	-1	_	_	bottomSectionY
+		v	11	186	-1	_	_	baseX
+		v	12	195	-1	_	_	baseZ
+		v	13	201	-1	_	_	sectionY
+		v	14	223	-1	_	_	packedSectionPos
+		v	16	237	-1	_	_	chunkNibbleArray
+		v	17	252	-1	_	_	sectionMinY
+		v	18	259	-1	_	_	sectionMaxY
+		v	19	262	-1	_	_	isMinBelowCurrent
+		v	20	265	-1	_	_	localZ
+		v	21	275	-1	_	_	localX
+		v	22	293	-1	_	_	minSourceY_O
+		v	23	333	-1	_	_	minSourceY_ZN
+		v	24	364	-1	_	_	minSourceY_ZP
+		v	25	394	-1	_	_	minSourceY_XN
+		v	26	425	-1	_	_	minSourceY_XP
+		v	27	444	-1	_	_	minSourceY_max
+		v	28	448	-1	_	_	it_y
+		v	29	507	-1	_	_	it_pos
