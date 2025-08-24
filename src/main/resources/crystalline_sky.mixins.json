@@ -12,6 +12,7 @@
     "LightStorageAccessor"
   ],
   "client": [
+    "client.ClientWorldMixin"
   ],
   "server": [
   ],

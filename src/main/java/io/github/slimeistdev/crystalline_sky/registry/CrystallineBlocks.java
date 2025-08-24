@@ -1,15 +1,14 @@
 package io.github.slimeistdev.crystalline_sky.registry;
 
 import io.github.slimeistdev.crystalline_sky.CrystallineSky;
+import net.minecraft.block.*;
 import net.minecraft.block.AbstractBlock.Settings;
-import net.minecraft.block.Block;
-import net.minecraft.block.Blocks;
-import net.minecraft.block.TransparentBlock;
 import net.minecraft.registry.Registries;
 import net.minecraft.registry.Registry;
 import net.minecraft.registry.RegistryKey;
 import net.minecraft.registry.RegistryKeys;
 import net.minecraft.sound.BlockSoundGroup;
+import net.minecraft.state.property.Properties;
 
 import java.util.function.Function;
 
@@ -24,10 +23,35 @@ public class CrystallineBlocks {
 		.suffocates(Blocks::never)
 		.blockVision(Blocks::never));
 
+	public static final Block SKY_LIGHT = register(
+		"sky_light",
+		LightBlock::new,
+		AbstractBlock.Settings.create()
+			.replaceable()
+			.strength(-1.0F, 3600000.8F)
+			.mapColor(state -> state.get(Properties.WATERLOGGED) ? MapColor.WATER_BLUE : MapColor.CLEAR)
+			.dropsNothing()
+			.nonOpaque()
+	);
+
 	public static void init() {}
 
 	private static <T extends Block> T register(String id, Function<Settings, T> factory, Settings settings) {
 		RegistryKey<Block> key = CrystallineSky.key(RegistryKeys.BLOCK, id);
 		return Registry.register(Registries.BLOCK, key, factory.apply(settings.registryKey(key)));
+	}
+
+	public static boolean isCrystallineSky(BlockState state) {
+		return getSkyLightLevel(state) > 0;
+	}
+
+	public static int getSkyLightLevel(BlockState state) {
+		if (state.isOf(SKY_LIGHT)) {
+			return state.get(LightBlock.LEVEL_15);
+		} else if (state.isOf(SKY)) {
+			return 15;
+		}
+
+		return 0;
 	}
 }

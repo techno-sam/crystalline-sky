@@ -11,6 +11,6 @@ import org.spongepowered.asm.mixin.Mixin;
 public class ChunkLightProviderMixin {
 	@WrapMethod(method = "needsLightUpdate")
 	private static boolean updateSky(BlockState oldState, BlockState newState, Operation<Boolean> original) {
-		return original.call(oldState, newState) || (oldState.isOf(CrystallineBlocks.SKY) != newState.isOf(CrystallineBlocks.SKY));
+		return original.call(oldState, newState) || (CrystallineBlocks.getSkyLightLevel(oldState) != CrystallineBlocks.getSkyLightLevel(newState));
 	}
 }

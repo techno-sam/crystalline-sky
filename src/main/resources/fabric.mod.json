@@ -32,6 +32,9 @@
       "io.github.slimeistdev.crystalline_sky.CrystallineSky"
     ],
     "client": [
+    ],
+    "fabric-datagen": [
+      "io.github.slimeistdev.crystalline_sky.datagen.CrystallineSkyDataGenerator"
     ]
   }
 }
