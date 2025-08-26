@@ -12,7 +12,12 @@
     "LightStorageAccessor"
   ],
   "client": [
-    "client.ClientWorldMixin"
+    "client.BlockRenderLayerMixin",
+    "client.ClientWorldMixin",
+    "client.DefaultFramebufferSetMixin",
+    "client.FramebufferMixin",
+    "client.WorldRendererAccessor",
+    "client.WorldRendererMixin"
   ],
   "server": [
   ],

@@ -32,9 +32,13 @@
       "io.github.slimeistdev.crystalline_sky.CrystallineSky"
     ],
     "client": [
+      "io.github.slimeistdev.crystalline_sky.CrystallineSkyClient"
     ],
     "fabric-datagen": [
       "io.github.slimeistdev.crystalline_sky.datagen.CrystallineSkyDataGenerator"
+    ],
+    "mm:early_risers": [
+      "io.github.slimeistdev.crystalline_sky.extenders_cove.CrystallineSkyEarlyRiser"
     ]
   }
 }

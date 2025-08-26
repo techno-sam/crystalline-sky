@@ -21,7 +21,8 @@ public class CrystallineBlocks {
 		.allowsSpawning(Blocks::never)
 		.solidBlock(Blocks::never)
 		.suffocates(Blocks::never)
-		.blockVision(Blocks::never));
+		.blockVision(Blocks::never)
+		.emissiveLighting(Blocks::always));
 
 	public static final Block SKY_LIGHT = register(
 		"sky_light",
