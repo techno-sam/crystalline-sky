@@ -1,0 +1,52 @@
+{
+  "variants": {
+    "level=0": {
+      "model": "crystalline_sky:block/sky_light_00"
+    },
+    "level=1": {
+      "model": "crystalline_sky:block/sky_light_01"
+    },
+    "level=10": {
+      "model": "crystalline_sky:block/sky_light_10"
+    },
+    "level=11": {
+      "model": "crystalline_sky:block/sky_light_11"
+    },
+    "level=12": {
+      "model": "crystalline_sky:block/sky_light_12"
+    },
+    "level=13": {
+      "model": "crystalline_sky:block/sky_light_13"
+    },
+    "level=14": {
+      "model": "crystalline_sky:block/sky_light_14"
+    },
+    "level=15": {
+      "model": "crystalline_sky:block/sky_light_15"
+    },
+    "level=2": {
+      "model": "crystalline_sky:block/sky_light_02"
+    },
+    "level=3": {
+      "model": "crystalline_sky:block/sky_light_03"
+    },
+    "level=4": {
+      "model": "crystalline_sky:block/sky_light_04"
+    },
+    "level=5": {
+      "model": "crystalline_sky:block/sky_light_05"
+    },
+    "level=6": {
+      "model": "crystalline_sky:block/sky_light_06"
+    },
+    "level=7": {
+      "model": "crystalline_sky:block/sky_light_07"
+    },
+    "level=8": {
+      "model": "crystalline_sky:block/sky_light_08"
+    },
+    "level=9": {
+      "model": "crystalline_sky:block/sky_light_09"
+    }
+  }
+}

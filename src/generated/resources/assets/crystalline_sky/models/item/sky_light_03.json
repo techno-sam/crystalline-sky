@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:item/generated",
+  "textures": {
+    "layer0": "crystalline_sky:item/sky_light_03"
+  }
+}

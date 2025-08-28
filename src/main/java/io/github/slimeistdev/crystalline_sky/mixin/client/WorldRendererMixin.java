@@ -18,6 +18,7 @@ import net.minecraft.client.render.*;
 import net.minecraft.client.util.Handle;
 import net.minecraft.client.util.ObjectAllocator;
 import net.minecraft.client.world.ClientWorld;
+import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.profiler.Profiler;
 import org.jetbrains.annotations.Nullable;
 import org.joml.*;
@@ -158,7 +159,13 @@ public abstract class WorldRendererMixin {
 			&& client.player != null
 			&& (client.player.getMainHandStack().isOf(CrystallineItems.SKY)
 			|| client.player.getOffHandStack().isOf(CrystallineItems.SKY))) {
-			colorModulator = new Vector4f(1.0f, 0.5f, 0.5f, 1.0f).mul(colorModulator);
+
+			float f = ticks + client.getRenderTickCounter().getTickProgress(true);
+			float alpha = (MathHelper.sin(f / 10.0f) + 1.0f) / 2.0f;
+			// remap alpha from [0, 1] to [0, 0.75]
+			float maxAlpha = 1.0f - 0.25f;
+			alpha = alpha * maxAlpha;
+			colorModulator = new Vector4f(1.0f, 1.0f, 1.0f, alpha).mul(colorModulator);
 		}
 
 		return original.call(modelView, colorModulator, modelOffset, textureMatrix, lineWidth);

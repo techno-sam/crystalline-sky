@@ -13,6 +13,7 @@ public class CrystallineRenderPipelines {
 			.withFragmentShader(CrystallineSky.id("core/terrain_sky"))
 			.withVertexShader(CrystallineSky.id("core/terrain_sky"))
 			.withLocation(CrystallineSky.id("pipeline/sky"))
+			.withShaderDefine("BAYER_BIAS", 0.03125f)
 			.build()
 	);
 }

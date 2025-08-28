@@ -13,6 +13,11 @@ public class CrystallineItems {
 		settings -> settings.rarity(Rarity.EPIC)
 	);
 
+	public static final Item WEEPING_SKY = Items.register(
+		CrystallineBlocks.WEEPING_SKY,
+		settings -> settings.rarity(Rarity.EPIC)
+	);
+
 	public static final Item SKY_LIGHT = Items.register(
 		CrystallineBlocks.SKY_LIGHT,
 		settings -> settings.rarity(Rarity.EPIC)

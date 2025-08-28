@@ -9,5 +9,6 @@ public class CrystallineSkyClient implements ClientModInitializer {
 	@Override
 	public void onInitializeClient() {
 		BlockRenderLayerMap.putBlock(CrystallineBlocks.SKY, BlockRenderLayerExt.CRYSTALLINE_SKY_SKY);
+		BlockRenderLayerMap.putBlock(CrystallineBlocks.WEEPING_SKY, BlockRenderLayerExt.CRYSTALLINE_SKY_SKY);
 	}
 }

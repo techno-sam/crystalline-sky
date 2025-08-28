@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:block/cube_all",
+  "textures": {
+    "all": "crystalline_sky:block/weeping_sky"
+  }
+}

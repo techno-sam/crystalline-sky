@@ -24,6 +24,8 @@ public class CrystallineBlocks {
 		.blockVision(Blocks::never)
 		.emissiveLighting(Blocks::always));
 
+	public static final Block WEEPING_SKY = register("weeping_sky", TransparentBlock::new, Settings.copy(SKY));
+
 	public static final Block SKY_LIGHT = register(
 		"sky_light",
 		LightBlock::new,
@@ -46,10 +48,14 @@ public class CrystallineBlocks {
 		return getSkyLightLevel(state) > 0;
 	}
 
+	public static boolean isWeepingSky(BlockState state) {
+		return state.isOf(WEEPING_SKY);
+	}
+
 	public static int getSkyLightLevel(BlockState state) {
 		if (state.isOf(SKY_LIGHT)) {
 			return state.get(LightBlock.LEVEL_15);
-		} else if (state.isOf(SKY)) {
+		} else if (state.isOf(SKY) || state.isOf(WEEPING_SKY)) {
 			return 15;
 		}
 
