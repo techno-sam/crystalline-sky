@@ -8,4 +8,13 @@ import org.spongepowered.asm.mixin.gen.Invoker;
 public interface LightStorageAccessor {
 	@Invoker("isSectionInEnabledColumn")
 	boolean crystalline_sky$callIsSectionInEnabledColumn(long sectionPos);
+
+	@Invoker("hasSection")
+	boolean crystalline_sky$hasSection(long sectionPos);
+
+	@Invoker("get")
+	int crystalline_sky$get(long blockPos);
+
+	@Invoker("set")
+	void crystalline_sky$set(long blockPos, int lightLevel);
 }

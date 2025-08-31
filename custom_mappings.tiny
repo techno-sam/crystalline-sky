@@ -26,15 +26,44 @@ c	fae	net/minecraft/class_3572	net/minecraft/world/chunk/light/ChunkSkyLightProv
 	f	J	h	field_44744	REMOVE_SKY_SOURCE_ENTRY
 	f	J	i	field_44745	ADD_SKY_SOURCE_ENTRY
 	f	Ljb$a;	j	field_44746	scratchPos
-	m	(IIII)V	a	method_51586	removeSourcesBelow
 	m	(JLjh;IZI)V	a	method_51587	propagateFromEmptySections
-			p	0			blockPos
-			p	1			direction
-			p	2			lightLevel
-			p	3			shouldIncrease
-			p	4			emptySections
+		p	1			blockPos
+		p	3			direction
+		p	4			lightLevel
+		p	5			shouldIncrease
+		p	6			emptySections
 	m	(III)V	b	method_51590	updateSourcesInColumn
+		p	1			x
+		p	2			z
+		p	3			lowestSourceY
+		v	4	15	-1	_	_	minY
+	m	(IIII)V	a	method_51586	removeSourcesBelow
+		p	1			x
+		p	2			z
+		p	3			lowestSourceY
+		p	4			minY
+		v	5	13	-1	_	_	sectionX
+		v	6	19	-1	_	_	sectionZ
+		v	7	24	-1	_	_	topSolid
+		v	8	31	-1	_	_	sectionY
+		v	9	75	-1	_	_	minYInSection
+		v	10	82	-1	_	_	maxYInSection
+		v	11	91	-1	_	_	it_y
+		v	12	107	-1	_	_	it_pos
 	m	(IIII)V	b	method_51591	addSourcesAbove
+		p	1			x
+		p	2			z
+		p	3			lowestSourceY
+		p	4			minY
+		v	5	6	-1	_	_	sectionX
+		v	6	12	-1	_	_	sectionZ
+		v	7	63	-1	_	_	maxAdjacentLowestSourceY
+		v	8	71	-1	_	_	lowestRelevantY
+		v	9	85	-1	_	_	it_packedSection
+		v	11	125	-1	_	_	minYInSection
+		v	12	132	-1	_	_	maxYInSection
+		v	13	141	-1	_	_	it_y
+		v	14	157	-1	_	_	it_pos
 	m	(J)V	a	method_51529	checkNode
 		v	3	5	-1	_	_	x
 		v	4	11	-1	_	_	y

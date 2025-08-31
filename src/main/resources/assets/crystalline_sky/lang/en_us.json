@@ -1,5 +1,15 @@
 {
   "block.crystalline_sky.sky": "Sky",
   "block.crystalline_sky.weeping_sky": "Weeping Sky",
-  "block.crystalline_sky.sky_light": "Sky Light"
+  "block.crystalline_sky.sky_light": "Sky Light",
+
+  "crystalline_sky.key.toggle_weeping_sky_debug": "Toggle Weeping Sky Debug",
+  "crystalline_sky.category.crystalline_sky": "Crystalline Sky",
+
+  "message.crystalline_sky.weeping_sky_debug.column.cleared": "Cleared Weeping Sky debug column.",
+  "message.crystalline_sky.weeping_sky_debug.column.set": "Set Weeping Sky debug column to [%s, %s].",
+
+  "message.crystalline_sky.weeping_sky_debug.0": "Weeping Sky debug: off",
+  "message.crystalline_sky.weeping_sky_debug.1": "Weeping Sky debug: lit runs",
+  "message.crystalline_sky.weeping_sky_debug.2": "Weeping Sky debug: unlit runs"
 }

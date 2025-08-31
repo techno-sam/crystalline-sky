@@ -158,7 +158,9 @@ public abstract class WorldRendererMixin {
 		if (blockRenderLayer == BlockRenderLayerExt.CRYSTALLINE_SKY_SKY
 			&& client.player != null
 			&& (client.player.getMainHandStack().isOf(CrystallineItems.SKY)
-			|| client.player.getOffHandStack().isOf(CrystallineItems.SKY))) {
+			|| client.player.getOffHandStack().isOf(CrystallineItems.SKY)
+			|| client.player.getMainHandStack().isOf(CrystallineItems.WEEPING_SKY)
+			|| client.player.getOffHandStack().isOf(CrystallineItems.WEEPING_SKY))) {
 
 			float f = ticks + client.getRenderTickCounter().getTickProgress(true);
 			float alpha = (MathHelper.sin(f / 10.0f) + 1.0f) / 2.0f;

@@ -8,12 +8,15 @@
   "compatibilityLevel": "JAVA_21",
   "mixins": [
     "ChunkLightProviderMixin",
+    "ChunkSkyLightMixin",
     "ChunkSkyLightProviderMixin",
-    "LightStorageAccessor"
+    "LightStorageAccessor",
+    "SkyLightStorageAccessor"
   ],
   "client": [
     "client.BlockRenderLayerMixin",
     "client.ClientWorldMixin",
+    "client.DebugRendererMixin",
     "client.DefaultFramebufferSetMixin",
     "client.FramebufferMixin",
     "client.WorldRendererAccessor",

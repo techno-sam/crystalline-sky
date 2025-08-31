@@ -1,5 +1,6 @@
 package io.github.slimeistdev.crystalline_sky.registry;
 
+import io.github.slimeistdev.crystalline_sky.items.WeepingSkyBlockItem;
 import net.minecraft.block.LightBlock;
 import net.minecraft.component.DataComponentTypes;
 import net.minecraft.component.type.BlockStateComponent;
@@ -15,7 +16,7 @@ public class CrystallineItems {
 
 	public static final Item WEEPING_SKY = Items.register(
 		CrystallineBlocks.WEEPING_SKY,
-		settings -> settings.rarity(Rarity.EPIC)
+		(block, settings) -> new WeepingSkyBlockItem(block, settings.rarity(Rarity.EPIC))
 	);
 
 	public static final Item SKY_LIGHT = Items.register(
