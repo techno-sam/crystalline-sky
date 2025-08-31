@@ -11,4 +11,10 @@ public interface SkyLightStorageAccessor extends LightStorageAccessor {
 
 	@Invoker("isAtOrAboveTopmostSection")
 	boolean crystalline_sky$isAtOrAboveTopmostSection(long sectionPos);
+
+	@Invoker("getTopSectionForColumn")
+	int crystalline_sky$getTopSectionForColumn(long columnPos);
+
+	@Invoker("getMinSectionY")
+	int crystalline_sky$getMinSectionY();
 }

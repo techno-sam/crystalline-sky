@@ -1,6 +1,8 @@
 package io.github.slimeistdev.crystalline_sky.mixin;
 
+import net.minecraft.world.chunk.ChunkNibbleArray;
 import net.minecraft.world.chunk.light.LightStorage;
+import org.jetbrains.annotations.Nullable;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.gen.Invoker;
 
@@ -17,4 +19,7 @@ public interface LightStorageAccessor {
 
 	@Invoker("set")
 	void crystalline_sky$set(long blockPos, int lightLevel);
+
+	@Invoker("method_51547")
+	@Nullable ChunkNibbleArray crystalline_sky$method_51547(long sectionPos);
 }

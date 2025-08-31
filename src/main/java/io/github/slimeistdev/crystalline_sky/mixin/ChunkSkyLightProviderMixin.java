@@ -14,6 +14,7 @@ import net.minecraft.util.math.ChunkPos;
 import net.minecraft.util.math.ChunkSectionPos;
 import net.minecraft.util.math.Direction;
 import net.minecraft.world.chunk.Chunk;
+import net.minecraft.world.chunk.ChunkNibbleArray;
 import net.minecraft.world.chunk.ChunkProvider;
 import net.minecraft.world.chunk.ChunkToNibbleArrayMap;
 import net.minecraft.world.chunk.light.ChunkLightProvider;
@@ -231,5 +232,102 @@ public abstract class ChunkSkyLightProviderMixin<M extends ChunkToNibbleArrayMap
 		}
 
 		weepingStorage.clearTempRunSplits(localX, localZ);
+	}
+
+	@Inject(method = "propagateLight", at = @At("RETURN"))
+	private void propagateWeepingLight(ChunkPos chunkPos, CallbackInfo ci,
+									   @Local(name = "sourcesO") ChunkSkyLight sourcesO,
+									   @Local(name = "sourcesZN") ChunkSkyLight sourcesZN,
+									   @Local(name = "sourcesZP") ChunkSkyLight sourcesZP,
+									   @Local(name = "sourcesXN") ChunkSkyLight sourcesXN,
+									   @Local(name = "sourcesXP") ChunkSkyLight sourcesXP
+	) {
+		WeepingStorage weepingStorage = ((ChunkSkyLight_Duck) sourcesO).crystalline_sky$getWeepingStorage();
+		if (weepingStorage == null) return;
+
+		boolean hasAny = false;
+		Outer: for (int localX = 0; localX < 16; localX++) {
+			for (int localZ = 0; localZ < 16; localZ++) {
+				if (!weepingStorage.isColumnEmpty(localX, localZ)) {
+					hasAny = true;
+					break Outer;
+				}
+			}
+		}
+		if (!hasAny)
+			return;
+
+		long packedZeroPos = ChunkSectionPos.withZeroY(chunkPos.x, chunkPos.z);
+		SkyLightStorageAccessor lightStorageAccessor = (SkyLightStorageAccessor) this.lightStorage;
+
+		int topSectionY = lightStorageAccessor.crystalline_sky$getTopSectionForColumn(packedZeroPos);
+		int bottomSectionY = lightStorageAccessor.crystalline_sky$getMinSectionY();
+		int baseX = ChunkSectionPos.getBlockCoord(chunkPos.x);
+		int baseZ = ChunkSectionPos.getBlockCoord(chunkPos.z);
+
+		int minY = ChunkSectionPos.getBlockCoord(bottomSectionY);
+
+		ChunkNibbleArray[] lightArrays = new ChunkNibbleArray[topSectionY - bottomSectionY];
+		for (int sectionY = topSectionY - 1; sectionY >= bottomSectionY; sectionY--) {
+			long packedSectionPos = ChunkSectionPos.asLong(chunkPos.x, sectionY, chunkPos.z);
+			lightArrays[sectionY - bottomSectionY] = lightStorageAccessor.crystalline_sky$method_51547(packedSectionPos);
+		}
+
+		for (int localZ = 0; localZ < 16; localZ++) {
+			for (int localX = 0; localX < 16; localX++) {
+				if (weepingStorage.isColumnEmpty(localX, localZ)) continue;
+
+				int lowestSourceY = sourcesO.get(localX, localZ);
+				int effectiveLowestSourceY = lowestSourceY <= minY ? Integer.MIN_VALUE : lowestSourceY;
+				if (effectiveLowestSourceY == Integer.MIN_VALUE) continue;
+
+				int minSourceY_ZN = localZ == 0 ? sourcesZN.get(localX, 15) : sourcesO.get(localX, localZ - 1);
+				int minSourceY_ZP = localZ == 15 ? sourcesZP.get(localX, 0) : sourcesO.get(localX, localZ + 1);
+				int minSourceY_XN = localX == 0 ? sourcesXN.get(15, localZ) : sourcesO.get(localX - 1, localZ);
+				int minSourceY_XP = localX == 15 ? sourcesXP.get(0, localZ) : sourcesO.get(localX + 1, localZ);
+				int minSourceY_max = Math.max(Math.max(minSourceY_ZN, minSourceY_ZP), Math.max(minSourceY_XN, minSourceY_XP));
+
+				for (WeepingStorage.Run run : weepingStorage.iterateLitRuns(localX, localZ, effectiveLowestSourceY)) {
+					if (run.topY() == Integer.MAX_VALUE) {
+						if (run.bottomY() == effectiveLowestSourceY) {
+							continue;
+						} else {
+							run = run.withTopY(effectiveLowestSourceY - 1);
+						}
+					}
+
+					int lowestRelevantY = Math.max(run.bottomY(), minY);
+					for (int sectionY = ChunkSectionPos.getSectionCoord(lowestRelevantY); sectionY <= topSectionY - 1; sectionY++) {
+						ChunkNibbleArray lightArray = lightArrays[sectionY - bottomSectionY];
+						if (lightArray == null) continue;
+
+						int minYInSection = ChunkSectionPos.getBlockCoord(sectionY);
+						int maxYInSection = minYInSection + 15;
+
+						if (minYInSection > run.topY()) { // todone break outer early if we're above run.topY()
+							break;
+						}
+
+						for (int it_y = Math.max(minYInSection, lowestRelevantY); it_y <= Math.min(maxYInSection, run.topY()); it_y++) {
+							lightArray.set(localX, ChunkSectionPos.getLocalCoord(it_y), localZ, 15);
+
+							if (it_y == lowestRelevantY || it_y < minSourceY_max) {
+								long it_pos = BlockPos.asLong(baseX + localX, it_y, baseZ + localZ);
+								enqueueIncrease(
+									it_pos,
+									QueueEntry.increaseSkySourceInDirections(
+										it_y == lowestRelevantY,
+										it_y < minSourceY_ZN,
+										it_y < minSourceY_ZP,
+										it_y < minSourceY_XN,
+										it_y < minSourceY_XP
+									)
+								);
+							}
+						}
+					}
+				}
+			}
+		}
 	}
 }
