@@ -29,7 +29,7 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
-// todo replace all name = "..." locals with ordinal
+// todone add ordinal to all name = "..." locals
 @Mixin(ChunkSkyLightProvider.class)
 public abstract class ChunkSkyLightProviderMixin<M extends ChunkToNibbleArrayMap<M>, S extends LightStorage<M>> extends ChunkLightProvider<M, S> {
 	@Shadow
@@ -68,11 +68,12 @@ public abstract class ChunkSkyLightProviderMixin<M extends ChunkToNibbleArrayMap
 		}
 	}
 
-	@Definition(id = "y", local = @Local(type = int.class, name = "y"))
-	@Definition(id = "lowestSourceY", local = @Local(type = int.class, name = "lowestSourceY"))
+	@SuppressWarnings("LocalMayBeArgsOnly")
+	@Definition(id = "y", local = @Local(type = int.class, name = "y", ordinal = 1))
+	@Definition(id = "lowestSourceY", local = @Local(type = int.class, name = "lowestSourceY", ordinal = 3))
 	@Expression("y >= lowestSourceY")
 	@WrapOperation(method = "checkNode", at = @At("MIXINEXTRAS:EXPRESSION"))
-	private boolean weepBelowTheLowest(int y, int lowestSourceY, Operation<Boolean> original, @Local(name = "x") int x, @Local(name = "z") int z) {
+	private boolean weepBelowTheLowest(int y, int lowestSourceY, Operation<Boolean> original, @Local(name = "x", ordinal = 0) int x, @Local(name = "z", ordinal = 2) int z) {
 		if (original.call(y, lowestSourceY)) {
 			return true;
 		}
@@ -162,7 +163,7 @@ public abstract class ChunkSkyLightProviderMixin<M extends ChunkToNibbleArrayMap
 
 	@Inject(method = "addSourcesAbove", at = @At("RETURN"))
 	private void addAdditionalWeepingSourcesAbove(int x, int z, int lowestSourceY, int minY, CallbackInfo ci,
-												  @Local(name = "maxAdjacentLowestSourceY") int maxAdjacentLowestSourceY) {
+												  @Local(name = "maxAdjacentLowestSourceY", ordinal = 6) int maxAdjacentLowestSourceY) {
 		LightSourceView chunk = chunkProvider.getChunk(ChunkSectionPos.getSectionCoord(x), ChunkSectionPos.getSectionCoord(z));
 		if (chunk == null) return;
 
@@ -236,11 +237,11 @@ public abstract class ChunkSkyLightProviderMixin<M extends ChunkToNibbleArrayMap
 
 	@Inject(method = "propagateLight", at = @At("RETURN"))
 	private void propagateWeepingLight(ChunkPos chunkPos, CallbackInfo ci,
-									   @Local(name = "sourcesO") ChunkSkyLight sourcesO,
-									   @Local(name = "sourcesZN") ChunkSkyLight sourcesZN,
-									   @Local(name = "sourcesZP") ChunkSkyLight sourcesZP,
-									   @Local(name = "sourcesXN") ChunkSkyLight sourcesXN,
-									   @Local(name = "sourcesXP") ChunkSkyLight sourcesXP
+									   @Local(name = "sourcesO", ordinal = 0) ChunkSkyLight sourcesO,
+									   @Local(name = "sourcesZN", ordinal = 1) ChunkSkyLight sourcesZN,
+									   @Local(name = "sourcesZP", ordinal = 2) ChunkSkyLight sourcesZP,
+									   @Local(name = "sourcesXN", ordinal = 3) ChunkSkyLight sourcesXN,
+									   @Local(name = "sourcesXP", ordinal = 4) ChunkSkyLight sourcesXP
 	) {
 		WeepingStorage weepingStorage = ((ChunkSkyLight_Duck) sourcesO).crystalline_sky$getWeepingStorage();
 		if (weepingStorage == null) return;
