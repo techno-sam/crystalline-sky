@@ -9,6 +9,7 @@ fapi = "0.130.0+1.21.8"
 mixinextras = "0.5.0"
 mm = "15.0.0-beta.3"
 manningham = "v2.3"
+sodium = "mc1.21.6-0.6.13-fabric"
 
 [plugins]
 loom = { id = "fabric-loom", version.ref = "loom" }
@@ -22,3 +23,4 @@ fapi = { group = "net.fabricmc.fabric-api", name = "fabric-api", version.ref = "
 mixinextras = { group = "io.github.llamalad7", name = "mixinextras-fabric", version.ref = "mixinextras" }
 mm = { group = "com.terraformersmc", name = "modmenu", version.ref = "mm" }
 manningham = { group = "com.github.Chocohead", name = "Fabric-ASM", version.ref = "manningham" }
+sodium = { group = "maven.modrinth", name = "sodium", version.ref = "sodium" }

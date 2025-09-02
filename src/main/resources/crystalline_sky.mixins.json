@@ -5,6 +5,7 @@
     "minVersion": "0.5.0"
   },
   "package": "io.github.slimeistdev.crystalline_sky.mixin",
+  "plugin": "io.github.slimeistdev.crystalline_sky.mixin.CrystallineSkyMixinPlugin",
   "compatibilityLevel": "JAVA_21",
   "mixins": [
     "ChunkLightProviderMixin",
@@ -19,8 +20,14 @@
     "client.DebugRendererMixin",
     "client.DefaultFramebufferSetMixin",
     "client.FramebufferMixin",
+    "client.WorldRenderer_NoSodium_Mixin",
     "client.WorldRendererAccessor",
-    "client.WorldRendererMixin"
+    "client.WorldRendererMixin",
+    "client.compat.sodium.DefaultMaterialsMixin",
+    "client.compat.sodium.DefaultTerrainRenderPassesMixin",
+    "client.compat.sodium.ShaderChunkRendererMixin",
+    "client.compat.sodium.SodiumWorldRendererMixin",
+    "client.compat.sodium.TerrainRenderPassAccessor"
   ],
   "server": [
   ],

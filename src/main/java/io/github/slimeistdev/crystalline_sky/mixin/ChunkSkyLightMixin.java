@@ -143,8 +143,8 @@ public abstract class ChunkSkyLightMixin implements ChunkSkyLight_Duck {
 			crystalline_sky$weepingStorage.insertSolid(localX, y - weepingMinY, localZ, crystalline_sky$weepingScanner);
 		}
 
-		CrystallineSky.LOG.info("Weeping sky ranges for local column [{}, {}] in {}:", localX, localZ, blockView);
-		crystalline_sky$weepingStorage.debugState(localX, localZ, CrystallineSky.LOG::info);
+		CrystallineSky.LOG.debug("Weeping sky ranges for local column [{}, {}] in {}:", localX, localZ, blockView);
+		crystalline_sky$weepingStorage.debugState(localX, localZ, CrystallineSky.LOG::debug);
 
 		crystalline_sky$weepingScanner.setBlockView(null);
 	}

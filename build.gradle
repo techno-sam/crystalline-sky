@@ -71,6 +71,12 @@ dependencies {
 		modRuntimeOnly libs.mm
 	}
 
+	modCompileOnly libs.sodium
+
+	if (!inCI && enable_sodium.toBoolean()) {
+		modRuntimeOnly libs.sodium
+	}
+
 	include(implementation(annotationProcessor(libs.mixinextras.get())))
 }
 

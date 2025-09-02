@@ -1,0 +1,54 @@
+#version 330 core
+
+#import <sodium:include/fog.glsl>
+#import <sodium:include/chunk_vertex.glsl>
+#import <sodium:include/chunk_matrices.glsl>
+#import <sodium:include/chunk_material.glsl>
+
+#import <crystalline_sky:include/projection.glsl>
+
+out vec4 v_Color;
+out vec4 v_TexProj;
+
+out float v_MaterialMipBias;
+#ifdef USE_FRAGMENT_DISCARD
+out float v_MaterialAlphaCutoff;
+#endif
+
+#ifdef USE_FOG
+out vec2 v_FragDistance;
+#endif
+
+uniform vec3 u_RegionOffset;
+
+uvec3 _get_relative_chunk_coord(uint pos) {
+    // Packing scheme is defined by LocalSectionIndex
+    return uvec3(pos) >> uvec3(5u, 0u, 2u) & uvec3(7u, 3u, 7u);
+}
+
+vec3 _get_draw_translation(uint pos) {
+    return _get_relative_chunk_coord(pos) * vec3(16.0);
+}
+
+void main() {
+    _vert_init();
+
+    // Transform the chunk-local vertex position into world model space
+    vec3 translation = u_RegionOffset + _get_draw_translation(_draw_id);
+    vec3 position = _vert_position + translation;
+
+#ifdef USE_FOG
+    v_FragDistance = getFragDistance(position);
+#endif
+
+    // Transform the vertex position into model-view-projection space
+    gl_Position = u_ProjectionMatrix * u_ModelViewMatrix * vec4(position, 1.0);
+
+    v_Color = _vert_color;
+    v_TexProj = projection_from_position(gl_Position);
+
+    v_MaterialMipBias = _material_mip_bias(_material_params);
+#ifdef USE_FRAGMENT_DISCARD
+    v_MaterialAlphaCutoff = _material_alpha_cutoff(_material_params);
+#endif
+}

@@ -1,0 +1,6 @@
+The following mixins in this package are from derived from https://github.com/wisp-forest/affinity, and as such are licensed under the MIT license:
+
+- DefaultMaterialsMixin
+- DefaultTerrainRenderPassesMixin
+- SodiumWorldRendererMixin
+- TerrainRenderPassAccessor

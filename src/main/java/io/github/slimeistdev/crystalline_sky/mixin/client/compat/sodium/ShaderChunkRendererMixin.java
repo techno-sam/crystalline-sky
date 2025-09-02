@@ -1,0 +1,50 @@
+package io.github.slimeistdev.crystalline_sky.mixin.client.compat.sodium;
+
+import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
+import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
+import io.github.slimeistdev.crystalline_sky.annotation.mixin.ConditionalMixin;
+import io.github.slimeistdev.crystalline_sky.compat.Mods;
+import io.github.slimeistdev.crystalline_sky.compat.sodium.SkyShaderInterface;
+import io.github.slimeistdev.crystalline_sky.extenders_cove.BlockRenderLayerExt;
+import net.caffeinemc.mods.sodium.client.gl.shader.GlProgram;
+import net.caffeinemc.mods.sodium.client.render.chunk.ShaderChunkRenderer;
+import net.caffeinemc.mods.sodium.client.render.chunk.shader.ChunkShaderInterface;
+import net.caffeinemc.mods.sodium.client.render.chunk.shader.ChunkShaderOptions;
+import net.caffeinemc.mods.sodium.client.render.chunk.shader.ShaderBindingContext;
+import net.caffeinemc.mods.sodium.client.render.chunk.terrain.material.DefaultMaterials;
+import net.minecraft.util.Identifier;
+import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.injection.At;
+
+import java.util.function.Function;
+
+@ConditionalMixin(mods = Mods.SODIUM)
+@Mixin(ShaderChunkRenderer.class)
+public class ShaderChunkRendererMixin {
+	@WrapOperation(method = "compileProgram", at = @At(value = "INVOKE", target = "Lnet/caffeinemc/mods/sodium/client/render/chunk/ShaderChunkRenderer;createShader(Ljava/lang/String;Lnet/caffeinemc/mods/sodium/client/render/chunk/shader/ChunkShaderOptions;)Lnet/caffeinemc/mods/sodium/client/gl/shader/GlProgram;"), remap = false)
+	private GlProgram<ChunkShaderInterface> createSkyShader(ShaderChunkRenderer instance, String path, ChunkShaderOptions options, Operation<GlProgram<ChunkShaderInterface>> original) {
+		if (options.pass() == DefaultMaterials.forChunkLayer(BlockRenderLayerExt.CRYSTALLINE_SKY_SKY).pass) {
+			return original.call(instance, "sodium_compat/block_layer_sky", options);
+		}
+
+		return original.call(instance, path, options);
+	}
+
+	@WrapOperation(method = "createShader", at = @At(value = "INVOKE", target = "Lnet/minecraft/util/Identifier;of(Ljava/lang/String;Ljava/lang/String;)Lnet/minecraft/util/Identifier;"))
+	private Identifier redirectShaderNamespace(String namespace, String path, Operation<Identifier> original, String pathArg) {
+		if (pathArg.equals("sodium_compat/block_layer_sky")) {
+			namespace = "crystalline_sky";
+		}
+
+		return original.call(namespace, path);
+	}
+
+	@WrapOperation(method = "createShader", at = @At(value = "INVOKE", target = "Lnet/caffeinemc/mods/sodium/client/gl/shader/GlProgram$Builder;link(Ljava/util/function/Function;)Lnet/caffeinemc/mods/sodium/client/gl/shader/GlProgram;"), remap = false)
+	private static GlProgram<ChunkShaderInterface> useSkyShaderInterface(GlProgram.Builder instance, Function<ShaderBindingContext, ChunkShaderInterface> factory, Operation<GlProgram<ChunkShaderInterface>> original, String argPath, ChunkShaderOptions argOptions) {
+		if (argPath.equals("sodium_compat/block_layer_sky")) {
+			factory = (shader) -> new SkyShaderInterface(shader, argOptions);
+		}
+
+		return original.call(instance, factory);
+	}
+}

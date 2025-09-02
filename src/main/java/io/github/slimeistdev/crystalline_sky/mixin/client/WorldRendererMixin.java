@@ -1,16 +1,11 @@
 package io.github.slimeistdev.crystalline_sky.mixin.client;
 
-import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
-import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import com.llamalad7.mixinextras.sugar.Local;
 import com.mojang.blaze3d.buffers.GpuBufferSlice;
-import io.github.slimeistdev.crystalline_sky.extenders_cove.BlockRenderLayerExt;
 import io.github.slimeistdev.crystalline_sky.extenders_cove.BlockRenderLayerGroupExt;
 import io.github.slimeistdev.crystalline_sky.mixin_ducks.client.DefaultFramebufferSet_Duck;
 import io.github.slimeistdev.crystalline_sky.mixin_ducks.client.Framebuffer_Duck;
-import io.github.slimeistdev.crystalline_sky.registry.CrystallineItems;
 import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.gl.DynamicUniforms;
 import net.minecraft.client.gl.Framebuffer;
 import net.minecraft.client.gl.SimpleFramebufferFactory;
 import net.minecraft.client.option.CloudRenderMode;
@@ -18,10 +13,10 @@ import net.minecraft.client.render.*;
 import net.minecraft.client.util.Handle;
 import net.minecraft.client.util.ObjectAllocator;
 import net.minecraft.client.world.ClientWorld;
-import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.profiler.Profiler;
 import org.jetbrains.annotations.Nullable;
-import org.joml.*;
+import org.joml.Matrix4f;
+import org.joml.Vector4f;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -61,13 +56,7 @@ public abstract class WorldRendererMixin {
 								Vector4f fogColor, boolean shouldRenderSky, CallbackInfo ci,
 								@Local FrameGraphBuilder frameGraphBuilder,
 								@Local SimpleFramebufferFactory factory) {
-		SimpleFramebufferFactory depthlessFactory = new SimpleFramebufferFactory(
-			factory.width(),
-			factory.height(),
-			false,
-			factory.clearColor()
-		);
-		Handle<Framebuffer> framebuffer = frameGraphBuilder.createResourceHandle("crystalline_sky:sky_framebuffer", depthlessFactory);
+		Handle<Framebuffer> framebuffer = frameGraphBuilder.createResourceHandle("crystalline_sky:sky_framebuffer", factory);
 		((DefaultFramebufferSet_Duck) framebufferSet).crystalline_sky$setSkyFramebuffer(framebuffer);
 	}
 
@@ -148,28 +137,5 @@ public abstract class WorldRendererMixin {
 									  Handle<Framebuffer> translucentFramebuffer, Handle<Framebuffer> mainFramebuffer, CallbackInfo ci,
 									  @Local SectionRenderState sectionRenderState) {
 		sectionRenderState.renderSection(BlockRenderLayerGroupExt.CRYSTALLINE_SKY_SKY);
-	}
-
-	@WrapOperation(method = "renderBlockLayers", at = @At(value = "NEW", target = "net/minecraft/client/gl/DynamicUniforms$UniformValue"))
-	private DynamicUniforms.UniformValue tintSkyBlocks(Matrix4fc modelView, Vector4fc colorModulator,
-													   Vector3fc modelOffset, Matrix4fc textureMatrix, float lineWidth,
-													   Operation<DynamicUniforms.UniformValue> original,
-													   @Local BlockRenderLayer blockRenderLayer) {
-		if (blockRenderLayer == BlockRenderLayerExt.CRYSTALLINE_SKY_SKY
-			&& client.player != null
-			&& (client.player.getMainHandStack().isOf(CrystallineItems.SKY)
-			|| client.player.getOffHandStack().isOf(CrystallineItems.SKY)
-			|| client.player.getMainHandStack().isOf(CrystallineItems.WEEPING_SKY)
-			|| client.player.getOffHandStack().isOf(CrystallineItems.WEEPING_SKY))) {
-
-			float f = ticks + client.getRenderTickCounter().getTickProgress(true);
-			float alpha = (MathHelper.sin(f / 10.0f) + 1.0f) / 2.0f;
-			// remap alpha from [0, 1] to [0, 0.75]
-			float maxAlpha = 1.0f - 0.25f;
-			alpha = alpha * maxAlpha;
-			colorModulator = new Vector4f(1.0f, 1.0f, 1.0f, alpha).mul(colorModulator);
-		}
-
-		return original.call(modelView, colorModulator, modelOffset, textureMatrix, lineWidth);
 	}
 }
