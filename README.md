@@ -1,19 +1,24 @@
-<!--suppress HtmlDeprecatedTag, XmlDeprecatedElement -->
-<center><img alt="mod preview" src="https://upload.wikimedia.org/wikipedia/commons/7/70/Example.png"/></center>
+<!--suppress HtmlDeprecatedTag, XmlDeprecatedElement, HtmlDeprecatedAttribute -->
+<p align="center">
+<img alt="mod icon: a block of sky surrounded by stone" src="https://raw.githubusercontent.com/techno-sam/crystalline-sky/refs/heads/fabric-1.21.8/dev/src/main/resources/assets/crystalline_sky/icon.png" width="128"/>
+</p>
 
-<center>
-A short quick summary of this mod
-</center>
+<p align="center">
+Crystallizes the heavens into block form. For all your sky-in-a-cave needs.<br/>
+</p>
 
----
-
-A long description of your mod, including 
-- Dot point lists of all features
-
-`path/to/config/files` if you have them
-
-Screenshots of features where possible
+<p align="center">
+<a href="https://modfest.net/toybox"><img alt="Made for Modfest: Toybox" src="https://raw.githubusercontent.com/ModFest/art/refs/heads/v2/badge/svg/toybox/compact.svg"></a>
+</p>
 
 ---
 
-A footnote for special thanks, credits, and other shoutouts - including "created at modfest" banners.
+Crystalline Sky adds several sky-light emitting blocks:
+- **Sky**: Emits sky-light level 15, renders like the sky.
+- **Sky Light**: Emits a sky-light level between 0 and 15, transparent rendering.
+- **Weeping Sky**: Emits sky-light level 15 in a column below it, renders like the sky.
+- **Weeping Sky Light**: Emits sky-light level 15 in a column below it, transparent rendering.
+
+---
+
+![weeping sky blocks illuminating a cave](https://cdn.modrinth.com/data/dhKWKlrK/images/5dc5430dd318361d12c962ac555d79f68aeac243.png)
