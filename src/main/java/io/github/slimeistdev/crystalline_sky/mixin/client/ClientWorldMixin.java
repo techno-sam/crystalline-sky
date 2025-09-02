@@ -25,6 +25,7 @@ public class ClientWorldMixin {
 	private static void modifyBlockMarkerItems(CallbackInfo ci) {
 		BLOCK_MARKER_ITEMS = new HashSet<>(BLOCK_MARKER_ITEMS);
 		BLOCK_MARKER_ITEMS.add(CrystallineItems.SKY_LIGHT);
+		BLOCK_MARKER_ITEMS.add(CrystallineItems.WEEPING_SKY_LIGHT);
 		BLOCK_MARKER_ITEMS.add(CrystallineItems.SKY);
 		BLOCK_MARKER_ITEMS.add(CrystallineItems.WEEPING_SKY);
 	}

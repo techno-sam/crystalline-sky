@@ -30,6 +30,9 @@ public class CrystallineSkyModelProvider extends FabricModelProvider {
 		registerSkyBlock(gen, CrystallineBlocks.SKY);
 		registerSkyBlock(gen, CrystallineBlocks.WEEPING_SKY);
 		registerSkyLightBlock(gen, CrystallineBlocks.SKY_LIGHT, CrystallineItems.SKY_LIGHT);
+
+		gen.registerBuiltinWithParticle(CrystallineBlocks.WEEPING_SKY_LIGHT, CrystallineItems.WEEPING_SKY_LIGHT);
+		gen.registerItemModel(CrystallineItems.WEEPING_SKY_LIGHT);
 	}
 
 	private void registerSkyBlock(BlockStateModelGenerator gen, Block block) {

@@ -7,7 +7,7 @@ import io.github.slimeistdev.crystalline_sky.registry.CrystallineItems;
 public class ModSetup {
 	public static void init() {
 		CrystallineDataComponentTypes.init();
-		CrystallineBlocks.init();
 		CrystallineItems.init();
+		CrystallineBlocks.init();
 	}
 }

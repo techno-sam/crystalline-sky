@@ -1,4 +1,4 @@
-package io.github.slimeistdev.crystalline_sky.items;
+package io.github.slimeistdev.crystalline_sky.content.items;
 
 import io.github.slimeistdev.crystalline_sky.infrastructure.client.WeepingSkyDebugRenderer;
 import io.github.slimeistdev.crystalline_sky.mixin_ducks.client.DebugRenderer_Duck;

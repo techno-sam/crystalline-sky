@@ -1,5 +1,6 @@
 package io.github.slimeistdev.crystalline_sky.datagen;
 
+import io.github.slimeistdev.crystalline_sky.datagen.providers.CrystallineSkyBlockTagProvider;
 import io.github.slimeistdev.crystalline_sky.datagen.providers.CrystallineSkyLootProvider;
 import io.github.slimeistdev.crystalline_sky.datagen.providers.CrystallineSkyModelProvider;
 import net.fabricmc.fabric.api.datagen.v1.DataGeneratorEntrypoint;
@@ -12,5 +13,6 @@ public class CrystallineSkyDataGenerator implements DataGeneratorEntrypoint {
 
 		pack.addProvider(CrystallineSkyModelProvider::new);
 		pack.addProvider(CrystallineSkyLootProvider::new);
+		pack.addProvider(CrystallineSkyBlockTagProvider::new);
 	}
 }

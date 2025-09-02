@@ -1,6 +1,8 @@
 package io.github.slimeistdev.crystalline_sky.registry;
 
 import io.github.slimeistdev.crystalline_sky.CrystallineSky;
+import io.github.slimeistdev.crystalline_sky.content.blocks.SkyLightBlock;
+import io.github.slimeistdev.crystalline_sky.content.blocks.WeepingSkyLightBlock;
 import net.minecraft.block.*;
 import net.minecraft.block.AbstractBlock.Settings;
 import net.minecraft.registry.Registries;
@@ -28,7 +30,18 @@ public class CrystallineBlocks {
 
 	public static final Block SKY_LIGHT = register(
 		"sky_light",
-		LightBlock::new,
+		SkyLightBlock::new,
+		AbstractBlock.Settings.create()
+			.replaceable()
+			.strength(-1.0F, 3600000.8F)
+			.mapColor(state -> state.get(Properties.WATERLOGGED) ? MapColor.WATER_BLUE : MapColor.CLEAR)
+			.dropsNothing()
+			.nonOpaque()
+	);
+
+	public static final Block WEEPING_SKY_LIGHT = register(
+		"weeping_sky_light",
+		WeepingSkyLightBlock::new,
 		AbstractBlock.Settings.create()
 			.replaceable()
 			.strength(-1.0F, 3600000.8F)
@@ -59,6 +72,6 @@ public class CrystallineBlocks {
 	}
 
 	public static boolean isWeepingSky(BlockState state) {
-		return state.isOf(WEEPING_SKY);
+		return state.isOf(WEEPING_SKY) || state.isOf(WEEPING_SKY_LIGHT);
 	}
 }

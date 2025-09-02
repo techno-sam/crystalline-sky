@@ -1,4 +1,4 @@
-package io.github.slimeistdev.crystalline_sky.items;
+package io.github.slimeistdev.crystalline_sky.content.items;
 
 import io.github.slimeistdev.crystalline_sky.registry.CrystallineDataComponentTypes;
 import net.minecraft.block.Block;
