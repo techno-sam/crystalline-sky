@@ -93,6 +93,39 @@ public abstract class ChunkSkyLightProviderMixin<M extends ChunkToNibbleArrayMap
 		return weepingStorage.isLit(localX, y, localZ);
 	}
 
+	@WrapOperation(method = "propagateDecrease", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/chunk/light/ChunkSkyLightProvider;enqueueDecrease(JJ)V"))
+	private void decreaseTakesLightIntoAccount1(ChunkSkyLightProvider instance, long blockPos, long flags,
+												Operation<Void> original, @Local(name = "k", ordinal = 2) int k) {
+		// k is the old light level at blockPos
+		BlockState state = getStateForLighting(scratchPos.set(blockPos));
+		int luminance = CrystallineBlocks.getSkyLightLevel(state);
+
+		if (luminance < k) {
+			original.call(instance, blockPos, flags);
+		}
+
+		if (luminance > 0) {
+			enqueueIncrease(blockPos, QueueEntry.increaseLightFromEmission(luminance, isTrivialForLighting(state)));
+		}
+	}
+
+	@WrapOperation(method = "propagateDecrease", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/chunk/light/ChunkSkyLightProvider;propagateFromEmptySections(JLnet/minecraft/util/math/Direction;IZI)V"))
+	private void decreaseTakesLightIntoAccount2(ChunkSkyLightProvider instance, long blockPos, Direction direction,
+												int lightLevel, boolean shouldIncrease, int emptySections,
+												Operation<Void> original, @Local(name = "k", ordinal = 2) int k) {
+		// k is the old light level at blockPos
+		BlockState state = getStateForLighting(scratchPos.set(blockPos));
+		int luminance = CrystallineBlocks.getSkyLightLevel(state);
+
+		if (luminance < k) {
+			original.call(instance, blockPos, direction, lightLevel, shouldIncrease, emptySections);
+		}
+
+		if (luminance > 0) {
+			original.call(instance, blockPos, direction, luminance, true, emptySections);
+		}
+	}
+
 	@Inject(method = "propagateLight", at = @At("RETURN"))
 	private void propagateCrystallineSkyLight(ChunkPos chunkPos, CallbackInfo ci) {
 		LightSourceView lightSourceView = this.chunkProvider.getChunk(chunkPos.x, chunkPos.z);
