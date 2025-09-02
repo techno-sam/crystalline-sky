@@ -1,4 +1,10 @@
 tiny	2	0	official	intermediary	named
+c	uh	net/minecraft/class_2483	net/minecraft/nbt/AbstractNbtList
+	m	(I)Lvi;	c	method_10534	get
+	m	(I)Lvi;	d	method_10536	remove
+c	uo	net/minecraft/class_2499	net/minecraft/nbt/NbtList
+	m	(I)Lvi;	method_10534	method_10534	get
+	m	(I)Lvi;	method_10536	method_10536	remove
 c	fac	net/minecraft/class_3558	net/minecraft/world/chunk/light/ChunkLightProvider
 	f	I	a	field_44729	MAX_LEVEL
 	f	I	b	field_44730	MIN_OPACITY

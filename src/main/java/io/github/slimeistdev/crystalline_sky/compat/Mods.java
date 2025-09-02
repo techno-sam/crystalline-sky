@@ -6,7 +6,8 @@ import java.util.Optional;
 import java.util.function.Supplier;
 
 public enum Mods {
-	SODIUM("sodium");
+	SODIUM("sodium"),
+	AXIOM("axiom");
 
 	public final String id;
 	public final boolean isLoaded;

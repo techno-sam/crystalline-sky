@@ -23,6 +23,7 @@
     "client.WorldRenderer_NoSodium_Mixin",
     "client.WorldRendererAccessor",
     "client.WorldRendererMixin",
+    "client.compat.axiom.ChunkRenderOverrider_AxiomChunkOverrideLayerMixin",
     "client.compat.sodium.DefaultMaterialsMixin",
     "client.compat.sodium.DefaultTerrainRenderPassesMixin",
     "client.compat.sodium.ShaderChunkRendererMixin",
