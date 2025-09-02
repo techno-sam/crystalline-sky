@@ -10,7 +10,7 @@ import net.minecraft.util.math.ColumnPos;
 import org.jetbrains.annotations.Nullable;
 
 public class WeepingSkyBlockItemClient {
-	// todo check if this is server-safe
+	// todone check if this is server-safe
 	@Environment(EnvType.CLIENT)
 	public static void setSelectedColumn(@Nullable ColumnPos column) {
 		MinecraftClient mc = MinecraftClient.getInstance();

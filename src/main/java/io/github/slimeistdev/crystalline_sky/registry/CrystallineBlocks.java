@@ -18,7 +18,7 @@ import java.util.function.Function;
 public class CrystallineBlocks {
 	public static final Block SKY = register("sky", TransparentBlock::new, Settings.create()
 		.strength(0.3f)
-		.sounds(BlockSoundGroup.GLASS)
+		.sounds(BlockSoundGroup.AMETHYST_BLOCK)
 		.nonOpaque()
 		.allowsSpawning(Blocks::never)
 		.solidBlock(Blocks::never)
