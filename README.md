@@ -1,6 +1,6 @@
 <!--suppress HtmlDeprecatedTag, XmlDeprecatedElement, HtmlDeprecatedAttribute -->
 <p align="center">
-<img alt="mod icon: a block of sky surrounded by stone" src="https://raw.githubusercontent.com/techno-sam/crystalline-sky/refs/heads/fabric-1.21.8/dev/src/main/resources/assets/crystalline_sky/icon.png" width="128"/>
+<img alt="mod icon: a block of sky surrounded by stone" src="https://raw.githubusercontent.com/techno-sam/crystalline-sky/refs/heads/fabric-1.21.8/src/main/resources/assets/crystalline_sky/icon.png" width="128"/>
 </p>
 
 <p align="center">
