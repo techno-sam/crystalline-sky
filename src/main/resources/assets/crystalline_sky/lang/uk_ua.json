@@ -1,0 +1,18 @@
+{
+  "block.crystalline_sky.sky": "Небеса",
+  "block.crystalline_sky.weeping_sky": "Плакучі небеса",
+  "block.crystalline_sky.sky_light": "Небесне світло",
+  "block.crystalline_sky.weeping_sky_light": "Плакуче небесне світло",
+
+  "crystalline_sky.key.toggle_weeping_sky_debug": "Перемкнути налагод. плакучих небес",
+  "crystalline_sky.category.crystalline_sky": "Crystalline Sky",
+
+  "message.crystalline_sky.weeping_sky_debug.column.cleared": "Очищено стовпець налагодження плакучих небес.",
+  "message.crystalline_sky.weeping_sky_debug.column.set": "Установлено стовпець налагодження плакучих небес на [%s, %s].",
+
+  "message.crystalline_sky.weeping_sky_debug.0": "Налагодження плакучих небес: ВИМК.",
+  "message.crystalline_sky.weeping_sky_debug.1": "Налагодження плакучих небес: Освітлено",
+  "message.crystalline_sky.weeping_sky_debug.2": "Налагодження плакучих небес: Не освітлено",
+  
+  "modmenu.descriptionTranslation.crystalline_sky": "Кристалізує небеса у формі блока. Для всіх ваших потреб у печері"
+}
