@@ -9,7 +9,7 @@ fapi = "0.116.10+1.21.1"
 mixinextras = "0.5.0"
 mm = "11.0.4"
 sodium = "mc1.21.1-0.6.13-fabric"
-axiom = "SZ7n7j9f"
+axiom = "jTdCyf2H"
 # these have to be manually extracted from the jar and put in the flatDir libs folder (only if the enable_axiom property is true)
 axiom-axiomclientapi = "1.0.0"
 axiom-lattice = "1.2.12"
