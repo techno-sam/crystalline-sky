@@ -24,7 +24,7 @@ public class FramebufferMixin implements Framebuffer_Duck {
 
 	@Override
 	public void crystalline_sky$copyColorFrom(Framebuffer framebuffer) {
-		RenderSystem.assertOnRenderThread();
+		RenderSystem.assertOnRenderThreadOrInit();
 		if (this.colorAttachment == -1) {
 			throw new IllegalStateException("Trying to copy color texture to a RenderTarget without a color texture");
 		} else if (framebuffer.getColorAttachment() == -1) {
@@ -35,9 +35,9 @@ public class FramebufferMixin implements Framebuffer_Duck {
 			GlStateManager._glBlitFrameBuffer(
 				0, 0, framebuffer.textureWidth, framebuffer.textureHeight,
 				0, 0, this.textureWidth, this.textureHeight,
-				256, GlConst.GL_NEAREST
+				GlConst.GL_COLOR_BUFFER_BIT, GlConst.GL_NEAREST
 			);
-			GlStateManager._glBindFramebuffer(GlConst.GL_FRAMEBUFFER, 0);
+			GlStateManager._glBindFramebuffer(GlConst.GL_FRAMEBUFFER, framebuffer.fbo);
 		}
 	}
 }

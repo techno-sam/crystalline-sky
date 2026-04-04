@@ -8,7 +8,6 @@ yarn = "1.21.1+build.3"
 fapi = "0.116.10+1.21.1"
 mixinextras = "0.5.0"
 mm = "11.0.4"
-manningham = "v2.3"
 sodium = "mc1.21.1-0.6.13-fabric"
 axiom = "SZ7n7j9f"
 # these have to be manually extracted from the jar and put in the flatDir libs folder (only if the enable_axiom property is true)
@@ -27,7 +26,6 @@ yarn = { group = "net.fabricmc", name = "yarn", version.ref = "yarn" }
 fapi = { group = "net.fabricmc.fabric-api", name = "fabric-api", version.ref = "fapi" }
 mixinextras = { group = "io.github.llamalad7", name = "mixinextras-fabric", version.ref = "mixinextras" }
 mm = { group = "com.terraformersmc", name = "modmenu", version.ref = "mm" }
-manningham = { group = "com.github.Chocohead", name = "Fabric-ASM", version.ref = "manningham" }
 sodium = { group = "maven.modrinth", name = "sodium", version.ref = "sodium" }
 axiom = { group = "maven.modrinth", name = "axiom", version.ref = "axiom" }
 axiom-axiomclientapi = { group = "local", name = "axiomclientapi", version.ref = "axiom-axiomclientapi" }

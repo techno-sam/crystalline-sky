@@ -36,19 +36,6 @@ repositories {
 			includeGroup "com.terraformersmc"
 		}
 	}
-	exclusiveContent { // Fabric ASM
-		//"https://jitpack.io/"
-		forRepository {
-			//noinspection ForeignDelegate
-			maven {
-				name 'JitPack (Manningham Mills)'
-				url "https://jitpack.io/"
-			}
-		}
-		filter {
-			includeGroup "com.github.Chocohead"
-		}
-	}
 	flatDir {
 		dir("libs")
 	}
@@ -63,12 +50,6 @@ dependencies {
 
 	modImplementation libs.fl
 	modImplementation libs.fapi
-
-	// Fabric ASM (enum extension etc)
-	modImplementation(libs.manningham) {
-		exclude (group: "net.fabricmc.fabric-api")
-	}
-	include libs.manningham
 
 	if (!inCI) {
 		modRuntimeOnly libs.mm

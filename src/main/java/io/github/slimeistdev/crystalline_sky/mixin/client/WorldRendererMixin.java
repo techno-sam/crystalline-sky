@@ -8,13 +8,15 @@ import io.github.slimeistdev.crystalline_sky.registry.client.CrystallineRenderLa
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gl.Framebuffer;
 import net.minecraft.client.gl.SimpleFramebuffer;
+import net.minecraft.client.option.CloudRenderMode;
 import net.minecraft.client.render.Camera;
 import net.minecraft.client.render.GameRenderer;
 import net.minecraft.client.render.LightmapTextureManager;
 import net.minecraft.client.render.RenderLayer;
 import net.minecraft.client.render.RenderTickCounter;
 import net.minecraft.client.render.WorldRenderer;
-import net.minecraft.client.world.ClientWorld;
+import net.minecraft.client.util.math.MatrixStack;
+import net.minecraft.util.math.Vec3d;
 import org.jetbrains.annotations.Nullable;
 import org.joml.Matrix4f;
 import org.spongepowered.asm.mixin.Final;
@@ -25,17 +27,11 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
-@Mixin(WorldRenderer.class)
+@Mixin(value = WorldRenderer.class, remap = false)
 public abstract class WorldRendererMixin implements WorldRenderer_Duck {
 	@Shadow
 	@Final
 	private MinecraftClient client;
-
-	@Shadow
-	private @Nullable ClientWorld world;
-
-	@Shadow
-	private int ticks;
 
 	@Shadow
 	protected abstract boolean hasBlindnessOrDarkness(Camera camera);
@@ -43,15 +39,21 @@ public abstract class WorldRendererMixin implements WorldRenderer_Duck {
 	@Shadow
 	protected abstract void renderLayer(RenderLayer renderLayer, double x, double y, double z, Matrix4f matrix4f, Matrix4f positionMatrix);
 
+	@Shadow
+	private @Nullable Framebuffer cloudsFramebuffer;
+
+	@Shadow
+	public abstract void renderClouds(MatrixStack matrices, Matrix4f matrix4f, Matrix4f matrix4f2, float tickDelta, double cameraX, double cameraY, double cameraZ);
+
 	@Unique
 	@Nullable
-	private Framebuffer crystalline_sky$skyBuffer;// = new SimpleFramebuffer(0, 0, false, MinecraftClient.IS_SYSTEM_MAC);
+	private Framebuffer crystalline_sky$skyBuffer;
 
 	@Override
 	public Framebuffer crystalline_sky$getSkyFramebuffer() {
 		if (crystalline_sky$skyBuffer == null) {
 			var fb = client.getFramebuffer();
-			crystalline_sky$skyBuffer = new SimpleFramebuffer(fb.textureWidth, fb.textureHeight, false, MinecraftClient.IS_SYSTEM_MAC);
+			crystalline_sky$skyBuffer = new SimpleFramebuffer(fb.textureWidth, fb.textureHeight, true, MinecraftClient.IS_SYSTEM_MAC);
 		}
 		return crystalline_sky$skyBuffer;
 	}
@@ -89,63 +91,35 @@ public abstract class WorldRendererMixin implements WorldRenderer_Duck {
 	@Inject(
 		method = "render",
 		at = @At(
-			value = "INVOKE",
-			target = "Lnet/minecraft/client/render/WorldRenderer;renderSky(Lorg/joml/Matrix4f;Lorg/joml/Matrix4f;FLnet/minecraft/client/render/Camera;ZLjava/lang/Runnable;)V",
-			shift = At.Shift.AFTER
+			value = "INVOKE_STRING",
+			target = "Lnet/minecraft/util/profiler/Profiler;swap(Ljava/lang/String;)V",
+			args = "ldc=terrain_setup"
 		)
 	)
 	private void copyAfterSky(RenderTickCounter tickCounter, boolean renderBlockOutline, Camera camera,
 							  GameRenderer gameRenderer, LightmapTextureManager lightmapTextureManager,
 							  Matrix4f matrix4f, Matrix4f matrix4f2, CallbackInfo ci) {
 		var skyBuffer = crystalline_sky$getSkyFramebuffer();
+		skyBuffer.clear(MinecraftClient.IS_SYSTEM_MAC);
 		((Framebuffer_Duck) skyBuffer).crystalline_sky$copyColorFrom(client.getFramebuffer());
-		// TODO: render clouds
-	}
-
-/*	@Inject(method = "render", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/render/WorldRenderer;renderMain(Lnet/minecraft/client/render/FrameGraphBuilder;Lnet/minecraft/client/render/Frustum;Lnet/minecraft/client/render/Camera;Lorg/joml/Matrix4f;Lcom/mojang/blaze3d/buffers/GpuBufferSlice;ZZLnet/minecraft/client/render/RenderTickCounter;Lnet/minecraft/util/profiler/Profiler;)V"))
-	private void copyAfterSky2(ObjectAllocator allocator, RenderTickCounter tickCounter, boolean renderBlockOutline,
-							  Camera camera, Matrix4f positionMatrix, Matrix4f projectionMatrix, GpuBufferSlice fog,
-							  Vector4f fogColor, boolean shouldRenderSky, CallbackInfo ci,
-							  @Local FrameGraphBuilder frameGraphBuilder) {
-		FramePass skyCopyPass = frameGraphBuilder.createPass("crystalline_sky:copy_sky_pass");
-
-		framebufferSet.mainFramebuffer = skyCopyPass.transfer(framebufferSet.mainFramebuffer);
-
-		Handle<Framebuffer> skyFramebuffer = crystalline_sky$transferSkyBuffer(skyCopyPass);
-
-		skyCopyPass.setRenderer(() -> {
-			((Framebuffer_Duck) skyFramebuffer.get()).crystalline_sky$copyColorFrom(framebufferSet.mainFramebuffer.get());
-		});
 
 		// render clouds
-		float f = tickCounter.getTickProgress(false);
-
 		CloudRenderMode cloudRenderMode = this.client.options.getCloudRenderModeValue();
 		if (cloudRenderMode != CloudRenderMode.OFF && !this.hasBlindnessOrDarkness(camera)) {
-			//noinspection DataFlowIssue
-			Optional<Integer> optional = this.world.getDimension().cloudHeight();
-			if (optional.isPresent()) {
-				float cloudPhase = this.ticks + f;
-				int color = this.world.getCloudsColor(f);
+			float f = tickCounter.getTickDelta(false);
+			Vec3d vec3d = camera.getPos();
+			double cx = vec3d.getX();
+			double cy = vec3d.getY();
+			double cz = vec3d.getZ();
 
-				// modified renderClouds function
-				{
-					FramePass framePass = frameGraphBuilder.createPass("crystallized clouds");
-					crystalline_sky$transferSkyBuffer(framePass);
-
-					framePass.setRenderer(() -> {
-						Handle<Framebuffer> backupCloudBuffer = this.framebufferSet.cloudsFramebuffer;
-						this.framebufferSet.cloudsFramebuffer = ((DefaultFramebufferSet_Duck) framebufferSet).crystalline_sky$getSkyFramebuffer();
-
-						this.cloudRenderer.renderClouds(color, cloudRenderMode, optional.get() + 0.33F, camera.getPos(), cloudPhase);
-
-						((DefaultFramebufferSet_Duck) framebufferSet).crystalline_sky$setSkyFramebuffer(framebufferSet.cloudsFramebuffer);
-						this.framebufferSet.cloudsFramebuffer = backupCloudBuffer;
-					});
-				}
-			}
+			var cloudsFramebuffer0 = this.cloudsFramebuffer;
+			this.cloudsFramebuffer = skyBuffer;
+			cloudsFramebuffer.beginWrite(false);
+			this.renderClouds(new MatrixStack(), matrix4f, matrix4f2, f, cx, cy, cz);
+			client.getFramebuffer().beginWrite(false);
+			this.cloudsFramebuffer = cloudsFramebuffer0;
 		}
-	}*/
+	}
 
 	// after solid, cutoutMipped, and cutout
 	@WrapOperation(
