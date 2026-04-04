@@ -16,9 +16,10 @@ out float v_MaterialAlphaCutoff;
 #endif
 
 #ifdef USE_FOG
-out vec2 v_FragDistance;
+out float v_FragDistance;
 #endif
 
+uniform int u_FogShape;
 uniform vec3 u_RegionOffset;
 
 uvec3 _get_relative_chunk_coord(uint pos) {
@@ -38,7 +39,7 @@ void main() {
     vec3 position = _vert_position + translation;
 
 #ifdef USE_FOG
-    v_FragDistance = getFragDistance(position);
+    v_FragDistance = getFragDistance(u_FogShape, position);
 #endif
 
     // Transform the vertex position into model-view-projection space
