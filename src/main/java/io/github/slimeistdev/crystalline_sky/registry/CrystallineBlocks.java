@@ -54,7 +54,7 @@ public class CrystallineBlocks {
 
 	private static <T extends Block> T register(String id, Function<Settings, T> factory, Settings settings) {
 		RegistryKey<Block> key = CrystallineSky.key(RegistryKeys.BLOCK, id);
-		return Registry.register(Registries.BLOCK, key, factory.apply(settings.registryKey(key)));
+		return Registry.register(Registries.BLOCK, key, factory.apply(settings));
 	}
 
 	public static boolean isCrystallineSky(BlockState state) {

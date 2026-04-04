@@ -8,6 +8,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.item.ItemUsageContext;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
+import net.minecraft.util.TypedActionResult;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.ColumnPos;
 import net.minecraft.world.World;
@@ -32,13 +33,13 @@ public class WeepingSkyBlockItem extends BlockItem {
 	}
 
 	@Override
-	public ActionResult use(World world, PlayerEntity user, Hand hand) {
+	public TypedActionResult<ItemStack> use(World world, PlayerEntity user, Hand hand) {
 		ItemStack stack = user.getStackInHand(hand);
 		if (stack.get(CrystallineDataComponentTypes.WEEPING_SKY_DEBUG_COLUMN_TOOL) != null) {
 			if (world.isClient) {
 				WeepingSkyBlockItemClient.setSelectedColumn(null);
 			}
-			return ActionResult.SUCCESS;
+			return TypedActionResult.success(stack);
 		}
 
 		return super.use(world, user, hand);

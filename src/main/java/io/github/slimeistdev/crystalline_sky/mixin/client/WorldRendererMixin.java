@@ -1,22 +1,22 @@
 package io.github.slimeistdev.crystalline_sky.mixin.client;
 
-import com.llamalad7.mixinextras.sugar.Local;
-import com.mojang.blaze3d.buffers.GpuBufferSlice;
-import io.github.slimeistdev.crystalline_sky.extenders_cove.BlockRenderLayerGroupExt;
-import io.github.slimeistdev.crystalline_sky.mixin_ducks.client.DefaultFramebufferSet_Duck;
+import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
+import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import io.github.slimeistdev.crystalline_sky.mixin_ducks.client.Framebuffer_Duck;
+import io.github.slimeistdev.crystalline_sky.mixin_ducks.client.WorldRenderer_Duck;
+import io.github.slimeistdev.crystalline_sky.registry.client.CrystallineRenderLayers;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gl.Framebuffer;
-import net.minecraft.client.gl.SimpleFramebufferFactory;
-import net.minecraft.client.option.CloudRenderMode;
-import net.minecraft.client.render.*;
-import net.minecraft.client.util.Handle;
-import net.minecraft.client.util.ObjectAllocator;
+import net.minecraft.client.gl.SimpleFramebuffer;
+import net.minecraft.client.render.Camera;
+import net.minecraft.client.render.GameRenderer;
+import net.minecraft.client.render.LightmapTextureManager;
+import net.minecraft.client.render.RenderLayer;
+import net.minecraft.client.render.RenderTickCounter;
+import net.minecraft.client.render.WorldRenderer;
 import net.minecraft.client.world.ClientWorld;
-import net.minecraft.util.profiler.Profiler;
 import org.jetbrains.annotations.Nullable;
 import org.joml.Matrix4f;
-import org.joml.Vector4f;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -25,14 +25,8 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
-import java.util.Optional;
-
 @Mixin(WorldRenderer.class)
-public abstract class WorldRendererMixin {
-	@Shadow
-	@Final
-	private DefaultFramebufferSet framebufferSet;
-
+public abstract class WorldRendererMixin implements WorldRenderer_Duck {
 	@Shadow
 	@Final
 	private MinecraftClient client;
@@ -44,32 +38,72 @@ public abstract class WorldRendererMixin {
 	private int ticks;
 
 	@Shadow
-	@Final
-	private CloudRenderer cloudRenderer;
-
-	@Shadow
 	protected abstract boolean hasBlindnessOrDarkness(Camera camera);
 
-	@Inject(method = "render", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/render/WorldRenderer;getTransparencyPostEffectProcessor()Lnet/minecraft/client/gl/PostEffectProcessor;"))
-	private void setupSkyBuffer(ObjectAllocator allocator, RenderTickCounter tickCounter, boolean renderBlockOutline,
-								Camera camera, Matrix4f positionMatrix, Matrix4f projectionMatrix, GpuBufferSlice fog,
-								Vector4f fogColor, boolean shouldRenderSky, CallbackInfo ci,
-								@Local FrameGraphBuilder frameGraphBuilder,
-								@Local SimpleFramebufferFactory factory) {
-		Handle<Framebuffer> framebuffer = frameGraphBuilder.createResourceHandle("crystalline_sky:sky_framebuffer", factory);
-		((DefaultFramebufferSet_Duck) framebufferSet).crystalline_sky$setSkyFramebuffer(framebuffer);
-	}
+	@Shadow
+	protected abstract void renderLayer(RenderLayer renderLayer, double x, double y, double z, Matrix4f matrix4f, Matrix4f positionMatrix);
 
 	@Unique
-	private Handle<Framebuffer> crystalline_sky$transferSkyBuffer(FramePass pass) {
-		Handle<Framebuffer> skyFramebuffer = pass.transfer(
-			((DefaultFramebufferSet_Duck) framebufferSet).crystalline_sky$getSkyFramebuffer());
-		((DefaultFramebufferSet_Duck) framebufferSet).crystalline_sky$setSkyFramebuffer(skyFramebuffer);
-		return skyFramebuffer;
+	@Nullable
+	private Framebuffer crystalline_sky$skyBuffer;// = new SimpleFramebuffer(0, 0, false, MinecraftClient.IS_SYSTEM_MAC);
+
+	@Override
+	public Framebuffer crystalline_sky$getSkyFramebuffer() {
+		if (crystalline_sky$skyBuffer == null) {
+			var fb = client.getFramebuffer();
+			crystalline_sky$skyBuffer = new SimpleFramebuffer(fb.textureWidth, fb.textureHeight, false, MinecraftClient.IS_SYSTEM_MAC);
+		}
+		return crystalline_sky$skyBuffer;
 	}
 
-	@Inject(method = "render", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/render/WorldRenderer;renderMain(Lnet/minecraft/client/render/FrameGraphBuilder;Lnet/minecraft/client/render/Frustum;Lnet/minecraft/client/render/Camera;Lorg/joml/Matrix4f;Lcom/mojang/blaze3d/buffers/GpuBufferSlice;ZZLnet/minecraft/client/render/RenderTickCounter;Lnet/minecraft/util/profiler/Profiler;)V"))
-	private void copyAfterSky(ObjectAllocator allocator, RenderTickCounter tickCounter, boolean renderBlockOutline,
+	@Inject(
+		method = "render",
+		at = @At(
+			value = "INVOKE_STRING",
+			target = "Lnet/minecraft/util/profiler/Profiler;swap(Ljava/lang/String;)V",
+			args = "ldc=clear",
+			shift = At.Shift.AFTER
+		)
+	)
+	private void setupSkyBuffer(RenderTickCounter tickCounter, boolean renderBlockOutline, Camera camera,
+								GameRenderer gameRenderer, LightmapTextureManager lightmapTextureManager,
+								Matrix4f matrix4f, Matrix4f matrix4f2, CallbackInfo ci) {
+		crystalline_sky$getSkyFramebuffer();
+	}
+
+	@Inject(method = "onResized", at = @At("RETURN"))
+	private void resizeSkyBuffer(int width, int height, CallbackInfo ci) {
+		if (crystalline_sky$skyBuffer != null) {
+			crystalline_sky$skyBuffer.resize(width, height, MinecraftClient.IS_SYSTEM_MAC);
+		}
+	}
+
+	@Inject(method = "close", at = @At("RETURN"))
+	private void closeSkyBuffer(CallbackInfo ci) {
+		if (crystalline_sky$skyBuffer != null) {
+			crystalline_sky$skyBuffer.delete();
+			crystalline_sky$skyBuffer = null;
+		}
+	}
+
+	@Inject(
+		method = "render",
+		at = @At(
+			value = "INVOKE",
+			target = "Lnet/minecraft/client/render/WorldRenderer;renderSky(Lorg/joml/Matrix4f;Lorg/joml/Matrix4f;FLnet/minecraft/client/render/Camera;ZLjava/lang/Runnable;)V",
+			shift = At.Shift.AFTER
+		)
+	)
+	private void copyAfterSky(RenderTickCounter tickCounter, boolean renderBlockOutline, Camera camera,
+							  GameRenderer gameRenderer, LightmapTextureManager lightmapTextureManager,
+							  Matrix4f matrix4f, Matrix4f matrix4f2, CallbackInfo ci) {
+		var skyBuffer = crystalline_sky$getSkyFramebuffer();
+		((Framebuffer_Duck) skyBuffer).crystalline_sky$copyColorFrom(client.getFramebuffer());
+		// TODO: render clouds
+	}
+
+/*	@Inject(method = "render", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/render/WorldRenderer;renderMain(Lnet/minecraft/client/render/FrameGraphBuilder;Lnet/minecraft/client/render/Frustum;Lnet/minecraft/client/render/Camera;Lorg/joml/Matrix4f;Lcom/mojang/blaze3d/buffers/GpuBufferSlice;ZZLnet/minecraft/client/render/RenderTickCounter;Lnet/minecraft/util/profiler/Profiler;)V"))
+	private void copyAfterSky2(ObjectAllocator allocator, RenderTickCounter tickCounter, boolean renderBlockOutline,
 							  Camera camera, Matrix4f positionMatrix, Matrix4f projectionMatrix, GpuBufferSlice fog,
 							  Vector4f fogColor, boolean shouldRenderSky, CallbackInfo ci,
 							  @Local FrameGraphBuilder frameGraphBuilder) {
@@ -111,31 +145,20 @@ public abstract class WorldRendererMixin {
 				}
 			}
 		}
-	}
+	}*/
 
-	@Inject(method = "renderMain", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/render/FramePass;transfer(Lnet/minecraft/client/util/Handle;)Lnet/minecraft/client/util/Handle;", ordinal = 0))
-	private void transferCrystallineSky(FrameGraphBuilder frameGraphBuilder, Frustum frustum, Camera camera,
-										Matrix4f positionMatrix, GpuBufferSlice fog, boolean renderBlockOutline,
-										boolean renderEntityOutline, RenderTickCounter tickCounter, Profiler profiler,
-										CallbackInfo ci, @Local FramePass framePass) {
-		crystalline_sky$transferSkyBuffer(framePass);
-	}
-
-	// renderMain : framePass.setRenderer(@{() -> ...});
-	@Inject(
-		method = "method_62214",
+	// after solid, cutoutMipped, and cutout
+	@WrapOperation(
+		method = "render",
 		at = @At(
 			value = "INVOKE",
-			target = "Lnet/minecraft/client/render/SectionRenderState;renderSection(Lnet/minecraft/client/render/BlockRenderLayerGroup;)V",
-			ordinal = 0,
-			shift = At.Shift.AFTER
+			target = "Lnet/minecraft/client/render/WorldRenderer;renderLayer(Lnet/minecraft/client/render/RenderLayer;DDDLorg/joml/Matrix4f;Lorg/joml/Matrix4f;)V",
+			ordinal = 2
 		)
 	)
-	private void renderCrystallineSky(GpuBufferSlice fog, RenderTickCounter tickCounter, Camera camera,
-									  Profiler profiler, Matrix4f positionMatrix, Handle<Framebuffer> itemEntityFramebuffer,
-									  Handle<Framebuffer> entityOutlineFramebuffer, boolean renderBlockOutline, Frustum frustum,
-									  Handle<Framebuffer> translucentFramebuffer, Handle<Framebuffer> mainFramebuffer, CallbackInfo ci,
-									  @Local SectionRenderState sectionRenderState) {
-		sectionRenderState.renderSection(BlockRenderLayerGroupExt.CRYSTALLINE_SKY_SKY);
+	private void renderCrystallineSky(WorldRenderer instance, RenderLayer renderLayer, double x, double y, double z,
+									  Matrix4f matrix4f, Matrix4f positionMatrix, Operation<Void> original) {
+		original.call(instance, renderLayer, x, y, z, matrix4f, positionMatrix);
+		renderLayer(CrystallineRenderLayers.SKY, x, y, z, matrix4f, positionMatrix);
 	}
 }

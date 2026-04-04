@@ -54,7 +54,7 @@ public class MutableWeepingScanner implements WeepingStorage.WeepingScanner {
 
 		while (bottomPos.getY() >= minY) {
 			BlockState bottomState = blockView.getBlockState(bottomPos);
-			if (faceBlocksLight(topState, bottomState)) {
+			if (faceBlocksLight(blockView, topState, bottomState, topPos, bottomPos)) {
 				return transformOutputY(bottomPos.getY());
 			}
 
@@ -85,7 +85,7 @@ public class MutableWeepingScanner implements WeepingStorage.WeepingScanner {
 				return transformOutputY(bottomPos.getY());
 			}
 
-			if (faceBlocksLight(topState, bottomState)) {
+			if (faceBlocksLight(blockView, topState, bottomState, topPos, bottomPos)) {
 				return -1;
 			}
 
@@ -107,15 +107,15 @@ public class MutableWeepingScanner implements WeepingStorage.WeepingScanner {
 		BlockState upper = blockView.getBlockState(reusablePos1);
 		BlockState lower = blockView.getBlockState(reusablePos2);
 
-		return faceBlocksLight(upper, lower);
+		return faceBlocksLight(blockView, upper, lower, reusablePos1, reusablePos2);
 	}
 
-	private static boolean faceBlocksLight(BlockState upper, BlockState lower) {
-		if (lower.getOpacity() != 0) {
+	private static boolean faceBlocksLight(BlockView world, BlockState upper, BlockState lower, BlockPos upperPos, BlockPos lowerPos) {
+		if (lower.getOpacity(world, lowerPos) != 0) {
 			return true;
 		} else {
-			VoxelShape voxelShape = ChunkLightProvider.getOpaqueShape(upper, Direction.DOWN);
-			VoxelShape voxelShape2 = ChunkLightProvider.getOpaqueShape(lower, Direction.UP);
+			VoxelShape voxelShape = ChunkLightProvider.getOpaqueShape(world, upperPos, upper, Direction.DOWN);
+			VoxelShape voxelShape2 = ChunkLightProvider.getOpaqueShape(world, lowerPos, lower, Direction.UP);
 			return VoxelShapes.unionCoversFullCube(voxelShape, voxelShape2);
 		}
 	}

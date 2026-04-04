@@ -5,7 +5,7 @@ import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import io.github.slimeistdev.crystalline_sky.annotation.mixin.ConditionalMixin;
 import io.github.slimeistdev.crystalline_sky.compat.Mods;
 import io.github.slimeistdev.crystalline_sky.compat.sodium.SkyShaderInterface;
-import io.github.slimeistdev.crystalline_sky.extenders_cove.BlockRenderLayerExt;
+import io.github.slimeistdev.crystalline_sky.registry.client.CrystallineRenderLayers;
 import net.caffeinemc.mods.sodium.client.gl.shader.GlProgram;
 import net.caffeinemc.mods.sodium.client.render.chunk.ShaderChunkRenderer;
 import net.caffeinemc.mods.sodium.client.render.chunk.shader.ChunkShaderInterface;
@@ -23,7 +23,7 @@ import java.util.function.Function;
 public class ShaderChunkRendererMixin {
 	@WrapOperation(method = "compileProgram", at = @At(value = "INVOKE", target = "Lnet/caffeinemc/mods/sodium/client/render/chunk/ShaderChunkRenderer;createShader(Ljava/lang/String;Lnet/caffeinemc/mods/sodium/client/render/chunk/shader/ChunkShaderOptions;)Lnet/caffeinemc/mods/sodium/client/gl/shader/GlProgram;"), remap = false)
 	private GlProgram<ChunkShaderInterface> createSkyShader(ShaderChunkRenderer instance, String path, ChunkShaderOptions options, Operation<GlProgram<ChunkShaderInterface>> original) {
-		if (options.pass() == DefaultMaterials.forChunkLayer(BlockRenderLayerExt.CRYSTALLINE_SKY_SKY).pass) {
+		if (options.pass() == DefaultMaterials.forRenderLayer(CrystallineRenderLayers.SKY).pass) {
 			return original.call(instance, "sodium_compat/block_layer_sky", options);
 		}
 

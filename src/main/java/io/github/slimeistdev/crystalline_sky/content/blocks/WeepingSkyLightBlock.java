@@ -1,7 +1,11 @@
 package io.github.slimeistdev.crystalline_sky.content.blocks;
 
 import io.github.slimeistdev.crystalline_sky.registry.CrystallineItems;
-import net.minecraft.block.*;
+import net.minecraft.block.Block;
+import net.minecraft.block.BlockRenderType;
+import net.minecraft.block.BlockState;
+import net.minecraft.block.ShapeContext;
+import net.minecraft.block.Waterloggable;
 import net.minecraft.fluid.FluidState;
 import net.minecraft.fluid.Fluids;
 import net.minecraft.state.StateManager;
@@ -9,12 +13,10 @@ import net.minecraft.state.property.BooleanProperty;
 import net.minecraft.state.property.Properties;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
-import net.minecraft.util.math.random.Random;
 import net.minecraft.util.shape.VoxelShape;
 import net.minecraft.util.shape.VoxelShapes;
 import net.minecraft.world.BlockView;
-import net.minecraft.world.WorldView;
-import net.minecraft.world.tick.ScheduledTickView;
+import net.minecraft.world.WorldAccess;
 
 public class WeepingSkyLightBlock extends Block implements Waterloggable {
 	public static final BooleanProperty WATERLOGGED = Properties.WATERLOGGED;
@@ -35,7 +37,7 @@ public class WeepingSkyLightBlock extends Block implements Waterloggable {
 	}
 
 	@Override
-	protected boolean isTransparent(BlockState state) {
+	protected boolean isTransparent(BlockState state, BlockView world, BlockPos pos) {
 		return state.getFluidState().isEmpty();
 	}
 
@@ -52,19 +54,17 @@ public class WeepingSkyLightBlock extends Block implements Waterloggable {
 	@Override
 	protected BlockState getStateForNeighborUpdate(
 		BlockState state,
-		WorldView world,
-		ScheduledTickView tickView,
-		BlockPos pos,
 		Direction direction,
-		BlockPos neighborPos,
 		BlockState neighborState,
-		Random random
+		WorldAccess world,
+		BlockPos pos,
+		BlockPos neighborPos
 	) {
 		if (state.get(WATERLOGGED)) {
-			tickView.scheduleFluidTick(pos, Fluids.WATER, Fluids.WATER.getTickRate(world));
+			world.scheduleFluidTick(pos, Fluids.WATER, Fluids.WATER.getTickRate(world));
 		}
 
-		return super.getStateForNeighborUpdate(state, world, tickView, pos, direction, neighborPos, neighborState, random);
+		return super.getStateForNeighborUpdate(state, direction, neighborState, world, pos, neighborPos);
 	}
 
 	@Override

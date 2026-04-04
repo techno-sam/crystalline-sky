@@ -1,12 +1,12 @@
 package io.github.slimeistdev.crystalline_sky;
 
-import io.github.slimeistdev.crystalline_sky.extenders_cove.BlockRenderLayerExt;
 import io.github.slimeistdev.crystalline_sky.mixin_ducks.client.DebugRenderer_Duck;
 import io.github.slimeistdev.crystalline_sky.registry.CrystallineBlocks;
+import io.github.slimeistdev.crystalline_sky.registry.client.CrystallineRenderLayers;
 import net.fabricmc.api.ClientModInitializer;
+import net.fabricmc.fabric.api.blockrenderlayer.v1.BlockRenderLayerMap;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 import net.fabricmc.fabric.api.client.keybinding.v1.KeyBindingHelper;
-import net.fabricmc.fabric.api.client.rendering.v1.BlockRenderLayerMap;
 import net.minecraft.client.option.KeyBinding;
 import net.minecraft.client.util.InputUtil;
 import net.minecraft.screen.ScreenTexts;
@@ -17,8 +17,8 @@ import org.lwjgl.glfw.GLFW;
 public class CrystallineSkyClient implements ClientModInitializer {
 	@Override
 	public void onInitializeClient() {
-		BlockRenderLayerMap.putBlock(CrystallineBlocks.SKY, BlockRenderLayerExt.CRYSTALLINE_SKY_SKY);
-		BlockRenderLayerMap.putBlock(CrystallineBlocks.WEEPING_SKY, BlockRenderLayerExt.CRYSTALLINE_SKY_SKY);
+		BlockRenderLayerMap.INSTANCE.putBlock(CrystallineBlocks.SKY, CrystallineRenderLayers.SKY);
+		BlockRenderLayerMap.INSTANCE.putBlock(CrystallineBlocks.WEEPING_SKY, CrystallineRenderLayers.SKY);
 
 		var weepingSkyKeybind = KeyBindingHelper.registerKeyBinding(new KeyBinding(
 			"crystalline_sky.key.toggle_weeping_sky_debug",

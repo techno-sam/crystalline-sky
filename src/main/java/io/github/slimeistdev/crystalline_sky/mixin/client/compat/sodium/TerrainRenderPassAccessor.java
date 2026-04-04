@@ -3,7 +3,7 @@ package io.github.slimeistdev.crystalline_sky.mixin.client.compat.sodium;
 import io.github.slimeistdev.crystalline_sky.annotation.mixin.ConditionalMixin;
 import io.github.slimeistdev.crystalline_sky.compat.Mods;
 import net.caffeinemc.mods.sodium.client.render.chunk.terrain.TerrainRenderPass;
-import net.minecraft.client.render.BlockRenderLayer;
+import net.minecraft.client.render.RenderLayer;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.gen.Accessor;
 
@@ -11,5 +11,5 @@ import org.spongepowered.asm.mixin.gen.Accessor;
 @Mixin(TerrainRenderPass.class)
 public interface TerrainRenderPassAccessor {
 	@Accessor("renderType")
-	BlockRenderLayer crystalline_sky$getRenderLayer();
+	RenderLayer crystalline_sky$getRenderLayer();
 }

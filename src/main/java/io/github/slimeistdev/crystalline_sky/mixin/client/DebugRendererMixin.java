@@ -3,7 +3,6 @@ package io.github.slimeistdev.crystalline_sky.mixin.client;
 import io.github.slimeistdev.crystalline_sky.infrastructure.client.WeepingSkyDebugRenderer;
 import io.github.slimeistdev.crystalline_sky.mixin_ducks.client.DebugRenderer_Duck;
 import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.render.Frustum;
 import net.minecraft.client.render.VertexConsumerProvider;
 import net.minecraft.client.render.debug.DebugRenderer;
 import net.minecraft.client.util.math.MatrixStack;
@@ -42,7 +41,7 @@ public class DebugRendererMixin implements DebugRenderer_Duck {
 	}
 
 	@Inject(method = "render", at = @At("RETURN"))
-	private void render(MatrixStack matrices, Frustum frustum, VertexConsumerProvider.Immediate vertexConsumers, double cameraX, double cameraY, double cameraZ, CallbackInfo ci) {
+	private void render(MatrixStack matrices, VertexConsumerProvider.Immediate vertexConsumers, double cameraX, double cameraY, double cameraZ, CallbackInfo ci) {
 		if (crystalline_sky$weepingSkyMode != 0) {
 			crystalline_sky$weepingSkyDebugRenderer.setLitMode(crystalline_sky$weepingSkyMode == 1);
 			crystalline_sky$weepingSkyDebugRenderer.render(matrices, vertexConsumers, cameraX, cameraY, cameraZ);

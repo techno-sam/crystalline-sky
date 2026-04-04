@@ -15,13 +15,12 @@
     "SkyLightStorageAccessor"
   ],
   "client": [
-    "client.BlockRenderLayerMixin",
     "client.ClientWorldMixin",
     "client.DebugRendererMixin",
-    "client.DefaultFramebufferSetMixin",
     "client.FramebufferMixin",
+    "client.GameRendererMixin",
+    "client.RenderLayerMixin",
     "client.WorldRenderer_NoSodium_Mixin",
-    "client.WorldRendererAccessor",
     "client.WorldRendererMixin",
     "client.compat.axiom.ChunkRenderOverrider_AxiomChunkOverrideLayerMixin",
     "client.compat.sodium.DefaultMaterialsMixin",
