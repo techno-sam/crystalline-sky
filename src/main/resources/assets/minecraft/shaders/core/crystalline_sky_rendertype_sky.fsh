@@ -1,19 +1,21 @@
 #version 150
 
-#moj_import <minecraft:globals.glsl>
-#moj_import <minecraft:fog.glsl>
-#moj_import <minecraft:dynamictransforms.glsl>
+#moj_import <fog.glsl>
 
 uniform sampler2D Sampler0;
 
-in float sphericalVertexDistance;
-in float cylindricalVertexDistance;
+uniform vec4 ColorModulator;
+uniform float FogStart;
+uniform float FogEnd;
+uniform vec4 FogColor;
+
+in float vertexDistance;
 in vec4 texProj0;
 
 out vec4 fragColor;
 
 #ifndef BAYER_BIAS
-#define BAYER_BIAS 0.0
+#define BAYER_BIAS 0.03125
 #endif
 
 #ifndef SCALE
@@ -37,5 +39,5 @@ void main() {
     }
 
     vec4 color = textureProj(Sampler0, texProj0) * vec4(ColorModulator.rgb, 1.0);
-    fragColor = apply_fog(color, sphericalVertexDistance, cylindricalVertexDistance, FogEnvironmentalStart, FogEnvironmentalEnd, FogRenderDistanceStart, FogRenderDistanceEnd, FogColor);
+    fragColor = linear_fog(color, vertexDistance, FogStart, FogEnd, FogColor);
 }

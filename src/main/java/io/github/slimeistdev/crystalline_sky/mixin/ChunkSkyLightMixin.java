@@ -35,13 +35,14 @@ public abstract class ChunkSkyLightMixin implements ChunkSkyLight_Duck {
 	private BlockPos.Mutable reusableBlockPos1;
 
 	@Shadow
-	private static boolean faceBlocksLight(BlockState upper, BlockState lower) {
+	private static boolean faceBlocksLight(BlockView blockView, BlockPos upperPos, BlockState upperState, BlockPos lowerPos, BlockState lowerState) {
 		throw new RuntimeException("Mixin failed to apply");
 	}
 
 	@Shadow
 	@Final
 	private BlockPos.Mutable reusableBlockPos2;
+
 	@Unique
 	@Final
 	@Mutable
@@ -99,7 +100,7 @@ public abstract class ChunkSkyLightMixin implements ChunkSkyLight_Duck {
 									if (foundSky == -1) {
 										foundSky = (short) (bottomPos.getY() - weepingMinY);
 									}
-								} else if (faceBlocksLight(topState, bottomState)) {
+								} else if (faceBlocksLight(chunk, topPos, topState, bottomPos, bottomState)) {
 									if (foundSky != -1) {
 										short lastLitY = (short) (bottomPos.getY() - weepingMinY + 1);
 										data.add(foundSky);
