@@ -1,5 +1,7 @@
 package io.github.slimeistdev.crystalline_sky.datagen.providers;
 
+import com.google.gson.JsonArray;
+import com.google.gson.JsonObject;
 import io.github.slimeistdev.crystalline_sky.registry.CrystallineBlocks;
 import io.github.slimeistdev.crystalline_sky.registry.CrystallineItems;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
@@ -44,6 +46,7 @@ public class CrystallineSkyModelProvider extends FabricModelProvider {
 	}
 
 	private void registerSkyLightBlock(BlockStateModelGenerator gen, Block block, Item item) {
+		gen.excludeFromSimpleItemModelGeneration(block);
 		BlockStateVariantMap.SingleProperty<Integer> singleProperty = BlockStateVariantMap.create(Properties.LEVEL_15);
 
 		for (int level = 0; level <= 15; level++) {
@@ -62,6 +65,29 @@ public class CrystallineSkyModelProvider extends FabricModelProvider {
 		}
 
 		// TODO generate root-level item model itself
+		Models.GENERATED.upload(
+			ModelIds.getItemModelId(item),
+			TextureMap.layer0(item),
+			gen.modelCollector,
+			(id, textures) -> {
+				JsonObject base = Models.GENERATED.createJson(id, textures);
+				var overrides = new JsonArray();
+				for (int level = 0; level <= 15; level++) {
+					JsonObject override = new JsonObject();
+
+					JsonObject predicate = new JsonObject();
+					predicate.addProperty("level", level / 16f);
+					override.add("predicate", predicate);
+
+					String suffix = String.format(Locale.ROOT, "_%02d", level);
+					Identifier model = TextureMap.getSubId(item, suffix);
+					override.addProperty("model", model.toString());
+
+					overrides.add(override);
+				}
+				base.add("overrides", overrides);
+				return base;
+			});
 		gen.blockStateCollector.accept(VariantsBlockStateSupplier.create(block).coordinate(singleProperty));
 	}
 

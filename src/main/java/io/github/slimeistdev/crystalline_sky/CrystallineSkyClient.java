@@ -2,16 +2,22 @@ package io.github.slimeistdev.crystalline_sky;
 
 import io.github.slimeistdev.crystalline_sky.mixin_ducks.client.DebugRenderer_Duck;
 import io.github.slimeistdev.crystalline_sky.registry.CrystallineBlocks;
+import io.github.slimeistdev.crystalline_sky.registry.CrystallineItems;
 import io.github.slimeistdev.crystalline_sky.registry.client.CrystallineRenderLayers;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.fabric.api.blockrenderlayer.v1.BlockRenderLayerMap;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 import net.fabricmc.fabric.api.client.keybinding.v1.KeyBindingHelper;
+import net.minecraft.block.LightBlock;
+import net.minecraft.client.item.ModelPredicateProviderRegistry;
 import net.minecraft.client.option.KeyBinding;
 import net.minecraft.client.util.InputUtil;
+import net.minecraft.component.DataComponentTypes;
+import net.minecraft.component.type.BlockStateComponent;
 import net.minecraft.screen.ScreenTexts;
 import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
+import net.minecraft.util.Identifier;
 import org.lwjgl.glfw.GLFW;
 
 public class CrystallineSkyClient implements ClientModInitializer {
@@ -38,6 +44,13 @@ public class CrystallineSkyClient implements ClientModInitializer {
 				client.inGameHud.getChatHud().addMessage(message);
 			}
 		});
+
+		ModelPredicateProviderRegistry.register(CrystallineItems.SKY_LIGHT, Identifier.ofVanilla("level"),
+			(stack, world, entity, seed) -> {
+				BlockStateComponent blockStateComponent = stack.getOrDefault(DataComponentTypes.BLOCK_STATE, BlockStateComponent.DEFAULT);
+				Integer integer = blockStateComponent.getValue(LightBlock.LEVEL_15);
+				return integer != null ? integer / 16.0F : 1.0F;
+			});
 	}
 
 	@SuppressWarnings("SameParameterValue")

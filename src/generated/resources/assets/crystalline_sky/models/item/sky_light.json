@@ -1,5 +1,103 @@
 {
   "parent": "minecraft:item/generated",
+  "overrides": [
+    {
+      "model": "crystalline_sky:item/sky_light_00",
+      "predicate": {
+        "level": 0.0
+      }
+    },
+    {
+      "model": "crystalline_sky:item/sky_light_01",
+      "predicate": {
+        "level": 0.0625
+      }
+    },
+    {
+      "model": "crystalline_sky:item/sky_light_02",
+      "predicate": {
+        "level": 0.125
+      }
+    },
+    {
+      "model": "crystalline_sky:item/sky_light_03",
+      "predicate": {
+        "level": 0.1875
+      }
+    },
+    {
+      "model": "crystalline_sky:item/sky_light_04",
+      "predicate": {
+        "level": 0.25
+      }
+    },
+    {
+      "model": "crystalline_sky:item/sky_light_05",
+      "predicate": {
+        "level": 0.3125
+      }
+    },
+    {
+      "model": "crystalline_sky:item/sky_light_06",
+      "predicate": {
+        "level": 0.375
+      }
+    },
+    {
+      "model": "crystalline_sky:item/sky_light_07",
+      "predicate": {
+        "level": 0.4375
+      }
+    },
+    {
+      "model": "crystalline_sky:item/sky_light_08",
+      "predicate": {
+        "level": 0.5
+      }
+    },
+    {
+      "model": "crystalline_sky:item/sky_light_09",
+      "predicate": {
+        "level": 0.5625
+      }
+    },
+    {
+      "model": "crystalline_sky:item/sky_light_10",
+      "predicate": {
+        "level": 0.625
+      }
+    },
+    {
+      "model": "crystalline_sky:item/sky_light_11",
+      "predicate": {
+        "level": 0.6875
+      }
+    },
+    {
+      "model": "crystalline_sky:item/sky_light_12",
+      "predicate": {
+        "level": 0.75
+      }
+    },
+    {
+      "model": "crystalline_sky:item/sky_light_13",
+      "predicate": {
+        "level": 0.8125
+      }
+    },
+    {
+      "model": "crystalline_sky:item/sky_light_14",
+      "predicate": {
+        "level": 0.875
+      }
+    },
+    {
+      "model": "crystalline_sky:item/sky_light_15",
+      "predicate": {
+        "level": 0.9375
+      }
+    }
+  ],
   "textures": {
     "layer0": "crystalline_sky:item/sky_light"
   }

@@ -17,11 +17,10 @@ import java.util.function.Consumer;
 
 @Mixin(GameRenderer.class)
 public class GameRendererMixin {
-	@SuppressWarnings("InvalidInjectorMethodSignature")
 	@WrapOperation(method = "loadPrograms", at = @At(value = "INVOKE", target = "Ljava/util/List;add(Ljava/lang/Object;)Z", ordinal = 0))
 	private <E extends Pair<ShaderProgram, Consumer<ShaderProgram>>> boolean loadSkyProgram(
 		List<E> instance,
-		E e,
+		Object e,
 		Operation<Boolean> original,
 		ResourceFactory factory
 	) throws IOException {

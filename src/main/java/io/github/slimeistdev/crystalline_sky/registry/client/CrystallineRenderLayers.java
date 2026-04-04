@@ -1,6 +1,7 @@
 package io.github.slimeistdev.crystalline_sky.registry.client;
 
 import com.mojang.blaze3d.systems.RenderSystem;
+import io.github.slimeistdev.crystalline_sky.mixin_ducks.client.RenderLayer_Duck;
 import io.github.slimeistdev.crystalline_sky.mixin_ducks.client.WorldRenderer_Duck;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
@@ -31,6 +32,11 @@ public class CrystallineRenderLayers {
 			.texture(SKY_TEXTURE)
 			.build(true)
 	);
+
+	static {
+		//noinspection DataFlowIssue
+		((RenderLayer_Duck) SKY).crystalline_sky$markAsBlockLayer();
+	}
 
 	private static class SkyBufferTexture extends RenderPhase.TextureBase {
 		public SkyBufferTexture() {
