@@ -22,8 +22,6 @@ import net.minecraft.util.Identifier;
 
 import java.util.Locale;
 
-//import static net.minecraft.client.data.BlockStateModelGenerator.createWeightedVariant;
-
 @SuppressWarnings("SameParameterValue")
 public class CrystallineSkyModelProvider extends FabricModelProvider {
 	public CrystallineSkyModelProvider(FabricDataOutput output) {
@@ -64,7 +62,6 @@ public class CrystallineSkyModelProvider extends FabricModelProvider {
 			);
 		}
 
-		// TODO generate root-level item model itself
 		Models.GENERATED.upload(
 			ModelIds.getItemModelId(item),
 			TextureMap.layer0(item),
