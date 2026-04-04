@@ -1,18 +1,18 @@
 tiny	2	0	official	intermediary	named
-c	uh	net/minecraft/class_2483	net/minecraft/nbt/AbstractNbtList
-	m	(I)Lvi;	c	method_10534	get
-	m	(I)Lvi;	d	method_10536	remove
-c	uo	net/minecraft/class_2499	net/minecraft/nbt/NbtList
-	m	(I)Lvi;	method_10534	method_10534	get
-	m	(I)Lvi;	method_10536	method_10536	remove
-c	fac	net/minecraft/class_3558	net/minecraft/world/chunk/light/ChunkLightProvider
+c	ua	net/minecraft/class_2483	net/minecraft/nbt/AbstractNbtList
+	m	(I)Luy;	k	method_10534	get
+	m	(I)Luy;	c	method_10536	remove
+c	uh	net/minecraft/class_2499	net/minecraft/nbt/NbtList
+	m	(I)Luy;	method_10534	method_10534	get
+	m	(I)Luy;	method_10536	method_10536	remove
+c	eov	net/minecraft/class_3558	net/minecraft/world/chunk/light/ChunkLightProvider
 	f	I	a	field_44729	MAX_LEVEL
 	f	I	b	field_44730	MIN_OPACITY
 	f	J	c	field_44731	PULL_LIGHT_IN_ENTRY
 	f	I	g	field_44732	MIN_QUEUE_SIZE
 	f	Lit/unimi/dsi/fastutil/longs/LongArrayFIFOQueue;	i	field_44734	decreaseQueue
 	f	Lit/unimi/dsi/fastutil/longs/LongArrayFIFOQueue;	j	field_44735	increaseQueue
-	f	I	k	field_31709	CACHE_SIZE
+	f	I	l	field_31709	CACHE_SIZE
 	m	(J)V	a	method_51529	checkNode
 	m	(JJ)V	a	method_51530	propagateDecrease
 	m	(JJI)V	a	method_51531	propagateIncrease
@@ -21,23 +21,37 @@ c	fac	net/minecraft/class_3558	net/minecraft/world/chunk/light/ChunkLightProvide
 	m	()I	d	method_51567	propagateIncreases
 	m	()I	e	method_51570	propagateDecreases
 
-c	fac$a	net/minecraft/class_3558$class_8531	net/minecraft/world/chunk/light/ChunkLightProvider$QueueEntry
+c	eov$a	net/minecraft/class_3558$class_8531	net/minecraft/world/chunk/light/ChunkLightProvider$QueueEntry
 	m	(IZ)J	a	method_51573	increaseLightFromEmission
+	m	(IZLji;)J	a	method_51574	packWithOneDirectionCleared
+		p	0			lightLevel
+		p	1			trivial
+		p	2			direction
 	m	(ZZZZZ)J	a	method_51578	increaseSkySourceInDirections
-	m	(IZLjh;)J	b	method_51579	increaseOnlyOneDirection
+	m	(IZLji;)J	b	method_51579	increaseOnlyOneDirection
 	m	(J)Z	c	method_51582	isIncreaseFromEmission
 
-c	fae	net/minecraft/class_3572	net/minecraft/world/chunk/light/ChunkSkyLightProvider
+c	eox	net/minecraft/class_3572	net/minecraft/world/chunk/light/ChunkSkyLightProvider
 	f	J	g	field_44743	REMOVE_TOP_SKY_SOURCE_ENTRY
 	f	J	h	field_44744	REMOVE_SKY_SOURCE_ENTRY
 	f	J	i	field_44745	ADD_SKY_SOURCE_ENTRY
-	f	Ljb$a;	j	field_44746	scratchPos
-	m	(JLjh;IZI)V	a	method_51587	propagateFromEmptySections
+	f	Ljd$a;	j	field_44746	scratchPos
+	f	Leoo;	k	field_44747	defaultSkyLight
+	m	(I)Z	a	method_51584	isMaxLightLevel
+		p	0			lightLevel
+	m	(III)I	a	method_51585	getSkyLightOrDefault
+		p	1			x
+		p	2			z
+		p	3			defaultValue
+	m	(JLji;IZI)V	a	method_51587	propagateFromEmptySections
 		p	1			blockPos
 		p	3			direction
 		p	4			lightLevel
 		p	5			shouldIncrease
 		p	6			emptySections
+	m	(II)Leoo;	b	method_51589	getSkyLight
+		p	1			chunkX
+		p	2			chunkZ
 	m	(III)V	b	method_51590	updateSourcesInColumn
 		p	1			x
 		p	2			z
@@ -87,7 +101,7 @@ c	fae	net/minecraft/class_3572	net/minecraft/world/chunk/light/ChunkSkyLightProv
 		v	15	98	-1	_	_	baseLevelToPropagate
 		v	16	128	-1	_	_	targetState
 		v	17	139	-1	_	_	trueLevelToPropagate
-	m	(Ldlz;)V	b	method_51471	propagateLight
+	m	(Ldcd;)V	b	method_51471	propagateLight
 		v	2	12	-1	_	_	packedZeroPos
 		v	4	48	-1	_	_	sourcesO
 		v	5	74	-1	_	_	sourcesZN
