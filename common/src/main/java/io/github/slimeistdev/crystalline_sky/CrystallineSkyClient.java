@@ -1,28 +1,29 @@
 package io.github.slimeistdev.crystalline_sky;
 
+import com.mojang.blaze3d.platform.InputConstants;
 import io.github.slimeistdev.crystalline_sky.mixin_ducks.client.DebugRenderer_Duck;
 import io.github.slimeistdev.crystalline_sky.registry.CrystallineBlocks;
 import io.github.slimeistdev.crystalline_sky.registry.CrystallineItems;
 import io.github.slimeistdev.crystalline_sky.registry.client.CrystallineRenderTypes;
-import net.fabricmc.api.ClientModInitializer;
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 import net.fabricmc.fabric.api.blockrenderlayer.v1.BlockRenderLayerMap;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 import net.fabricmc.fabric.api.client.keybinding.v1.KeyBindingHelper;
-import net.minecraft.world.level.block.LightBlock;
-import net.minecraft.client.renderer.item.ItemProperties;
+import net.minecraft.ChatFormatting;
 import net.minecraft.client.KeyMapping;
-import com.mojang.blaze3d.platform.InputConstants;
+import net.minecraft.client.renderer.item.ItemProperties;
 import net.minecraft.core.component.DataComponents;
-import net.minecraft.world.item.component.BlockItemStateProperties;
 import net.minecraft.network.chat.CommonComponents;
 import net.minecraft.network.chat.Component;
-import net.minecraft.ChatFormatting;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.item.component.BlockItemStateProperties;
+import net.minecraft.world.level.block.LightBlock;
 import org.lwjgl.glfw.GLFW;
 
-public class CrystallineSkyClient implements ClientModInitializer {
-	@Override
-	public void onInitializeClient() {
+@Environment(EnvType.CLIENT)
+public class CrystallineSkyClient {
+	public static void init() {
 		BlockRenderLayerMap.INSTANCE.putBlock(CrystallineBlocks.SKY, CrystallineRenderTypes.SKY);
 		BlockRenderLayerMap.INSTANCE.putBlock(CrystallineBlocks.WEEPING_SKY, CrystallineRenderTypes.SKY);
 

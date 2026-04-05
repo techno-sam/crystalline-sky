@@ -13,17 +13,10 @@ displayURL = "${homepage}"
 logoFile = "assets/${modId}/icon.png"
 
 [[mixins]]
-config="${modId}-common.mixins.json"
-
-[[mixins]]
 config="${modId}.mixins.json"
 
-[[dependencies."${ modId }"]]
-modId = "connector"
-type = "required"
-versionRange = "*"
-ordering = "NONE"
-side = "BOTH"
+[[mixins]]
+config="${modId}-common.mixins.json"
 
 [[dependencies."${ modId }"]]
 modId = "neoforge"
@@ -36,12 +29,5 @@ side = "BOTH"
 modId = "minecraft"
 type = "required"
 versionRange = "[${mc},)"
-ordering = "NONE"
-side = "BOTH"
-
-[[dependencies."${ modId }"]]
-modId = "fabric_api"
-type = "required"
-versionRange = "[${fapi},)"
 ordering = "NONE"
 side = "BOTH"

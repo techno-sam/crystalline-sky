@@ -18,7 +18,8 @@
   "license": "${license}",
   "icon": "assets/${modId}/icon.png",
   "mixins": [
-    "${modId}.mixins.json"
+    "${modId}.mixins.json",
+    "${modId}-common.mixins.json"
   ],
   "depends": {
     "minecraft": ">=${mc}",
@@ -29,10 +30,10 @@
   },
   "entrypoints": {
     "main": [
-      "io.github.slimeistdev.crystalline_sky.CrystallineSky"
+      "io.github.slimeistdev.crystalline_sky.fabric.CrystallineSkyImpl"
     ],
     "client": [
-      "io.github.slimeistdev.crystalline_sky.CrystallineSkyClient"
+      "io.github.slimeistdev.crystalline_sky.fabric.CrystallineSkyClientImpl"
     ],
     "fabric-datagen": [
       "io.github.slimeistdev.crystalline_sky.datagen.CrystallineSkyDataGenerator"

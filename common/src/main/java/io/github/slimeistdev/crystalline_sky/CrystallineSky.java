@@ -1,18 +1,16 @@
 package io.github.slimeistdev.crystalline_sky;
 
-import net.fabricmc.api.ModInitializer;
 import net.minecraft.core.Registry;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class CrystallineSky implements ModInitializer {
+public class CrystallineSky {
 	public static final String ID = "crystalline_sky";
 	public static final Logger LOG = LoggerFactory.getLogger(ID);
 
-	@Override
-	public void onInitialize() {
+	public static void init() {
 		ModSetup.init();
 	}
 
