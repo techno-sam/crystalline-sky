@@ -4,22 +4,22 @@ import io.github.slimeistdev.crystalline_sky.infrastructure.WeepingStorage;
 import io.github.slimeistdev.crystalline_sky.mixin_ducks.ChunkSkyLight_Duck;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
-import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.render.RenderLayer;
-import net.minecraft.client.render.VertexConsumer;
-import net.minecraft.client.render.VertexConsumerProvider;
-import net.minecraft.client.render.debug.DebugRenderer;
-import net.minecraft.client.util.math.MatrixStack;
-import net.minecraft.util.math.ChunkPos;
-import net.minecraft.util.math.ColumnPos;
-import net.minecraft.world.chunk.light.ChunkSkyLight;
-import net.minecraft.world.chunk.light.LightSourceView;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.renderer.RenderType;
+import com.mojang.blaze3d.vertex.VertexConsumer;
+import net.minecraft.client.renderer.MultiBufferSource;
+import net.minecraft.client.renderer.debug.DebugRenderer;
+import com.mojang.blaze3d.vertex.PoseStack;
+import net.minecraft.world.level.ChunkPos;
+import net.minecraft.server.level.ColumnPos;
+import net.minecraft.world.level.lighting.ChunkSkyLightSources;
+import net.minecraft.world.level.chunk.LightChunk;
 import org.jetbrains.annotations.Nullable;
 import org.joml.Matrix4f;
 
 @Environment(EnvType.CLIENT)
-public class WeepingSkyDebugRenderer implements DebugRenderer.Renderer {
-	private final MinecraftClient client;
+public class WeepingSkyDebugRenderer implements DebugRenderer.SimpleDebugRenderer {
+	private final Minecraft client;
 	private @Nullable ColumnPos column = null;
 	private boolean litMode = true;
 
@@ -36,7 +36,7 @@ public class WeepingSkyDebugRenderer implements DebugRenderer.Renderer {
 		0xFFFF007F,
 	};
 
-	public WeepingSkyDebugRenderer(MinecraftClient client) {
+	public WeepingSkyDebugRenderer(Minecraft client) {
 		this.client = client;
 	}
 
@@ -49,19 +49,19 @@ public class WeepingSkyDebugRenderer implements DebugRenderer.Renderer {
 	}
 
 	@Override
-	public void render(MatrixStack matrices, VertexConsumerProvider vertexConsumers, double cameraX, double cameraY, double cameraZ) {
+	public void render(PoseStack matrices, MultiBufferSource vertexConsumers, double cameraX, double cameraY, double cameraZ) {
 		if (column == null)
 			return;
 
-		if (client.world == null)
+		if (client.level == null)
 			return;
 
 		ChunkPos chunkPos = column.toChunkPos();
-		LightSourceView chunk = client.world.getChunkManager().getChunk(chunkPos.x, chunkPos.z);
+		LightChunk chunk = client.level.getChunkSource().getChunkForLighting(chunkPos.x, chunkPos.z);
 		if (chunk == null)
 			return;
 
-		ChunkSkyLight chunkSkyLight = chunk.getChunkSkyLight();
+		ChunkSkyLightSources chunkSkyLight = chunk.getSkyLightSources();
 		WeepingStorage weepingStorage = ((ChunkSkyLight_Duck) chunkSkyLight).crystalline_sky$getWeepingStorage();
 		if (weepingStorage == null)
 			return;
@@ -69,9 +69,9 @@ public class WeepingSkyDebugRenderer implements DebugRenderer.Renderer {
 		int localX = column.x() & 15;
 		int localZ = column.z() & 15;
 
-		int lowestSourceY = chunkSkyLight.get(localX, localZ);
+		int lowestSourceY = chunkSkyLight.getLowestSourceY(localX, localZ);
 
-		Matrix4f matrix4f = matrices.peek().getPositionMatrix();
+		Matrix4f matrix4f = matrices.last().pose();
 
 		float x1 = (float) (column.x() - cameraX);
 		float x2 = x1 + 1;
@@ -104,8 +104,8 @@ public class WeepingSkyDebugRenderer implements DebugRenderer.Renderer {
 		}
 	}
 
-	private static void renderOutlinedBox(VertexConsumerProvider vertexConsumers, Matrix4f matrix, float x1, float x2, float y1, float y2, float z1, float z2, int color) {
-		VertexConsumer vertexConsumer = vertexConsumers.getBuffer(RenderLayer.getDebugLineStrip(2.0));
+	private static void renderOutlinedBox(MultiBufferSource vertexConsumers, Matrix4f matrix, float x1, float x2, float y1, float y2, float z1, float z2, int color) {
+		VertexConsumer vertexConsumer = vertexConsumers.getBuffer(RenderType.debugLineStrip(2.0));
 
 		// render top face
 		renderHorizontalSquare(matrix, x1, x2, y1, z1, z2, color, vertexConsumer);
@@ -116,24 +116,24 @@ public class WeepingSkyDebugRenderer implements DebugRenderer.Renderer {
 		// the (x1, z1) vertical edge has been drawn, draw the other 3
 
 		// (x2, z1)
-		vertexConsumer.vertex(matrix, x2, y2, z1).color(color);
-		vertexConsumer.vertex(matrix, x2, y1, z1).color(color);
+		vertexConsumer.addVertex(matrix, x2, y2, z1).setColor(color);
+		vertexConsumer.addVertex(matrix, x2, y1, z1).setColor(color);
 
 		// (x2, z2)
-		vertexConsumer.vertex(matrix, x2, y1, z2).color(color);
-		vertexConsumer.vertex(matrix, x2, y2, z2).color(color);
+		vertexConsumer.addVertex(matrix, x2, y1, z2).setColor(color);
+		vertexConsumer.addVertex(matrix, x2, y2, z2).setColor(color);
 
 		// (x1, z2)
-		vertexConsumer.vertex(matrix, x1, y2, z2).color(color);
-		vertexConsumer.vertex(matrix, x1, y1, z2).color(color);
+		vertexConsumer.addVertex(matrix, x1, y2, z2).setColor(color);
+		vertexConsumer.addVertex(matrix, x1, y1, z2).setColor(color);
 	}
 
 	private static void renderHorizontalSquare(Matrix4f matrix, float x1, float x2, float y, float z1, float z2, int color, VertexConsumer vertexConsumer) {
-		vertexConsumer.vertex(matrix, x1, y, z1).color(color);
-		vertexConsumer.vertex(matrix, x2, y, z1).color(color);
-		vertexConsumer.vertex(matrix, x2, y, z2).color(color);
-		vertexConsumer.vertex(matrix, x1, y, z2).color(color);
-		vertexConsumer.vertex(matrix, x1, y, z1).color(color);
+		vertexConsumer.addVertex(matrix, x1, y, z1).setColor(color);
+		vertexConsumer.addVertex(matrix, x2, y, z1).setColor(color);
+		vertexConsumer.addVertex(matrix, x2, y, z2).setColor(color);
+		vertexConsumer.addVertex(matrix, x1, y, z2).setColor(color);
+		vertexConsumer.addVertex(matrix, x1, y, z1).setColor(color);
 	}
 
 	@Override

@@ -1,9 +1,9 @@
 package io.github.slimeistdev.crystalline_sky;
 
 import net.fabricmc.api.ModInitializer;
-import net.minecraft.registry.Registry;
-import net.minecraft.registry.RegistryKey;
-import net.minecraft.util.Identifier;
+import net.minecraft.core.Registry;
+import net.minecraft.resources.ResourceKey;
+import net.minecraft.resources.ResourceLocation;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -16,11 +16,11 @@ public class CrystallineSky implements ModInitializer {
 		ModSetup.init();
 	}
 
-	public static Identifier id(String path) {
-		return Identifier.of(ID, path);
+	public static ResourceLocation id(String path) {
+		return ResourceLocation.fromNamespaceAndPath(ID, path);
 	}
 
-	public static <T> RegistryKey<T> key(RegistryKey<? extends Registry<T>> registryKey, String path) {
-		return RegistryKey.of(registryKey, id(path));
+	public static <T> ResourceKey<T> key(ResourceKey<? extends Registry<T>> registryKey, String path) {
+		return ResourceKey.create(registryKey, id(path));
 	}
 }

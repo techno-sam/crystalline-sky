@@ -1,14 +1,14 @@
 package io.github.slimeistdev.crystalline_sky.registry.client;
 
-import net.minecraft.client.gl.ShaderProgram;
+import net.minecraft.client.renderer.ShaderInstance;
 import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.Nullable;
 
 public class CrystallineShaderPrograms {
 	@ApiStatus.Internal
-	public static @Nullable ShaderProgram renderTypeSkyProgram;
+	public static @Nullable ShaderInstance renderTypeSkyProgram;
 
-	public static @Nullable ShaderProgram getRenderTypeSkyProgram() {
+	public static @Nullable ShaderInstance getRenderTypeSkyProgram() {
 		return renderTypeSkyProgram;
 	}
 }

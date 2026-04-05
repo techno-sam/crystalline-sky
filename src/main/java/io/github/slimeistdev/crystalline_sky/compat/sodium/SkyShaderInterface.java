@@ -12,8 +12,8 @@ import net.caffeinemc.mods.sodium.client.render.chunk.shader.ChunkShaderOptions;
 import net.caffeinemc.mods.sodium.client.render.chunk.shader.ChunkShaderTextureSlot;
 import net.caffeinemc.mods.sodium.client.render.chunk.shader.ShaderBindingContext;
 import net.caffeinemc.mods.sodium.client.util.TextureUtil;
-import net.minecraft.client.MinecraftClient;
-import net.minecraft.util.math.MathHelper;
+import net.minecraft.client.Minecraft;
+import net.minecraft.util.Mth;
 import org.joml.Matrix4fc;
 import org.lwjgl.opengl.GL32C;
 
@@ -50,16 +50,16 @@ public class SkyShaderInterface implements ChunkShaderInterface {
 	public void setupState() {
 		this.bindTexture(ChunkShaderTextureSlot.BLOCK, TextureUtil.getBlockTextureId());
 
-		MinecraftClient client = MinecraftClient.getInstance();
-		if (client.world != null
+		Minecraft client = Minecraft.getInstance();
+		if (client.level != null
 			&& client.player != null
-			&& (client.player.getMainHandStack().isOf(CrystallineItems.SKY)
-			|| client.player.getOffHandStack().isOf(CrystallineItems.SKY)
-			|| client.player.getMainHandStack().isOf(CrystallineItems.WEEPING_SKY)
-			|| client.player.getOffHandStack().isOf(CrystallineItems.WEEPING_SKY))) {
+			&& (client.player.getMainHandItem().is(CrystallineItems.SKY)
+			|| client.player.getOffhandItem().is(CrystallineItems.SKY)
+			|| client.player.getMainHandItem().is(CrystallineItems.WEEPING_SKY)
+			|| client.player.getOffhandItem().is(CrystallineItems.WEEPING_SKY))) {
 
-			float f = client.world.getTime() + client.getRenderTickCounter().getTickDelta(true);
-			float alpha = (MathHelper.sin(f / 10.0f) + 1.0f) / 2.0f;
+			float f = client.level.getGameTime() + client.getTimer().getGameTimeDeltaPartialTick(true);
+			float alpha = (Mth.sin(f / 10.0f) + 1.0f) / 2.0f;
 			// remap alpha from [0, 1] to [0, 0.75]
 			float maxAlpha = 1.0f - 0.25f;
 			alpha = alpha * maxAlpha;

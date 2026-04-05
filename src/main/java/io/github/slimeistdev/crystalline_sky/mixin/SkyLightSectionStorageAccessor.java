@@ -1,20 +1,20 @@
 package io.github.slimeistdev.crystalline_sky.mixin;
 
-import net.minecraft.world.chunk.light.SkyLightStorage;
+import net.minecraft.world.level.lighting.SkyLightSectionStorage;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.gen.Invoker;
 
-@Mixin(SkyLightStorage.class)
-public interface SkyLightStorageAccessor extends LightStorageAccessor {
-	@Invoker("isAboveMinHeight")
+@Mixin(SkyLightSectionStorage.class)
+public interface SkyLightSectionStorageAccessor extends LayerLightSectionStorageAccessor {
+	@Invoker("hasLightDataAtOrBelow")
 	boolean crystalline_sky$isAboveMinHeight(int sectionY);
 
-	@Invoker("isAtOrAboveTopmostSection")
+	@Invoker("isAboveData")
 	boolean crystalline_sky$isAtOrAboveTopmostSection(long sectionPos);
 
-	@Invoker("getTopSectionForColumn")
+	@Invoker("getTopSectionY")
 	int crystalline_sky$getTopSectionForColumn(long columnPos);
 
-	@Invoker("getMinSectionY")
+	@Invoker("getBottomSectionY")
 	int crystalline_sky$getMinSectionY();
 }

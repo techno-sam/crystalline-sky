@@ -6,19 +6,19 @@ import io.github.slimeistdev.crystalline_sky.registry.CrystallineBlocks;
 import io.github.slimeistdev.crystalline_sky.registry.CrystallineItems;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricModelProvider;
-import net.minecraft.block.Block;
-import net.minecraft.data.client.BlockStateModelGenerator;
-import net.minecraft.data.client.BlockStateVariant;
-import net.minecraft.data.client.BlockStateVariantMap;
-import net.minecraft.data.client.ItemModelGenerator;
-import net.minecraft.data.client.ModelIds;
-import net.minecraft.data.client.Models;
-import net.minecraft.data.client.TextureMap;
-import net.minecraft.data.client.VariantSettings;
-import net.minecraft.data.client.VariantsBlockStateSupplier;
-import net.minecraft.item.Item;
-import net.minecraft.state.property.Properties;
-import net.minecraft.util.Identifier;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.data.models.BlockModelGenerators;
+import net.minecraft.data.models.blockstates.Variant;
+import net.minecraft.data.models.blockstates.PropertyDispatch;
+import net.minecraft.data.models.ItemModelGenerators;
+import net.minecraft.data.models.model.ModelLocationUtils;
+import net.minecraft.data.models.model.ModelTemplates;
+import net.minecraft.data.models.model.TextureMapping;
+import net.minecraft.data.models.blockstates.VariantProperties;
+import net.minecraft.data.models.blockstates.MultiVariantGenerator;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.level.block.state.properties.BlockStateProperties;
+import net.minecraft.resources.ResourceLocation;
 
 import java.util.Locale;
 
@@ -29,45 +29,45 @@ public class CrystallineSkyModelProvider extends FabricModelProvider {
 	}
 
 	@Override
-	public void generateBlockStateModels(BlockStateModelGenerator gen) {
+	public void generateBlockStateModels(BlockModelGenerators gen) {
 		registerSkyBlock(gen, CrystallineBlocks.SKY);
 		registerSkyBlock(gen, CrystallineBlocks.WEEPING_SKY);
 		registerSkyLightBlock(gen, CrystallineBlocks.SKY_LIGHT, CrystallineItems.SKY_LIGHT);
 
-		gen.registerBuiltinWithParticle(CrystallineBlocks.WEEPING_SKY_LIGHT, CrystallineItems.WEEPING_SKY_LIGHT);
-		gen.registerItemModel(CrystallineItems.WEEPING_SKY_LIGHT);
+		gen.createAirLikeBlock(CrystallineBlocks.WEEPING_SKY_LIGHT, CrystallineItems.WEEPING_SKY_LIGHT);
+		gen.createSimpleFlatItemModel(CrystallineItems.WEEPING_SKY_LIGHT);
 	}
 
-	private void registerSkyBlock(BlockStateModelGenerator gen, Block block) {
-		gen.registerSimpleCubeAll(block);
-		gen.registerItemModel(block);
+	private void registerSkyBlock(BlockModelGenerators gen, Block block) {
+		gen.createTrivialCube(block);
+		gen.createSimpleFlatItemModel(block);
 	}
 
-	private void registerSkyLightBlock(BlockStateModelGenerator gen, Block block, Item item) {
-		gen.excludeFromSimpleItemModelGeneration(block);
-		BlockStateVariantMap.SingleProperty<Integer> singleProperty = BlockStateVariantMap.create(Properties.LEVEL_15);
+	private void registerSkyLightBlock(BlockModelGenerators gen, Block block, Item item) {
+		gen.skipAutoItemBlock(block);
+		PropertyDispatch.C1<Integer> singleProperty = PropertyDispatch.property(BlockStateProperties.LEVEL);
 
 		for (int level = 0; level <= 15; level++) {
 			String suffix = String.format(Locale.ROOT, "_%02d", level);
-			Identifier texture = TextureMap.getSubId(item, suffix);
+			ResourceLocation texture = TextureMapping.getItemTexture(item, suffix);
 
-			singleProperty.register(level, BlockStateVariant.create().put(
-				VariantSettings.MODEL,
-				Models.PARTICLE.upload(block, suffix, TextureMap.particle(texture), gen.modelCollector))
+			singleProperty.select(level, Variant.variant().with(
+				VariantProperties.MODEL,
+				ModelTemplates.PARTICLE_ONLY.createWithSuffix(block, suffix, TextureMapping.particle(texture), gen.modelOutput))
 			);
-			Models.GENERATED.upload(
-				ModelIds.getItemSubModelId(item, suffix),
-				TextureMap.layer0(texture),
-				gen.modelCollector
+			ModelTemplates.FLAT_ITEM.create(
+				ModelLocationUtils.getModelLocation(item, suffix),
+				TextureMapping.layer0(texture),
+				gen.modelOutput
 			);
 		}
 
-		Models.GENERATED.upload(
-			ModelIds.getItemModelId(item),
-			TextureMap.layer0(item),
-			gen.modelCollector,
+		ModelTemplates.FLAT_ITEM.create(
+			ModelLocationUtils.getModelLocation(item),
+			TextureMapping.layer0(item),
+			gen.modelOutput,
 			(id, textures) -> {
-				JsonObject base = Models.GENERATED.createJson(id, textures);
+				JsonObject base = ModelTemplates.FLAT_ITEM.createBaseTemplate(id, textures);
 				var overrides = new JsonArray();
 				for (int level = 0; level <= 15; level++) {
 					JsonObject override = new JsonObject();
@@ -77,7 +77,7 @@ public class CrystallineSkyModelProvider extends FabricModelProvider {
 					override.add("predicate", predicate);
 
 					String suffix = String.format(Locale.ROOT, "_%02d", level);
-					Identifier model = TextureMap.getSubId(item, suffix);
+					ResourceLocation model = TextureMapping.getItemTexture(item, suffix);
 					override.addProperty("model", model.toString());
 
 					overrides.add(override);
@@ -85,9 +85,9 @@ public class CrystallineSkyModelProvider extends FabricModelProvider {
 				base.add("overrides", overrides);
 				return base;
 			});
-		gen.blockStateCollector.accept(VariantsBlockStateSupplier.create(block).coordinate(singleProperty));
+		gen.blockStateOutput.accept(MultiVariantGenerator.multiVariant(block).with(singleProperty));
 	}
 
 	@Override
-	public void generateItemModels(ItemModelGenerator gen) {}
+	public void generateItemModels(ItemModelGenerators gen) {}
 }

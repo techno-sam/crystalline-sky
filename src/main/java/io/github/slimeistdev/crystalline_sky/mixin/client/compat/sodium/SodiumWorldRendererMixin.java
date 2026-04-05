@@ -7,7 +7,7 @@ import net.caffeinemc.mods.sodium.client.render.SodiumWorldRenderer;
 import net.caffeinemc.mods.sodium.client.render.chunk.ChunkRenderMatrices;
 import net.caffeinemc.mods.sodium.client.render.chunk.RenderSectionManager;
 import net.caffeinemc.mods.sodium.client.render.chunk.terrain.material.DefaultMaterials;
-import net.minecraft.client.render.RenderLayer;
+import net.minecraft.client.renderer.RenderType;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
@@ -21,7 +21,7 @@ public class SodiumWorldRendererMixin {
 	private RenderSectionManager renderSectionManager;
 
 	@Inject(method = "drawChunkLayer", at = @At("RETURN"))
-	private void drawCrystallineLayer(RenderLayer renderLayer, ChunkRenderMatrices matrices, double x, double y, double z, CallbackInfo ci) {
+	private void drawCrystallineLayer(RenderType renderLayer, ChunkRenderMatrices matrices, double x, double y, double z, CallbackInfo ci) {
 		if (renderLayer != CrystallineRenderLayers.SKY) return;
 
 		renderSectionManager.renderLayer(matrices, DefaultMaterials.forRenderLayer(CrystallineRenderLayers.SKY).pass, x, y, z);

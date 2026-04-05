@@ -1,28 +1,28 @@
 package io.github.slimeistdev.crystalline_sky.infrastructure;
 
 import io.github.slimeistdev.crystalline_sky.registry.CrystallineBlocks;
-import net.minecraft.block.BlockState;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.Direction;
-import net.minecraft.util.shape.VoxelShape;
-import net.minecraft.util.shape.VoxelShapes;
-import net.minecraft.world.BlockView;
-import net.minecraft.world.chunk.light.ChunkLightProvider;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
+import net.minecraft.world.phys.shapes.VoxelShape;
+import net.minecraft.world.phys.shapes.Shapes;
+import net.minecraft.world.level.BlockGetter;
+import net.minecraft.world.level.lighting.LightEngine;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 public class MutableWeepingScanner implements WeepingStorage.WeepingScanner {
-	private @Nullable BlockView blockView;
+	private @Nullable BlockGetter blockView;
 	private final int minY;
 
-	private final BlockPos.Mutable reusablePos1 = new BlockPos.Mutable();
-	private final BlockPos.Mutable reusablePos2 = new BlockPos.Mutable();
+	private final BlockPos.MutableBlockPos reusablePos1 = new BlockPos.MutableBlockPos();
+	private final BlockPos.MutableBlockPos reusablePos2 = new BlockPos.MutableBlockPos();
 
 	public MutableWeepingScanner(int minY) {
 		this.minY = minY;
 	}
 
-	public void setBlockView(@Nullable BlockView blockView) {
+	public void setBlockView(@Nullable BlockGetter blockView) {
 		this.blockView = blockView;
 	}
 
@@ -34,7 +34,7 @@ public class MutableWeepingScanner implements WeepingStorage.WeepingScanner {
 		return y == Integer.MIN_VALUE ? -1 : y - minY;
 	}
 
-	private @NotNull BlockView checkBlockView() {
+	private @NotNull BlockGetter checkBlockView() {
 		if (blockView == null) {
 			throw new IllegalStateException("blockView is not set");
 		} else {
@@ -44,12 +44,12 @@ public class MutableWeepingScanner implements WeepingStorage.WeepingScanner {
 
 	@Override
 	public int scan(int localX, int yMax, int localZ) {
-		BlockView blockView = checkBlockView();
+		BlockGetter blockView = checkBlockView();
 
 		int actualYMax = transformInputY(yMax);
 
-		BlockPos.Mutable topPos = reusablePos1.set(localX, actualYMax, localZ);
-		BlockPos.Mutable bottomPos = reusablePos2.set(localX, actualYMax - 1, localZ);
+		BlockPos.MutableBlockPos topPos = reusablePos1.set(localX, actualYMax, localZ);
+		BlockPos.MutableBlockPos bottomPos = reusablePos2.set(localX, actualYMax - 1, localZ);
 		BlockState topState = blockView.getBlockState(topPos);
 
 		while (bottomPos.getY() >= minY) {
@@ -68,12 +68,12 @@ public class MutableWeepingScanner implements WeepingStorage.WeepingScanner {
 
 	@Override
 	public int scanForWeepingSky(int localX, int yMax, int localZ) {
-		BlockView blockView = checkBlockView();
+		BlockGetter blockView = checkBlockView();
 
 		int actualYMax = transformInputY(yMax);
 
-		BlockPos.Mutable topPos = reusablePos1.set(localX, actualYMax, localZ);
-		BlockPos.Mutable bottomPos = reusablePos2.set(localX, actualYMax - 1, localZ);
+		BlockPos.MutableBlockPos topPos = reusablePos1.set(localX, actualYMax, localZ);
+		BlockPos.MutableBlockPos bottomPos = reusablePos2.set(localX, actualYMax - 1, localZ);
 		BlockState topState = blockView.getBlockState(topPos);
 
 		if (CrystallineBlocks.isWeepingSky(topState))
@@ -99,7 +99,7 @@ public class MutableWeepingScanner implements WeepingStorage.WeepingScanner {
 
 	@Override
 	public boolean faceBlocksLight(int localX, int upperY, int localZ) {
-		BlockView blockView = checkBlockView();
+		BlockGetter blockView = checkBlockView();
 
 		int actualY = transformInputY(upperY);
 		reusablePos1.set(localX, actualY, localZ);
@@ -110,13 +110,13 @@ public class MutableWeepingScanner implements WeepingStorage.WeepingScanner {
 		return faceBlocksLight(blockView, upper, lower, reusablePos1, reusablePos2);
 	}
 
-	private static boolean faceBlocksLight(BlockView world, BlockState upper, BlockState lower, BlockPos upperPos, BlockPos lowerPos) {
-		if (lower.getOpacity(world, lowerPos) != 0) {
+	private static boolean faceBlocksLight(BlockGetter world, BlockState upper, BlockState lower, BlockPos upperPos, BlockPos lowerPos) {
+		if (lower.getLightBlock(world, lowerPos) != 0) {
 			return true;
 		} else {
-			VoxelShape voxelShape = ChunkLightProvider.getOpaqueShape(world, upperPos, upper, Direction.DOWN);
-			VoxelShape voxelShape2 = ChunkLightProvider.getOpaqueShape(world, lowerPos, lower, Direction.UP);
-			return VoxelShapes.unionCoversFullCube(voxelShape, voxelShape2);
+			VoxelShape voxelShape = LightEngine.getOcclusionShape(world, upperPos, upper, Direction.DOWN);
+			VoxelShape voxelShape2 = LightEngine.getOcclusionShape(world, lowerPos, lower, Direction.UP);
+			return Shapes.faceShapeOccludes(voxelShape, voxelShape2);
 		}
 	}
 }

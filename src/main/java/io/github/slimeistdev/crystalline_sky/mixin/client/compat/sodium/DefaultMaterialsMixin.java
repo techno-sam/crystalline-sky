@@ -7,7 +7,7 @@ import net.caffeinemc.mods.sodium.client.render.chunk.terrain.DefaultTerrainRend
 import net.caffeinemc.mods.sodium.client.render.chunk.terrain.material.DefaultMaterials;
 import net.caffeinemc.mods.sodium.client.render.chunk.terrain.material.Material;
 import net.caffeinemc.mods.sodium.client.render.chunk.terrain.material.parameters.AlphaCutoffParameter;
-import net.minecraft.client.render.RenderLayer;
+import net.minecraft.client.renderer.RenderType;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
@@ -31,7 +31,7 @@ public class DefaultMaterialsMixin {
 	);
 
 	@Inject(method = "forRenderLayer", at = @At(value = "NEW", target = "(Ljava/lang/String;)Ljava/lang/IllegalArgumentException;"), cancellable = true)
-	private static void addCrystallineSkyMaterial(RenderLayer layer, CallbackInfoReturnable<Material> cir) {
+	private static void addCrystallineSkyMaterial(RenderType layer, CallbackInfoReturnable<Material> cir) {
 		if (layer == CrystallineRenderLayers.SKY) {
 			cir.setReturnValue(crystalline_sky$SKY);
 		}

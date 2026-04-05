@@ -1,45 +1,46 @@
 package io.github.slimeistdev.crystalline_sky.content.items;
 
 import io.github.slimeistdev.crystalline_sky.registry.CrystallineDataComponentTypes;
-import net.minecraft.block.Block;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.BlockItem;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.ItemUsageContext;
-import net.minecraft.util.ActionResult;
-import net.minecraft.util.Hand;
-import net.minecraft.util.TypedActionResult;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.ColumnPos;
-import net.minecraft.world.World;
+import net.minecraft.world.item.Item.Properties;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.BlockItem;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.context.UseOnContext;
+import net.minecraft.world.InteractionResult;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResultHolder;
+import net.minecraft.core.BlockPos;
+import net.minecraft.server.level.ColumnPos;
+import net.minecraft.world.level.Level;
 
 public class WeepingSkyBlockItem extends BlockItem {
-	public WeepingSkyBlockItem(Block block, Settings settings) {
+	public WeepingSkyBlockItem(Block block, Properties settings) {
 		super(block, settings);
 	}
 
 	@Override
-	public ActionResult useOnBlock(ItemUsageContext context) {
-		ItemStack stack = context.getStack();
+	public InteractionResult useOn(UseOnContext context) {
+		ItemStack stack = context.getItemInHand();
 		if (stack.get(CrystallineDataComponentTypes.WEEPING_SKY_DEBUG_COLUMN_TOOL) != null) {
-			if (context.getWorld().isClient) {
-				BlockPos pos = context.getBlockPos();
+			if (context.getLevel().isClientSide) {
+				BlockPos pos = context.getClickedPos();
 				WeepingSkyBlockItemClient.setSelectedColumn(new ColumnPos(pos.getX(), pos.getZ()));
 			}
-			return ActionResult.SUCCESS;
+			return InteractionResult.SUCCESS;
 		}
 
-		return super.useOnBlock(context);
+		return super.useOn(context);
 	}
 
 	@Override
-	public TypedActionResult<ItemStack> use(World world, PlayerEntity user, Hand hand) {
-		ItemStack stack = user.getStackInHand(hand);
+	public InteractionResultHolder<ItemStack> use(Level world, Player user, InteractionHand hand) {
+		ItemStack stack = user.getItemInHand(hand);
 		if (stack.get(CrystallineDataComponentTypes.WEEPING_SKY_DEBUG_COLUMN_TOOL) != null) {
-			if (world.isClient) {
+			if (world.isClientSide) {
 				WeepingSkyBlockItemClient.setSelectedColumn(null);
 			}
-			return TypedActionResult.success(stack);
+			return InteractionResultHolder.success(stack);
 		}
 
 		return super.use(world, user, hand);

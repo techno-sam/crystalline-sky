@@ -8,16 +8,16 @@ import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.fabric.api.blockrenderlayer.v1.BlockRenderLayerMap;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 import net.fabricmc.fabric.api.client.keybinding.v1.KeyBindingHelper;
-import net.minecraft.block.LightBlock;
-import net.minecraft.client.item.ModelPredicateProviderRegistry;
-import net.minecraft.client.option.KeyBinding;
-import net.minecraft.client.util.InputUtil;
-import net.minecraft.component.DataComponentTypes;
-import net.minecraft.component.type.BlockStateComponent;
-import net.minecraft.screen.ScreenTexts;
-import net.minecraft.text.Text;
-import net.minecraft.util.Formatting;
-import net.minecraft.util.Identifier;
+import net.minecraft.world.level.block.LightBlock;
+import net.minecraft.client.renderer.item.ItemProperties;
+import net.minecraft.client.KeyMapping;
+import com.mojang.blaze3d.platform.InputConstants;
+import net.minecraft.core.component.DataComponents;
+import net.minecraft.world.item.component.BlockItemStateProperties;
+import net.minecraft.network.chat.CommonComponents;
+import net.minecraft.network.chat.Component;
+import net.minecraft.ChatFormatting;
+import net.minecraft.resources.ResourceLocation;
 import org.lwjgl.glfw.GLFW;
 
 public class CrystallineSkyClient implements ClientModInitializer {
@@ -26,35 +26,35 @@ public class CrystallineSkyClient implements ClientModInitializer {
 		BlockRenderLayerMap.INSTANCE.putBlock(CrystallineBlocks.SKY, CrystallineRenderLayers.SKY);
 		BlockRenderLayerMap.INSTANCE.putBlock(CrystallineBlocks.WEEPING_SKY, CrystallineRenderLayers.SKY);
 
-		var weepingSkyKeybind = KeyBindingHelper.registerKeyBinding(new KeyBinding(
+		var weepingSkyKeybind = KeyBindingHelper.registerKeyBinding(new KeyMapping(
 			"crystalline_sky.key.toggle_weeping_sky_debug",
-			InputUtil.Type.KEYSYM,
+			InputConstants.Type.KEYSYM,
 			GLFW.GLFW_KEY_UNKNOWN,
 			"crystalline_sky.category.crystalline_sky"
 		));
 
 		ClientTickEvents.END_CLIENT_TICK.register(client -> {
-			while (weepingSkyKeybind.wasPressed()) {
+			while (weepingSkyKeybind.consumeClick()) {
 				int mode = ((DebugRenderer_Duck) client.debugRenderer).crystalline_sky$toggleWeepingSky();
 
-				Text message = getDebugMessage(Formatting.YELLOW,
-					Text.translatable("message.crystalline_sky.weeping_sky_debug." + mode)
+				Component message = getDebugMessage(ChatFormatting.YELLOW,
+					Component.translatable("message.crystalline_sky.weeping_sky_debug." + mode)
 				);
 
-				client.inGameHud.getChatHud().addMessage(message);
+				client.gui.getChat().addMessage(message);
 			}
 		});
 
-		ModelPredicateProviderRegistry.register(CrystallineItems.SKY_LIGHT, Identifier.ofVanilla("level"),
+		ItemProperties.register(CrystallineItems.SKY_LIGHT, ResourceLocation.withDefaultNamespace("level"),
 			(stack, world, entity, seed) -> {
-				BlockStateComponent blockStateComponent = stack.getOrDefault(DataComponentTypes.BLOCK_STATE, BlockStateComponent.DEFAULT);
-				Integer integer = blockStateComponent.getValue(LightBlock.LEVEL_15);
+				BlockItemStateProperties blockStateComponent = stack.getOrDefault(DataComponents.BLOCK_STATE, BlockItemStateProperties.EMPTY);
+				Integer integer = blockStateComponent.get(LightBlock.LEVEL);
 				return integer != null ? integer / 16.0F : 1.0F;
 			});
 	}
 
 	@SuppressWarnings("SameParameterValue")
-	private static Text getDebugMessage(Formatting formatting, Text message) {
-		return Text.empty().append(Text.translatable("debug.prefix").formatted(formatting, Formatting.BOLD)).append(ScreenTexts.SPACE).append(message);
+	private static Component getDebugMessage(ChatFormatting formatting, Component message) {
+		return Component.empty().append(Component.translatable("debug.prefix").withStyle(formatting, ChatFormatting.BOLD)).append(CommonComponents.SPACE).append(message);
 	}
 }

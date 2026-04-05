@@ -36,6 +36,18 @@ repositories {
 			includeGroup "com.terraformersmc"
 		}
 	}
+	exclusiveContent {
+		forRepository {
+			//noinspection ForeignDelegate
+			maven {
+				name 'ParchmentMC'
+				url "https://maven.parchmentmc.org"
+			}
+		}
+		filter {
+			includeGroup "org.parchmentmc.data"
+		}
+	}
 	flatDir {
 		dir("libs")
 	}
@@ -44,7 +56,8 @@ repositories {
 dependencies {
 	minecraft libs.mc
 	mappings loom.layered {
-		it.mappings variantOf(libs.yarn) { classifier "v2" }
+		it.officialMojangMappings()
+		it.parchment variantOf(libs.parchment) { artifactType "zip" }
 		it.mappings file("custom_mappings.tiny")
 	}
 

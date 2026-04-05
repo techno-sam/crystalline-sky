@@ -5,32 +5,32 @@ import io.github.slimeistdev.crystalline_sky.mixin_ducks.client.RenderLayer_Duck
 import io.github.slimeistdev.crystalline_sky.mixin_ducks.client.WorldRenderer_Duck;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
-import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.render.RenderLayer;
-import net.minecraft.client.render.RenderPhase;
-import net.minecraft.client.render.VertexFormat;
-import net.minecraft.client.render.VertexFormats;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.renderer.RenderType;
+import net.minecraft.client.renderer.RenderStateShard;
+import com.mojang.blaze3d.vertex.VertexFormat;
+import com.mojang.blaze3d.vertex.DefaultVertexFormat;
 
-import static net.minecraft.client.render.RenderLayer.of;
-import static net.minecraft.client.render.RenderPhase.ENABLE_LIGHTMAP;
+import static net.minecraft.client.renderer.RenderType.create;
+import static net.minecraft.client.renderer.RenderStateShard.LIGHTMAP;
 
 @Environment(EnvType.CLIENT)
 public class CrystallineRenderLayers {
-	private static final RenderPhase.TextureBase SKY_TEXTURE = new SkyBufferTexture();
-	private static final RenderPhase.ShaderProgram SKY_PROGRAM = new RenderPhase.ShaderProgram(CrystallineShaderPrograms::getRenderTypeSkyProgram);
+	private static final RenderStateShard.EmptyTextureStateShard SKY_TEXTURE = new SkyBufferTexture();
+	private static final RenderStateShard.ShaderStateShard SKY_PROGRAM = new RenderStateShard.ShaderStateShard(CrystallineShaderPrograms::getRenderTypeSkyProgram);
 
-	public static final RenderLayer SKY = of(
+	public static final RenderType SKY = create(
 		"crystalline_sky_sky",
-		VertexFormats.POSITION_COLOR_TEXTURE_LIGHT_NORMAL,
-		VertexFormat.DrawMode.QUADS,
+		DefaultVertexFormat.BLOCK,
+		VertexFormat.Mode.QUADS,
 		4194304,
 		true,
 		false,
-		RenderLayer.MultiPhaseParameters.builder()
-			.lightmap(ENABLE_LIGHTMAP)
-			.program(SKY_PROGRAM)
-			.texture(SKY_TEXTURE)
-			.build(true)
+		RenderType.CompositeState.builder()
+			.setLightmapState(LIGHTMAP)
+			.setShaderState(SKY_PROGRAM)
+			.setTextureState(SKY_TEXTURE)
+			.createCompositeState(true)
 	);
 
 	static {
@@ -38,12 +38,12 @@ public class CrystallineRenderLayers {
 		((RenderLayer_Duck) SKY).crystalline_sky$markAsBlockLayer();
 	}
 
-	private static class SkyBufferTexture extends RenderPhase.TextureBase {
+	private static class SkyBufferTexture extends RenderStateShard.EmptyTextureStateShard {
 		public SkyBufferTexture() {
 			super(() -> {
-				MinecraftClient mc = MinecraftClient.getInstance();
-				var fb = ((WorldRenderer_Duck) mc.worldRenderer).crystalline_sky$getSkyFramebuffer();
-				RenderSystem.setShaderTexture(0, fb.getColorAttachment());
+				Minecraft mc = Minecraft.getInstance();
+				var fb = ((WorldRenderer_Duck) mc.levelRenderer).crystalline_sky$getSkyFramebuffer();
+				RenderSystem.setShaderTexture(0, fb.getColorTextureId());
 			}, () -> {});
 		}
 	}

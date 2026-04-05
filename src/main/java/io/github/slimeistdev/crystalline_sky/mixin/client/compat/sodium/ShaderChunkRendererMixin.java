@@ -12,7 +12,7 @@ import net.caffeinemc.mods.sodium.client.render.chunk.shader.ChunkShaderInterfac
 import net.caffeinemc.mods.sodium.client.render.chunk.shader.ChunkShaderOptions;
 import net.caffeinemc.mods.sodium.client.render.chunk.shader.ShaderBindingContext;
 import net.caffeinemc.mods.sodium.client.render.chunk.terrain.material.DefaultMaterials;
-import net.minecraft.util.Identifier;
+import net.minecraft.resources.ResourceLocation;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 
@@ -30,8 +30,8 @@ public class ShaderChunkRendererMixin {
 		return original.call(instance, path, options);
 	}
 
-	@WrapOperation(method = "createShader", at = @At(value = "INVOKE", target = "Lnet/minecraft/util/Identifier;of(Ljava/lang/String;Ljava/lang/String;)Lnet/minecraft/util/Identifier;"))
-	private Identifier redirectShaderNamespace(String namespace, String path, Operation<Identifier> original, String pathArg) {
+	@WrapOperation(method = "createShader", at = @At(value = "INVOKE", target = "Lnet/minecraft/resources/ResourceLocation;fromNamespaceAndPath(Ljava/lang/String;Ljava/lang/String;)Lnet/minecraft/resources/ResourceLocation;"))
+	private ResourceLocation redirectShaderNamespace(String namespace, String path, Operation<ResourceLocation> original, String pathArg) {
 		if (pathArg.equals("sodium_compat/block_layer_sky")) {
 			namespace = "crystalline_sky";
 		}

@@ -4,22 +4,22 @@ import io.github.slimeistdev.crystalline_sky.infrastructure.client.WeepingSkyDeb
 import io.github.slimeistdev.crystalline_sky.mixin_ducks.client.DebugRenderer_Duck;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
-import net.minecraft.client.MinecraftClient;
-import net.minecraft.text.Text;
-import net.minecraft.util.math.ColumnPos;
+import net.minecraft.client.Minecraft;
+import net.minecraft.network.chat.Component;
+import net.minecraft.server.level.ColumnPos;
 import org.jetbrains.annotations.Nullable;
 
 public class WeepingSkyBlockItemClient {
 	// todone check if this is server-safe
 	@Environment(EnvType.CLIENT)
 	public static void setSelectedColumn(@Nullable ColumnPos column) {
-		MinecraftClient mc = MinecraftClient.getInstance();
+		Minecraft mc = Minecraft.getInstance();
 		WeepingSkyDebugRenderer weepingSkyDebugRenderer = ((DebugRenderer_Duck) mc.debugRenderer).crystalline_sky$getWeepingSkyDebugRenderer();
 		weepingSkyDebugRenderer.setColumn(column);
 
-		Text text = column == null
-			? Text.translatable("message.crystalline_sky.weeping_sky_debug.column.cleared")
-			: Text.translatable("message.crystalline_sky.weeping_sky_debug.column.set", column.x(), column.z());
-		mc.inGameHud.setOverlayMessage(text, false);
+		Component text = column == null
+			? Component.translatable("message.crystalline_sky.weeping_sky_debug.column.cleared")
+			: Component.translatable("message.crystalline_sky.weeping_sky_debug.column.set", column.x(), column.z());
+		mc.gui.setOverlayMessage(text, false);
 	}
 }
