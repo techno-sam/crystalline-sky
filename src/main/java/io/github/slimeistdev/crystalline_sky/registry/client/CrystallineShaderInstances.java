@@ -4,7 +4,7 @@ import net.minecraft.client.renderer.ShaderInstance;
 import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.Nullable;
 
-public class CrystallineShaderPrograms {
+public class CrystallineShaderInstances {
 	@ApiStatus.Internal
 	public static @Nullable ShaderInstance renderTypeSkyProgram;
 

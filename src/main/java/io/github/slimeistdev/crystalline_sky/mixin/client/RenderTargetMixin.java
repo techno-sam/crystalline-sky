@@ -3,13 +3,13 @@ package io.github.slimeistdev.crystalline_sky.mixin.client;
 import com.mojang.blaze3d.platform.GlConst;
 import com.mojang.blaze3d.platform.GlStateManager;
 import com.mojang.blaze3d.systems.RenderSystem;
-import io.github.slimeistdev.crystalline_sky.mixin_ducks.client.Framebuffer_Duck;
+import io.github.slimeistdev.crystalline_sky.mixin_ducks.client.RenderTarget_Duck;
 import com.mojang.blaze3d.pipeline.RenderTarget;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 
 @Mixin(RenderTarget.class)
-public class RenderTargetMixin implements Framebuffer_Duck {
+public class RenderTargetMixin implements RenderTarget_Duck {
 	@Shadow
 	protected int colorTextureId;
 

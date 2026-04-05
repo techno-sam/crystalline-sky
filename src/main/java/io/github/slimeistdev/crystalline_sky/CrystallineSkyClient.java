@@ -3,7 +3,7 @@ package io.github.slimeistdev.crystalline_sky;
 import io.github.slimeistdev.crystalline_sky.mixin_ducks.client.DebugRenderer_Duck;
 import io.github.slimeistdev.crystalline_sky.registry.CrystallineBlocks;
 import io.github.slimeistdev.crystalline_sky.registry.CrystallineItems;
-import io.github.slimeistdev.crystalline_sky.registry.client.CrystallineRenderLayers;
+import io.github.slimeistdev.crystalline_sky.registry.client.CrystallineRenderTypes;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.fabric.api.blockrenderlayer.v1.BlockRenderLayerMap;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
@@ -23,8 +23,8 @@ import org.lwjgl.glfw.GLFW;
 public class CrystallineSkyClient implements ClientModInitializer {
 	@Override
 	public void onInitializeClient() {
-		BlockRenderLayerMap.INSTANCE.putBlock(CrystallineBlocks.SKY, CrystallineRenderLayers.SKY);
-		BlockRenderLayerMap.INSTANCE.putBlock(CrystallineBlocks.WEEPING_SKY, CrystallineRenderLayers.SKY);
+		BlockRenderLayerMap.INSTANCE.putBlock(CrystallineBlocks.SKY, CrystallineRenderTypes.SKY);
+		BlockRenderLayerMap.INSTANCE.putBlock(CrystallineBlocks.WEEPING_SKY, CrystallineRenderTypes.SKY);
 
 		var weepingSkyKeybind = KeyBindingHelper.registerKeyBinding(new KeyMapping(
 			"crystalline_sky.key.toggle_weeping_sky_debug",

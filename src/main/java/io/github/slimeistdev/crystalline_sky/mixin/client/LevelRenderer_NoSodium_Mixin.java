@@ -6,7 +6,7 @@ import com.mojang.blaze3d.systems.RenderSystem;
 import io.github.slimeistdev.crystalline_sky.annotation.mixin.ConditionalMixin;
 import io.github.slimeistdev.crystalline_sky.compat.Mods;
 import io.github.slimeistdev.crystalline_sky.registry.CrystallineItems;
-import io.github.slimeistdev.crystalline_sky.registry.client.CrystallineRenderLayers;
+import io.github.slimeistdev.crystalline_sky.registry.client.CrystallineRenderTypes;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.ShaderInstance;
 import net.minecraft.client.renderer.RenderType;
@@ -36,7 +36,7 @@ public class LevelRenderer_NoSodium_Mixin {
 							   RenderType renderLayer) {
 		original.call(instance, drawMode, viewMatrix, projectionMatrix, window);
 
-		if (renderLayer == CrystallineRenderLayers.SKY
+		if (renderLayer == CrystallineRenderTypes.SKY
 			&& instance.COLOR_MODULATOR != null
 			&& minecraft.player != null
 			&& (minecraft.player.getMainHandItem().is(CrystallineItems.SKY)

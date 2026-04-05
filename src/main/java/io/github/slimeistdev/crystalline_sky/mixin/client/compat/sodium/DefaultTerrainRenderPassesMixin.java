@@ -2,7 +2,7 @@ package io.github.slimeistdev.crystalline_sky.mixin.client.compat.sodium;
 
 import io.github.slimeistdev.crystalline_sky.annotation.mixin.ConditionalMixin;
 import io.github.slimeistdev.crystalline_sky.compat.Mods;
-import io.github.slimeistdev.crystalline_sky.registry.client.CrystallineRenderLayers;
+import io.github.slimeistdev.crystalline_sky.registry.client.CrystallineRenderTypes;
 import net.caffeinemc.mods.sodium.client.render.chunk.terrain.DefaultTerrainRenderPasses;
 import net.caffeinemc.mods.sodium.client.render.chunk.terrain.TerrainRenderPass;
 import org.spongepowered.asm.mixin.Final;
@@ -25,7 +25,7 @@ public class DefaultTerrainRenderPassesMixin {
 	private static void addCrystallineSkyPass(CallbackInfo ci) {
 		var ALL$ = new TerrainRenderPass[ALL.length + 1];
 		System.arraycopy(ALL, 0, ALL$, 0, ALL.length);
-		ALL$[ALL.length] = new TerrainRenderPass(CrystallineRenderLayers.SKY, false, true);
+		ALL$[ALL.length] = new TerrainRenderPass(CrystallineRenderTypes.SKY, false, true);
 		ALL = ALL$;
 	}
 }

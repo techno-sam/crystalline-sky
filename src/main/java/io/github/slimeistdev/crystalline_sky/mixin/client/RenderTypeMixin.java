@@ -1,7 +1,7 @@
 package io.github.slimeistdev.crystalline_sky.mixin.client;
 
 import com.google.common.collect.ImmutableList;
-import io.github.slimeistdev.crystalline_sky.mixin_ducks.client.RenderLayer_Duck;
+import io.github.slimeistdev.crystalline_sky.mixin_ducks.client.RenderType_Duck;
 import net.minecraft.client.renderer.RenderType;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
@@ -9,7 +9,7 @@ import org.spongepowered.asm.mixin.Mutable;
 import org.spongepowered.asm.mixin.Shadow;
 
 @Mixin(RenderType.class)
-public class RenderTypeMixin implements RenderLayer_Duck {
+public class RenderTypeMixin implements RenderType_Duck {
 	@Shadow
 	@Final
 	@Mutable

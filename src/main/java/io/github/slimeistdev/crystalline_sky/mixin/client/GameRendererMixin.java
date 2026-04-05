@@ -3,7 +3,7 @@ package io.github.slimeistdev.crystalline_sky.mixin.client;
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import com.mojang.datafixers.util.Pair;
-import io.github.slimeistdev.crystalline_sky.registry.client.CrystallineShaderPrograms;
+import io.github.slimeistdev.crystalline_sky.registry.client.CrystallineShaderInstances;
 import net.minecraft.client.renderer.ShaderInstance;
 import net.minecraft.client.renderer.GameRenderer;
 import com.mojang.blaze3d.vertex.DefaultVertexFormat;
@@ -28,7 +28,7 @@ public class GameRendererMixin {
 			factory,
 			"crystalline_sky_rendertype_sky",
 			DefaultVertexFormat.BLOCK
-		), (Consumer<ShaderInstance>) program -> CrystallineShaderPrograms.renderTypeSkyProgram = program));
+		), (Consumer<ShaderInstance>) program -> CrystallineShaderInstances.renderTypeSkyProgram = program));
 		return original.call(instance, e);
 	}
 }

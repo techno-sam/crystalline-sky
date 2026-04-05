@@ -1,8 +1,8 @@
 package io.github.slimeistdev.crystalline_sky.registry.client;
 
 import com.mojang.blaze3d.systems.RenderSystem;
-import io.github.slimeistdev.crystalline_sky.mixin_ducks.client.RenderLayer_Duck;
-import io.github.slimeistdev.crystalline_sky.mixin_ducks.client.WorldRenderer_Duck;
+import io.github.slimeistdev.crystalline_sky.mixin_ducks.client.RenderType_Duck;
+import io.github.slimeistdev.crystalline_sky.mixin_ducks.client.LevelRenderer_Duck;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.client.Minecraft;
@@ -15,9 +15,9 @@ import static net.minecraft.client.renderer.RenderType.create;
 import static net.minecraft.client.renderer.RenderStateShard.LIGHTMAP;
 
 @Environment(EnvType.CLIENT)
-public class CrystallineRenderLayers {
+public class CrystallineRenderTypes {
 	private static final RenderStateShard.EmptyTextureStateShard SKY_TEXTURE = new SkyBufferTexture();
-	private static final RenderStateShard.ShaderStateShard SKY_PROGRAM = new RenderStateShard.ShaderStateShard(CrystallineShaderPrograms::getRenderTypeSkyProgram);
+	private static final RenderStateShard.ShaderStateShard SKY_PROGRAM = new RenderStateShard.ShaderStateShard(CrystallineShaderInstances::getRenderTypeSkyProgram);
 
 	public static final RenderType SKY = create(
 		"crystalline_sky_sky",
@@ -35,14 +35,14 @@ public class CrystallineRenderLayers {
 
 	static {
 		//noinspection DataFlowIssue
-		((RenderLayer_Duck) SKY).crystalline_sky$markAsBlockLayer();
+		((RenderType_Duck) SKY).crystalline_sky$markAsBlockLayer();
 	}
 
 	private static class SkyBufferTexture extends RenderStateShard.EmptyTextureStateShard {
 		public SkyBufferTexture() {
 			super(() -> {
 				Minecraft mc = Minecraft.getInstance();
-				var fb = ((WorldRenderer_Duck) mc.levelRenderer).crystalline_sky$getSkyFramebuffer();
+				var fb = ((LevelRenderer_Duck) mc.levelRenderer).crystalline_sky$getSkyFramebuffer();
 				RenderSystem.setShaderTexture(0, fb.getColorTextureId());
 			}, () -> {});
 		}

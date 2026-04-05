@@ -3,7 +3,7 @@ package io.github.slimeistdev.crystalline_sky.mixin.client.compat.axiom;
 import com.moulberry.axiom.render.ChunkRenderOverrider;
 import io.github.slimeistdev.crystalline_sky.annotation.mixin.ConditionalMixin;
 import io.github.slimeistdev.crystalline_sky.compat.Mods;
-import io.github.slimeistdev.crystalline_sky.registry.client.CrystallineRenderLayers;
+import io.github.slimeistdev.crystalline_sky.registry.client.CrystallineRenderTypes;
 import net.minecraft.client.renderer.RenderType;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
@@ -15,7 +15,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 public class ChunkRenderOverrider_AxiomChunkOverrideLayerMixin {
 	@Inject(method = "fromVanilla", at = @At("HEAD"), cancellable = true)
 	private static void unexplodeSky(RenderType layer, CallbackInfoReturnable<ChunkRenderOverrider.AxiomChunkOverrideLayer> cir) {
-		if (layer == CrystallineRenderLayers.SKY) {
+		if (layer == CrystallineRenderTypes.SKY) {
 			cir.setReturnValue(ChunkRenderOverrider.AxiomChunkOverrideLayer.CUTOUT_MIPPED);
 		}
 	}

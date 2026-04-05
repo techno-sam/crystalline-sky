@@ -2,7 +2,7 @@ package io.github.slimeistdev.crystalline_sky.mixin.client.compat.sodium;
 
 import io.github.slimeistdev.crystalline_sky.annotation.mixin.ConditionalMixin;
 import io.github.slimeistdev.crystalline_sky.compat.Mods;
-import io.github.slimeistdev.crystalline_sky.registry.client.CrystallineRenderLayers;
+import io.github.slimeistdev.crystalline_sky.registry.client.CrystallineRenderTypes;
 import net.caffeinemc.mods.sodium.client.render.SodiumWorldRenderer;
 import net.caffeinemc.mods.sodium.client.render.chunk.ChunkRenderMatrices;
 import net.caffeinemc.mods.sodium.client.render.chunk.RenderSectionManager;
@@ -22,8 +22,8 @@ public class SodiumWorldRendererMixin {
 
 	@Inject(method = "drawChunkLayer", at = @At("RETURN"))
 	private void drawCrystallineLayer(RenderType renderLayer, ChunkRenderMatrices matrices, double x, double y, double z, CallbackInfo ci) {
-		if (renderLayer != CrystallineRenderLayers.SKY) return;
+		if (renderLayer != CrystallineRenderTypes.SKY) return;
 
-		renderSectionManager.renderLayer(matrices, DefaultMaterials.forRenderLayer(CrystallineRenderLayers.SKY).pass, x, y, z);
+		renderSectionManager.renderLayer(matrices, DefaultMaterials.forRenderLayer(CrystallineRenderTypes.SKY).pass, x, y, z);
 	}
 }

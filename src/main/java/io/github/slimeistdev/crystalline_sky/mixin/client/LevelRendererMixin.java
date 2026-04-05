@@ -2,9 +2,9 @@ package io.github.slimeistdev.crystalline_sky.mixin.client;
 
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
-import io.github.slimeistdev.crystalline_sky.mixin_ducks.client.Framebuffer_Duck;
-import io.github.slimeistdev.crystalline_sky.mixin_ducks.client.WorldRenderer_Duck;
-import io.github.slimeistdev.crystalline_sky.registry.client.CrystallineRenderLayers;
+import io.github.slimeistdev.crystalline_sky.mixin_ducks.client.LevelRenderer_Duck;
+import io.github.slimeistdev.crystalline_sky.mixin_ducks.client.RenderTarget_Duck;
+import io.github.slimeistdev.crystalline_sky.registry.client.CrystallineRenderTypes;
 import net.minecraft.client.Minecraft;
 import com.mojang.blaze3d.pipeline.RenderTarget;
 import com.mojang.blaze3d.pipeline.TextureTarget;
@@ -28,7 +28,7 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(value = LevelRenderer.class, remap = false)
-public abstract class LevelRendererMixin implements WorldRenderer_Duck {
+public abstract class LevelRendererMixin implements LevelRenderer_Duck {
 	@Shadow
 	@Final
 	private Minecraft minecraft;
@@ -101,7 +101,7 @@ public abstract class LevelRendererMixin implements WorldRenderer_Duck {
 							  Matrix4f matrix4f, Matrix4f matrix4f2, CallbackInfo ci) {
 		var skyBuffer = crystalline_sky$getSkyFramebuffer();
 		skyBuffer.clear(Minecraft.ON_OSX);
-		((Framebuffer_Duck) skyBuffer).crystalline_sky$copyColorFrom(minecraft.getMainRenderTarget());
+		((RenderTarget_Duck) skyBuffer).crystalline_sky$copyColorFrom(minecraft.getMainRenderTarget());
 
 		// render clouds
 		CloudStatus cloudRenderMode = this.minecraft.options.getCloudsType();
@@ -133,6 +133,6 @@ public abstract class LevelRendererMixin implements WorldRenderer_Duck {
 	private void renderCrystallineSky(LevelRenderer instance, RenderType renderLayer, double x, double y, double z,
 									  Matrix4f matrix4f, Matrix4f positionMatrix, Operation<Void> original) {
 		original.call(instance, renderLayer, x, y, z, matrix4f, positionMatrix);
-		renderSectionLayer(CrystallineRenderLayers.SKY, x, y, z, matrix4f, positionMatrix);
+		renderSectionLayer(CrystallineRenderTypes.SKY, x, y, z, matrix4f, positionMatrix);
 	}
 }

@@ -2,7 +2,7 @@ package io.github.slimeistdev.crystalline_sky.mixin.client.compat.sodium;
 
 import io.github.slimeistdev.crystalline_sky.annotation.mixin.ConditionalMixin;
 import io.github.slimeistdev.crystalline_sky.compat.Mods;
-import io.github.slimeistdev.crystalline_sky.registry.client.CrystallineRenderLayers;
+import io.github.slimeistdev.crystalline_sky.registry.client.CrystallineRenderTypes;
 import net.caffeinemc.mods.sodium.client.render.chunk.terrain.DefaultTerrainRenderPasses;
 import net.caffeinemc.mods.sodium.client.render.chunk.terrain.material.DefaultMaterials;
 import net.caffeinemc.mods.sodium.client.render.chunk.terrain.material.Material;
@@ -23,7 +23,7 @@ public class DefaultMaterialsMixin {
 	@SuppressWarnings("OptionalGetWithoutIsPresent")
 	private static final Material crystalline_sky$SKY = new Material(
 		Arrays.stream(DefaultTerrainRenderPasses.ALL)
-			.filter(pass -> ((TerrainRenderPassAccessor) pass).crystalline_sky$getRenderLayer() == CrystallineRenderLayers.SKY)
+			.filter(pass -> ((TerrainRenderPassAccessor) pass).crystalline_sky$getRenderLayer() == CrystallineRenderTypes.SKY)
 			.findFirst()
 			.get(),
 		AlphaCutoffParameter.ZERO,
@@ -32,7 +32,7 @@ public class DefaultMaterialsMixin {
 
 	@Inject(method = "forRenderLayer", at = @At(value = "NEW", target = "(Ljava/lang/String;)Ljava/lang/IllegalArgumentException;"), cancellable = true)
 	private static void addCrystallineSkyMaterial(RenderType layer, CallbackInfoReturnable<Material> cir) {
-		if (layer == CrystallineRenderLayers.SKY) {
+		if (layer == CrystallineRenderTypes.SKY) {
 			cir.setReturnValue(crystalline_sky$SKY);
 		}
 	}
