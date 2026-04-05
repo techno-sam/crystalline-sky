@@ -50,6 +50,8 @@ jobs:
         run: chmod +x ./gradlew
 
       - name: Gradle Build
+        env:
+          RELEASE_BUILD: ${{ github.event_name == 'release' && github.event.action == 'published' }}
         run: ./gradlew build
 
       - name: Attest Build Provenance
@@ -67,6 +69,8 @@ jobs:
 
       - name: Maven Publish
         if: github.event_name == 'release' && github.event.action == 'published'
+        env:
+          RELEASE_BUILD: true
         run: ./gradlew publish
 
       - name: Github Publish
@@ -90,6 +94,7 @@ jobs:
 
       - name: Modrinth Publish
         env:
+          RELEASE_BUILD: true
           MODRINTH_TOKEN: ${{ secrets.MODRINTH_TOKEN }}
           CHANGELOG: ${{ github.event.release.body }}
           RELEASE_TYPE: ${{ steps.detect-release-type.outputs.type }}

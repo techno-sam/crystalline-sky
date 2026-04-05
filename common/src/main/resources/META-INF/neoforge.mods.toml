@@ -12,8 +12,11 @@ authors = "${members}"
 displayURL = "${homepage}"
 logoFile = "assets/${modId}/icon.png"
 
-[properties]
-"connector:placeholder" = true
+[[mixins]]
+config="${modId}-common.mixins.json"
+
+[[mixins]]
+config="${modId}.mixins.json"
 
 [[dependencies."${ modId }"]]
 modId = "connector"
