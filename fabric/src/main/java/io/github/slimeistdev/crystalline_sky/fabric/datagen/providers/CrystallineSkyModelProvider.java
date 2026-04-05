@@ -1,24 +1,26 @@
-package io.github.slimeistdev.crystalline_sky.datagen.providers;
+package io.github.slimeistdev.crystalline_sky.fabric.datagen.providers;
 
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
+import io.github.slimeistdev.crystalline_sky.CrystallineSky;
 import io.github.slimeistdev.crystalline_sky.registry.CrystallineBlocks;
 import io.github.slimeistdev.crystalline_sky.registry.CrystallineItems;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricModelProvider;
-import net.minecraft.world.level.block.Block;
 import net.minecraft.data.models.BlockModelGenerators;
-import net.minecraft.data.models.blockstates.Variant;
-import net.minecraft.data.models.blockstates.PropertyDispatch;
 import net.minecraft.data.models.ItemModelGenerators;
+import net.minecraft.data.models.blockstates.MultiVariantGenerator;
+import net.minecraft.data.models.blockstates.PropertyDispatch;
+import net.minecraft.data.models.blockstates.Variant;
+import net.minecraft.data.models.blockstates.VariantProperties;
 import net.minecraft.data.models.model.ModelLocationUtils;
 import net.minecraft.data.models.model.ModelTemplates;
 import net.minecraft.data.models.model.TextureMapping;
-import net.minecraft.data.models.blockstates.VariantProperties;
-import net.minecraft.data.models.blockstates.MultiVariantGenerator;
-import net.minecraft.world.item.Item;
-import net.minecraft.world.level.block.state.properties.BlockStateProperties;
+import net.minecraft.data.models.model.TexturedModel;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 
 import java.util.Locale;
 
@@ -39,7 +41,16 @@ public class CrystallineSkyModelProvider extends FabricModelProvider {
 	}
 
 	private void registerSkyBlock(BlockModelGenerators gen, Block block) {
-		gen.createTrivialCube(block);
+		gen.blockStateOutput.accept(BlockModelGenerators.createSimpleBlock(block, TexturedModel.CUBE.create(
+			block,
+			(id, json) -> {
+				gen.modelOutput.accept(id, () -> {
+					JsonObject root = json.get().getAsJsonObject();
+					root.addProperty("render_type", CrystallineSky.id("sky").toString());
+					return root;
+				});
+			}
+		)));
 		gen.createSimpleFlatItemModel(block);
 	}
 

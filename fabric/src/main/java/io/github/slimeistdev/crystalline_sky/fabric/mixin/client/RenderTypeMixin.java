@@ -1,4 +1,4 @@
-package io.github.slimeistdev.crystalline_sky.mixin.client;
+package io.github.slimeistdev.crystalline_sky.fabric.mixin.client;
 
 import com.google.common.collect.ImmutableList;
 import io.github.slimeistdev.crystalline_sky.mixin_ducks.client.RenderType_Duck;

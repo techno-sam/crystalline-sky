@@ -1,4 +1,4 @@
-package io.github.slimeistdev.crystalline_sky.datagen.providers;
+package io.github.slimeistdev.crystalline_sky.fabric.datagen.providers;
 
 import io.github.slimeistdev.crystalline_sky.registry.CrystallineBlocks;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;

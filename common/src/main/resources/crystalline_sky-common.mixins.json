@@ -19,7 +19,6 @@
     "client.DebugRendererMixin",
     "client.RenderTargetMixin",
     "client.GameRendererMixin",
-    "client.RenderTypeMixin",
     "client.LevelRenderer_NoSodium_Mixin",
     "client.LevelRendererMixin",
     "client.compat.axiom.ChunkRenderOverrider_AxiomChunkOverrideLayerMixin",

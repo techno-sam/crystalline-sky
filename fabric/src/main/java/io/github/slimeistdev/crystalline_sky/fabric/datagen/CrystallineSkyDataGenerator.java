@@ -1,8 +1,8 @@
-package io.github.slimeistdev.crystalline_sky.datagen;
+package io.github.slimeistdev.crystalline_sky.fabric.datagen;
 
-import io.github.slimeistdev.crystalline_sky.datagen.providers.CrystallineSkyBlockTagProvider;
-import io.github.slimeistdev.crystalline_sky.datagen.providers.CrystallineSkyLootProvider;
-import io.github.slimeistdev.crystalline_sky.datagen.providers.CrystallineSkyModelProvider;
+import io.github.slimeistdev.crystalline_sky.fabric.datagen.providers.CrystallineSkyBlockTagProvider;
+import io.github.slimeistdev.crystalline_sky.fabric.datagen.providers.CrystallineSkyLootProvider;
+import io.github.slimeistdev.crystalline_sky.fabric.datagen.providers.CrystallineSkyModelProvider;
 import net.fabricmc.fabric.api.datagen.v1.DataGeneratorEntrypoint;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataGenerator;
 
