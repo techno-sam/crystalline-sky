@@ -3,7 +3,6 @@ package io.github.slimeistdev.crystalline_sky.registry;
 import io.github.slimeistdev.crystalline_sky.CrystallineSky;
 import io.github.slimeistdev.crystalline_sky.content.blocks.SkyLightBlock;
 import io.github.slimeistdev.crystalline_sky.content.blocks.WeepingSkyLightBlock;
-import net.minecraft.block.*;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.LightBlock;

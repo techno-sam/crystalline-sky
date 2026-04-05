@@ -18,13 +18,13 @@ public class CrystallineSkyBlockTagProvider extends FabricTagProvider.BlockTagPr
 
 	@Override
 	protected void addTags(HolderLookup.Provider wrapperLookup) {
-		tag(TagKey.create(Registries.BLOCK, CrystallineSky.id("sky_light_emitters")))
+		getOrCreateTagBuilder(TagKey.create(Registries.BLOCK, CrystallineSky.id("sky_light_emitters")))
 			.add(CrystallineBlocks.SKY)
 			.add(CrystallineBlocks.SKY_LIGHT)
 			.add(CrystallineBlocks.WEEPING_SKY)
 			.add(CrystallineBlocks.WEEPING_SKY_LIGHT);
 
-		tag(BlockTags.CRYSTAL_SOUND_BLOCKS)
+		getOrCreateTagBuilder(BlockTags.CRYSTAL_SOUND_BLOCKS)
 			.add(CrystallineBlocks.SKY)
 			.add(CrystallineBlocks.WEEPING_SKY);
 	}
