@@ -8,7 +8,7 @@ public class RegistrationListeners<T> {
 	private @Nullable T obj;
 	private @Nullable Consumer<T> cons;
 
-	public void registered(T obj) {
+	public synchronized void registered(T obj) {
 		this.obj = obj;
 		if (cons != null) {
 			cons.accept(obj);
@@ -16,7 +16,7 @@ public class RegistrationListeners<T> {
 		}
 	}
 
-	public void addListener(Consumer<? super T> consumer) {
+	public synchronized void addListener(Consumer<? super T> consumer) {
 		if (obj != null) {
 			consumer.accept(obj);
 		} else if (cons == null) {

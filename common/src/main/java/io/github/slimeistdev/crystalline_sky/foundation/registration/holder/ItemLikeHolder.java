@@ -23,21 +23,12 @@ abstract class ItemLikeHolder<T extends ItemLike> extends BaseHolder<T> implemen
 		return is(stack.getItem());
 	}
 
-	public abstract boolean is(Item item);
+	public boolean is(Item item) {
+		return asItem() == item;
+	}
 
 	@Override
 	public Item asItem() {
 		return value().asItem();
-	}
-
-	static class NonItem<T extends ItemLike> extends ItemLikeHolder<T> {
-		protected NonItem(HolderOwner<T> owner, ResourceKey<T> key) {
-			super(owner, key);
-		}
-
-		@Override
-		public boolean is(Item item) {
-			return asItem() == item;
-		}
 	}
 }

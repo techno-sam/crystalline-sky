@@ -8,9 +8,4 @@ public class ItemHolder<T extends Item> extends ItemLikeHolder<T> {
 	public ItemHolder(HolderOwner<T> owner, ResourceKey<T> key) {
 		super(owner, key);
 	}
-
-	@Override
-	public boolean is(Item item) {
-		return asItem() == item;
-	}
 }
