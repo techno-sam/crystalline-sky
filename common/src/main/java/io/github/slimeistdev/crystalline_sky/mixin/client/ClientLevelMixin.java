@@ -24,9 +24,9 @@ public class ClientLevelMixin {
 	@Inject(method = "<clinit>", at = @At("RETURN"))
 	private static void modifyBlockMarkerItems(CallbackInfo ci) {
 		MARKER_PARTICLE_ITEMS = new HashSet<>(MARKER_PARTICLE_ITEMS);
-		MARKER_PARTICLE_ITEMS.add(CrystallineItems.SKY_LIGHT);
-		MARKER_PARTICLE_ITEMS.add(CrystallineItems.WEEPING_SKY_LIGHT);
-		MARKER_PARTICLE_ITEMS.add(CrystallineItems.SKY);
-		MARKER_PARTICLE_ITEMS.add(CrystallineItems.WEEPING_SKY);
+		MARKER_PARTICLE_ITEMS.add(CrystallineItems.SKY_LIGHT.value());
+		MARKER_PARTICLE_ITEMS.add(CrystallineItems.WEEPING_SKY_LIGHT.value());
+		MARKER_PARTICLE_ITEMS.add(CrystallineItems.SKY.value());
+		MARKER_PARTICLE_ITEMS.add(CrystallineItems.WEEPING_SKY.value());
 	}
 }

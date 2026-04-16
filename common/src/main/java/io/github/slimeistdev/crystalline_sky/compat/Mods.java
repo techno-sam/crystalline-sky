@@ -1,6 +1,6 @@
 package io.github.slimeistdev.crystalline_sky.compat;
 
-import net.fabricmc.loader.api.FabricLoader;
+import dev.architectury.injectables.annotations.ExpectPlatform;
 
 import java.util.Optional;
 import java.util.function.Supplier;
@@ -14,7 +14,12 @@ public enum Mods {
 
 	Mods(String id) {
 		this.id = id;
-		this.isLoaded = FabricLoader.getInstance().isModLoaded(id);
+		this.isLoaded = isModLoaded(id);
+	}
+
+	@ExpectPlatform
+	public static boolean isModLoaded(String id) {
+		throw new AssertionError();
 	}
 
 	/**

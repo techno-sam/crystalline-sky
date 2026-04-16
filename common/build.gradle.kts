@@ -14,7 +14,8 @@ dependencies {
 	modImplementation(libs.fl)
 
 	// required for proper remapping and compiling
-	//modCompileOnly(libs.fapi) // TODO: try removing this and seeing if that breaks stuff
+	modCompileOnly(libs.fapi)
+	compileOnly(libs.jsr305)
 
 	modCompileOnly(libs.sodium.fabric)
 

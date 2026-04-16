@@ -53,10 +53,8 @@ public class SkyShaderInterface implements ChunkShaderInterface {
 		Minecraft client = Minecraft.getInstance();
 		if (client.level != null
 			&& client.player != null
-			&& (client.player.getMainHandItem().is(CrystallineItems.SKY)
-			|| client.player.getOffhandItem().is(CrystallineItems.SKY)
-			|| client.player.getMainHandItem().is(CrystallineItems.WEEPING_SKY)
-			|| client.player.getOffhandItem().is(CrystallineItems.WEEPING_SKY))) {
+			&& (CrystallineItems.isSky(client.player.getMainHandItem())
+			|| CrystallineItems.isSky(client.player.getOffhandItem()))) {
 
 			float f = client.level.getGameTime() + client.getTimer().getGameTimeDeltaPartialTick(true);
 			float alpha = (Mth.sin(f / 10.0f) + 1.0f) / 2.0f;

@@ -39,10 +39,8 @@ public class LevelRenderer_NoSodium_Mixin {
 		if (renderLayer == CrystallineRenderTypes.SKY
 			&& instance.COLOR_MODULATOR != null
 			&& minecraft.player != null
-			&& (minecraft.player.getMainHandItem().is(CrystallineItems.SKY)
-			|| minecraft.player.getOffhandItem().is(CrystallineItems.SKY)
-			|| minecraft.player.getMainHandItem().is(CrystallineItems.WEEPING_SKY)
-			|| minecraft.player.getOffhandItem().is(CrystallineItems.WEEPING_SKY))) {
+			&& (CrystallineItems.isSky(minecraft.player.getMainHandItem())
+			|| CrystallineItems.isSky(minecraft.player.getOffhandItem()))) {
 
 			float f = ticks + minecraft.getTimer().getGameTimeDeltaPartialTick(true);
 			float alpha = (Mth.sin(f / 10.0f) + 1.0f) / 2.0f;

@@ -1,21 +1,18 @@
 package io.github.slimeistdev.crystalline_sky.registry.client;
 
 import com.mojang.blaze3d.systems.RenderSystem;
-import io.github.slimeistdev.crystalline_sky.mixin_ducks.client.RenderType_Duck;
+import com.mojang.blaze3d.vertex.DefaultVertexFormat;
+import com.mojang.blaze3d.vertex.VertexFormat;
 import io.github.slimeistdev.crystalline_sky.mixin_ducks.client.LevelRenderer_Duck;
+import io.github.slimeistdev.crystalline_sky.mixin_ducks.client.RenderType_Duck;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.RenderStateShard;
-import com.mojang.blaze3d.vertex.VertexFormat;
-import com.mojang.blaze3d.vertex.DefaultVertexFormat;
-
-import static net.minecraft.client.renderer.RenderType.create;
-import static net.minecraft.client.renderer.RenderStateShard.LIGHTMAP;
+import net.minecraft.client.renderer.RenderType;
 
 @Environment(EnvType.CLIENT)
-public class CrystallineRenderTypes {
+public abstract class CrystallineRenderTypes extends RenderType {
 	private static final RenderStateShard.EmptyTextureStateShard SKY_TEXTURE = new SkyBufferTexture();
 	private static final RenderStateShard.ShaderStateShard SKY_PROGRAM = new RenderStateShard.ShaderStateShard(CrystallineShaderInstances::getRenderTypeSkyProgram);
 
@@ -36,6 +33,10 @@ public class CrystallineRenderTypes {
 	static {
 		//noinspection DataFlowIssue
 		((RenderType_Duck) SKY).crystalline_sky$markAsBlockLayer();
+	}
+
+	private CrystallineRenderTypes(String name, VertexFormat format, VertexFormat.Mode mode, int bufferSize, boolean affectsCrumbling, boolean sortOnUpload, Runnable setupState, Runnable clearState) {
+		super(name, format, mode, bufferSize, affectsCrumbling, sortOnUpload, setupState, clearState);
 	}
 
 	private static class SkyBufferTexture extends RenderStateShard.EmptyTextureStateShard {

@@ -10,9 +10,9 @@ loom {
 			client()
 
 			name = "Minecraft Data"
-			vmArg("-Dfabric-api.data")
+			vmArg("-Dfabric-api.datagen")
 			vmArg("-Dfabric-api.datagen.output-dir=${common.file("src/generated/resources")}")
-			vmArg("-Dfabric-api.datagen.modid=${"slug"()}")
+			vmArg("-Dfabric-api.datagen.modid=${"modId"()}")
 
 			environmentVariable("DATAGEN", "TRUE")
 		}

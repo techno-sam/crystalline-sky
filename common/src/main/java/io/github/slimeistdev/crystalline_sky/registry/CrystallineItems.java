@@ -1,54 +1,54 @@
 package io.github.slimeistdev.crystalline_sky.registry;
 
+import io.github.slimeistdev.crystalline_sky.CrystallineSky;
 import io.github.slimeistdev.crystalline_sky.content.blocks.SkyLightBlock;
 import io.github.slimeistdev.crystalline_sky.content.items.WeepingSkyBlockItem;
-import net.fabricmc.fabric.api.itemgroup.v1.ItemGroupEvents;
-import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.LightBlock;
+import io.github.slimeistdev.crystalline_sky.foundation.registration.CatnipRegistry;
+import io.github.slimeistdev.crystalline_sky.foundation.registration.holder.ItemHolder;
+import io.github.slimeistdev.crystalline_sky.multiloader.ItemGroupRegistrationEvent;
 import net.minecraft.core.component.DataComponents;
-import net.minecraft.world.item.component.BlockItemStateProperties;
+import net.minecraft.core.registries.Registries;
+import net.minecraft.resources.ResourceKey;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.BlockItem;
-import net.minecraft.world.item.Item;
-import net.minecraft.world.item.CreativeModeTabs;
+import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.Rarity;
+import net.minecraft.world.item.component.BlockItemStateProperties;
+import net.minecraft.world.level.block.LightBlock;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.function.BiFunction;
 
 public class CrystallineItems {
-	public static final Item SKY = Items.registerBlock(
-		CrystallineBlocks.SKY,
-		settings -> settings.rarity(Rarity.EPIC)
-	);
+	private static final CatnipRegistry REGISTRY = CrystallineSky.registry();
 
-	public static final Item WEEPING_SKY = register(
-		CrystallineBlocks.WEEPING_SKY,
-		(block, settings) -> new WeepingSkyBlockItem(block, settings.rarity(Rarity.EPIC))
-	);
+	public static final ItemHolder<BlockItem> SKY = REGISTRY.item(CrystallineBlocks.SKY)
+		.properties(p -> p.rarity(Rarity.EPIC))
+		.register();
 
-	public static final Item SKY_LIGHT = Items.registerBlock(
-		CrystallineBlocks.SKY_LIGHT,
-		settings -> settings.rarity(Rarity.EPIC)
-			.component(DataComponents.BLOCK_STATE, BlockItemStateProperties.EMPTY.with(LightBlock.LEVEL, 15))
-	);
+	public static final ItemHolder<WeepingSkyBlockItem> WEEPING_SKY = REGISTRY.item(CrystallineBlocks.WEEPING_SKY, WeepingSkyBlockItem::new)
+		.properties(p -> p.rarity(Rarity.EPIC))
+		.register();
 
-	public static final Item WEEPING_SKY_LIGHT = Items.registerBlock(
-		CrystallineBlocks.WEEPING_SKY_LIGHT,
-		settings -> settings.rarity(Rarity.EPIC)
-	);
+	public static final ItemHolder<BlockItem> SKY_LIGHT = REGISTRY.item(CrystallineBlocks.SKY_LIGHT)
+		.properties(p -> p
+			.rarity(Rarity.EPIC)
+			.component(DataComponents.BLOCK_STATE, BlockItemStateProperties.EMPTY.with(LightBlock.LEVEL, 15)))
+		.register();
+
+	public static final ItemHolder<BlockItem> WEEPING_SKY_LIGHT = REGISTRY.item(CrystallineBlocks.WEEPING_SKY_LIGHT)
+		.properties(p -> p.rarity(Rarity.EPIC))
+		.register();
 
 	@SuppressWarnings("SameParameterValue")
-	private static Item register(Block block, BiFunction<Block, Item.Properties, BlockItem> factory) {
-		return Items.registerBlock(factory.apply(block, new Item.Properties()));
+	private static ResourceKey<CreativeModeTab> tabKey(String name) {
+		return ResourceKey.create(Registries.CREATIVE_MODE_TAB, ResourceLocation.withDefaultNamespace(name));
 	}
 
-	public static void init() {
-		ItemGroupEvents.modifyEntriesEvent(CreativeModeTabs.OP_BLOCKS).register(entries -> {
-			if (!entries.getContext().hasPermissions()) return;
-
+	public static void onItemGroupRegistration(ItemGroupRegistrationEvent event) {
+		if (event.getTab().equals(tabKey("op_blocks")) && event.hasPermissions()) {
 			List<ItemStack> stacks = new ArrayList<>();
 
 			stacks.add(new ItemStack(SKY));
@@ -60,7 +60,13 @@ public class CrystallineItems {
 
 			stacks.add(new ItemStack(WEEPING_SKY_LIGHT));
 
-			entries.addAfter(Items.LIGHT, stacks);
-		});
+			event.addAfter(Items.LIGHT, stacks);
+		}
+	}
+
+	public static void init() {}
+
+	public static boolean isSky(ItemStack stack) {
+		return SKY.is(stack) || WEEPING_SKY.is(stack);
 	}
 }

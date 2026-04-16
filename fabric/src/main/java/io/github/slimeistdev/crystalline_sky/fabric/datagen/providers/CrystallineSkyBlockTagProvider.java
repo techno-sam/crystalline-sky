@@ -1,13 +1,16 @@
 package io.github.slimeistdev.crystalline_sky.fabric.datagen.providers;
 
 import io.github.slimeistdev.crystalline_sky.CrystallineSky;
+import io.github.slimeistdev.crystalline_sky.foundation.registration.holder.BaseHolder;
 import io.github.slimeistdev.crystalline_sky.registry.CrystallineBlocks;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricTagProvider;
-import net.minecraft.core.registries.Registries;
+import net.minecraft.core.Holder;
 import net.minecraft.core.HolderLookup;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.tags.TagKey;
+import net.minecraft.world.level.block.Block;
 
 import java.util.concurrent.CompletableFuture;
 
@@ -18,14 +21,25 @@ public class CrystallineSkyBlockTagProvider extends FabricTagProvider.BlockTagPr
 
 	@Override
 	protected void addTags(HolderLookup.Provider wrapperLookup) {
-		getOrCreateTagBuilder(TagKey.create(Registries.BLOCK, CrystallineSky.id("sky_light_emitters")))
+		builder(TagKey.create(Registries.BLOCK, CrystallineSky.id("sky_light_emitters")))
 			.add(CrystallineBlocks.SKY)
 			.add(CrystallineBlocks.SKY_LIGHT)
 			.add(CrystallineBlocks.WEEPING_SKY)
 			.add(CrystallineBlocks.WEEPING_SKY_LIGHT);
 
-		getOrCreateTagBuilder(BlockTags.CRYSTAL_SOUND_BLOCKS)
+		builder(BlockTags.CRYSTAL_SOUND_BLOCKS)
 			.add(CrystallineBlocks.SKY)
 			.add(CrystallineBlocks.WEEPING_SKY);
+	}
+
+	private TagBuilder<Block> builder(TagKey<Block> tag) {
+		return new TagBuilder<>(getOrCreateTagBuilder(tag));
+	}
+
+	private record TagBuilder<T>(FabricTagProvider<T>.FabricTagBuilder wrapped) {
+		public <R extends T> TagBuilder<T> add(Holder<R> object) {
+			BaseHolder.<T>downcast(object).unwrap().map(wrapped::add, wrapped::add);
+			return this;
+		}
 	}
 }

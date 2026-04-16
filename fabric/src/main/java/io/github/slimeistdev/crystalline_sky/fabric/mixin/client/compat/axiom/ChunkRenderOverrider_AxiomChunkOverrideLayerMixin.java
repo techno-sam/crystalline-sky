@@ -1,4 +1,4 @@
-package io.github.slimeistdev.crystalline_sky.mixin.client.compat.axiom;
+package io.github.slimeistdev.crystalline_sky.fabric.mixin.client.compat.axiom;
 
 import com.moulberry.axiom.render.ChunkRenderOverrider;
 import io.github.slimeistdev.crystalline_sky.annotation.mixin.ConditionalMixin;

@@ -1,0 +1,107 @@
+/*
+ * Steam 'n' Rails
+ * Copyright (c) 2022-2026 The Railways Team
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Lesser General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with this program. If not, see <https://www.gnu.org/licenses/>.
+ */
+
+package io.github.slimeistdev.crystalline_sky.util;
+
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.MutableComponent;
+import net.minecraft.network.chat.Style;
+import org.apache.commons.lang3.StringUtils;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
+
+import java.util.Locale;
+import java.util.Optional;
+import java.util.stream.Stream;
+
+public class TextUtils {
+    public static String snakeCaseToTitleCase(String inputString) {
+        return titleCaseConversion(inputString.replace("_", " "));
+    }
+
+    public static String titleCaseConversion(String inputString) {
+        if (StringUtils.isBlank(inputString)) {
+            return "";
+        }
+
+        if (StringUtils.length(inputString) == 1) {
+            return inputString.toUpperCase(Locale.ROOT);
+        }
+
+        StringBuffer resultPlaceHolder = new StringBuffer(inputString.length());
+
+        Stream.of(inputString.split(" ")).forEach(stringPart -> {
+            if (stringPart.length() > 1)
+                resultPlaceHolder.append(stringPart.substring(0, 1)
+                        .toUpperCase(Locale.ROOT))
+                    .append(stringPart.substring(1)
+                        .toLowerCase(Locale.ROOT));
+            else
+                resultPlaceHolder.append(stringPart.toUpperCase(Locale.ROOT));
+
+            resultPlaceHolder.append(" ");
+        });
+        return StringUtils.trim(resultPlaceHolder.toString());
+    }
+
+    public static Component translateWithFormatting(String key, Object... args) {
+        MutableComponent base = Component.translatable(key, args);
+        StringBuilder partsStringBuilder = new StringBuilder();
+        base.visit((style, part) -> {
+            partsStringBuilder.append(part);
+            return Optional.empty();
+        }, Style.EMPTY);
+        return Component.literal(partsStringBuilder.toString());
+    }
+
+    public static String joinSpace(@Nullable String... strings) {
+        return join(" ", strings);
+    }
+
+    public static String joinUnderscore(@Nullable String... strings) {
+        return join("_", strings);
+    }
+
+    public static String join(final String separator, final @Nullable String... strings) {
+        String[] filtered = Stream.of(strings).filter(s -> s != null && !s.isEmpty()).toArray(String[]::new);
+        StringBuilder out = new StringBuilder();
+        for (int i = 0; i < filtered.length; i++) {
+            out.append(filtered[i]);
+            if (i < filtered.length - 1) out.append(separator);
+        }
+        return out.toString();
+    }
+
+    public static String stripPrefix(String string, String prefix) {
+        if (string.startsWith(prefix)) {
+            return string.substring(prefix.length());
+        }
+        return string;
+    }
+
+    public static String ensureEndsWith(String string, String suffix) {
+        if (!string.endsWith(suffix)) {
+            return string + suffix;
+        }
+        return string;
+    }
+
+    public static String prefixToFolder(String name, @NotNull String prefix) {
+        return prefix + "/" + stripPrefix(name, ensureEndsWith(prefix, "_"));
+    }
+}

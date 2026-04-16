@@ -32,12 +32,12 @@ public class CrystallineSkyModelProvider extends FabricModelProvider {
 
 	@Override
 	public void generateBlockStateModels(BlockModelGenerators gen) {
-		registerSkyBlock(gen, CrystallineBlocks.SKY);
-		registerSkyBlock(gen, CrystallineBlocks.WEEPING_SKY);
-		registerSkyLightBlock(gen, CrystallineBlocks.SKY_LIGHT, CrystallineItems.SKY_LIGHT);
+		registerSkyBlock(gen, CrystallineBlocks.SKY.value());
+		registerSkyBlock(gen, CrystallineBlocks.WEEPING_SKY.value());
+		registerSkyLightBlock(gen, CrystallineBlocks.SKY_LIGHT.value(), CrystallineItems.SKY_LIGHT.value());
 
-		gen.createAirLikeBlock(CrystallineBlocks.WEEPING_SKY_LIGHT, CrystallineItems.WEEPING_SKY_LIGHT);
-		gen.createSimpleFlatItemModel(CrystallineItems.WEEPING_SKY_LIGHT);
+		gen.createAirLikeBlock(CrystallineBlocks.WEEPING_SKY_LIGHT.value(), CrystallineItems.WEEPING_SKY_LIGHT.value());
+		gen.createSimpleFlatItemModel(CrystallineItems.WEEPING_SKY_LIGHT.value());
 	}
 
 	private void registerSkyBlock(BlockModelGenerators gen, Block block) {

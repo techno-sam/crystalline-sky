@@ -1,76 +1,63 @@
 package io.github.slimeistdev.crystalline_sky.registry;
 
 import io.github.slimeistdev.crystalline_sky.CrystallineSky;
+import io.github.slimeistdev.crystalline_sky.content.blocks.SkyBlock;
 import io.github.slimeistdev.crystalline_sky.content.blocks.SkyLightBlock;
 import io.github.slimeistdev.crystalline_sky.content.blocks.WeepingSkyLightBlock;
-import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.Blocks;
+import io.github.slimeistdev.crystalline_sky.foundation.registration.CatnipRegistry;
+import io.github.slimeistdev.crystalline_sky.foundation.registration.holder.BlockHolder;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.block.LightBlock;
-import net.minecraft.world.level.block.TransparentBlock;
-import net.minecraft.world.level.block.state.BlockBehaviour;
-import net.minecraft.world.level.block.state.BlockBehaviour.Properties;
-import net.minecraft.core.registries.BuiltInRegistries;
-import net.minecraft.core.Registry;
-import net.minecraft.resources.ResourceKey;
-import net.minecraft.core.registries.Registries;
 import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.material.MapColor;
 
-import java.util.function.Function;
-
 @SuppressWarnings("SameParameterValue")
 public class CrystallineBlocks {
-	public static final Block SKY = register("sky", TransparentBlock::new, Properties.of()
-		.strength(0.3f)
-		.sound(SoundType.AMETHYST)
-		.noOcclusion()
-		.isValidSpawn(Blocks::never)
-		.isRedstoneConductor(Blocks::never)
-		.isSuffocating(Blocks::never)
-		.isViewBlocking(Blocks::never)
-		.emissiveRendering(Blocks::always));
+	private static final CatnipRegistry REGISTRY = CrystallineSky.registry();
 
-	public static final Block WEEPING_SKY = register("weeping_sky", TransparentBlock::new, Properties.ofFullCopy(SKY));
+	public static final BlockHolder<SkyBlock> SKY = REGISTRY.block("sky", SkyBlock::new)
+		.properties(p -> p
+			.strength(0.3f)
+			.sound(SoundType.AMETHYST)
+			.noOcclusion()
+			.isValidSpawn(CrystallineBlocks::never)
+			.isRedstoneConductor(CrystallineBlocks::never)
+			.isSuffocating(CrystallineBlocks::never)
+			.isViewBlocking(CrystallineBlocks::never)
+			.emissiveRendering(CrystallineBlocks::always))
+		.register();
 
-	public static final Block SKY_LIGHT = register(
-		"sky_light",
-		SkyLightBlock::new,
-		BlockBehaviour.Properties.of()
+	public static final BlockHolder<SkyBlock> WEEPING_SKY = REGISTRY.block("weeping_sky", SkyBlock::new)
+		.initialProperties(SKY::value)
+		.register();
+
+	public static final BlockHolder<SkyLightBlock> SKY_LIGHT = REGISTRY.block("sky_light", SkyLightBlock::new)
+		.properties(p -> p
 			.replaceable()
 			.strength(-1.0F, 3600000.8F)
-			.mapColor(state -> state.getValue(BlockStateProperties.WATERLOGGED) ? MapColor.WATER : MapColor.NONE)
+			.mapColor(CrystallineBlocks::waterloggedColor)
 			.noLootTable()
-			.noOcclusion()
-	);
+			.noOcclusion())
+		.register();
 
-	public static final Block WEEPING_SKY_LIGHT = register(
-		"weeping_sky_light",
-		WeepingSkyLightBlock::new,
-		BlockBehaviour.Properties.of()
-			.replaceable()
-			.strength(-1.0F, 3600000.8F)
-			.mapColor(state -> state.getValue(BlockStateProperties.WATERLOGGED) ? MapColor.WATER : MapColor.NONE)
-			.noLootTable()
-			.noOcclusion()
-	);
+	public static final BlockHolder<WeepingSkyLightBlock> WEEPING_SKY_LIGHT = REGISTRY.block("weeping_sky_light", WeepingSkyLightBlock::new)
+		.initialProperties(SKY_LIGHT::value)
+		.register();
 
 	public static void init() {}
-
-	private static <T extends Block> T register(String id, Function<Properties, T> factory, Properties settings) {
-		ResourceKey<Block> key = CrystallineSky.key(Registries.BLOCK, id);
-		return Registry.register(BuiltInRegistries.BLOCK, key, factory.apply(settings));
-	}
 
 	public static boolean isCrystallineSky(BlockState state) {
 		return getSkyLightLevel(state) > 0;
 	}
 
 	public static int getSkyLightLevel(BlockState state) {
-		if (state.is(SKY_LIGHT)) {
+		if (SKY_LIGHT.is(state)) {
 			return state.getValue(LightBlock.LEVEL);
-		} else if (state.is(SKY)) { // weeping sky explicitly excluded, that's handled differently
+		} else if (SKY.is(state)) { // weeping sky explicitly excluded, that's handled differently
 			return 15;
 		}
 
@@ -78,6 +65,26 @@ public class CrystallineBlocks {
 	}
 
 	public static boolean isWeepingSky(BlockState state) {
-		return state.is(WEEPING_SKY) || state.is(WEEPING_SKY_LIGHT);
+		return WEEPING_SKY.is(state) || WEEPING_SKY_LIGHT.is(state);
+	}
+
+	private static Boolean never(BlockState state, BlockGetter blockGetter, BlockPos pos, EntityType<?> entity) {
+		return false;
+	}
+
+	private static Boolean always(BlockState state, BlockGetter blockGetter, BlockPos pos, EntityType<?> entity) {
+		return true;
+	}
+
+	private static boolean always(BlockState state, BlockGetter blockGetter, BlockPos pos) {
+		return true;
+	}
+
+	private static boolean never(BlockState state, BlockGetter blockGetter, BlockPos pos) {
+		return false;
+	}
+
+	private static MapColor waterloggedColor(BlockState state) {
+		return state.getValue(BlockStateProperties.WATERLOGGED) ? MapColor.WATER : MapColor.NONE;
 	}
 }

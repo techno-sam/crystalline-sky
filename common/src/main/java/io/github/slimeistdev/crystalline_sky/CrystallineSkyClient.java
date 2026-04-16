@@ -31,7 +31,7 @@ public class CrystallineSkyClient {
 
 	public static void init() {
 		ClientPlatformHelper.registerItemProperty(
-			CrystallineItems.SKY_LIGHT,
+			CrystallineItems.SKY_LIGHT.value(),
 			ResourceLocation.withDefaultNamespace("level"),
 			(stack, world, entity, seed) -> {
 				BlockItemStateProperties state = stack.getOrDefault(DataComponents.BLOCK_STATE, BlockItemStateProperties.EMPTY);
