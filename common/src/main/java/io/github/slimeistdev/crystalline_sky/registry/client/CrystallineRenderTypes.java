@@ -48,4 +48,6 @@ public abstract class CrystallineRenderTypes extends RenderType {
 			}, () -> {});
 		}
 	}
+
+	public static void init() {}
 }

@@ -1,6 +1,6 @@
 package io.github.slimeistdev.crystalline_sky.foundation.registration;
 
-import com.google.common.collect.HashMultimap;
+import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.Multimap;
 import com.google.common.collect.Multimaps;
 import io.github.slimeistdev.crystalline_sky.foundation.registration.builder.BlockBuilder;
@@ -21,7 +21,7 @@ import java.util.function.Function;
 public class CatnipRegistry {
 	public final String modId;
 
-	private static final Multimap<Registry<?>, Registration<?, ?, ?>> REGISTRATIONS = HashMultimap.create();
+	private static final Multimap<Registry<?>, Registration<?, ?, ?>> REGISTRATIONS = ArrayListMultimap.create();
 	public static final Multimap<Registry<?>, Registration<?, ?, ?>> REGISTRATIONS_VIEW = Multimaps.unmodifiableMultimap(REGISTRATIONS);
 
 	public CatnipRegistry(String modId) {

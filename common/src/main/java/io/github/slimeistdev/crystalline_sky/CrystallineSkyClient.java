@@ -30,15 +30,17 @@ public class CrystallineSkyClient {
 	);
 
 	public static void init() {
-		ClientPlatformHelper.registerItemProperty(
-			CrystallineItems.SKY_LIGHT.value(),
-			ResourceLocation.withDefaultNamespace("level"),
-			(stack, world, entity, seed) -> {
-				BlockItemStateProperties state = stack.getOrDefault(DataComponents.BLOCK_STATE, BlockItemStateProperties.EMPTY);
-				Integer level = state.get(LightBlock.LEVEL);
-				return level != null ? level / 16.0F : 1.0F;
-			}
-		);
+		CrystallineItems.SKY_LIGHT.onRegistered(i -> {
+			ClientPlatformHelper.registerItemProperty(
+				i,
+				ResourceLocation.withDefaultNamespace("level"),
+				(stack, world, entity, seed) -> {
+					BlockItemStateProperties state = stack.getOrDefault(DataComponents.BLOCK_STATE, BlockItemStateProperties.EMPTY);
+					Integer level = state.get(LightBlock.LEVEL);
+					return level != null ? level / 16.0F : 1.0F;
+				}
+			);
+		});
 	}
 
 	public static void registerKeybindings(Consumer<KeyMapping> registrar) {

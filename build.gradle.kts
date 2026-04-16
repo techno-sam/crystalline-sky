@@ -71,8 +71,13 @@ subprojects {
 
 	setupRepositories()
 
-	val capitalizedName =
-		project.name.replaceFirstChar { it.uppercase() }
+	val capitalizedName = {
+		if (project.name == "neoforge") {
+			"NeoForge"
+		} else {
+			project.name.replaceFirstChar { it.titlecase() }
+		}
+	}();
 
 	val loom = project.extensions.getByType<LoomGradleExtensionAPI>()
 	loom.apply {

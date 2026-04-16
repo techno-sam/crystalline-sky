@@ -2,11 +2,11 @@ package io.github.slimeistdev.crystalline_sky.neoforge;
 
 import io.github.slimeistdev.crystalline_sky.CrystallineSky;
 import io.github.slimeistdev.crystalline_sky.CrystallineSkyClient;
+import io.github.slimeistdev.crystalline_sky.multiloader.neoforge.ItemGroupRegistrationEventImpl;
+import io.github.slimeistdev.crystalline_sky.registry.CrystallineItems;
 import io.github.slimeistdev.crystalline_sky.registry.client.CrystallineRenderTypes;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.RenderType;
-import net.minecraft.world.item.CreativeModeTab;
-import net.minecraft.world.item.CreativeModeTabs;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
@@ -39,6 +39,6 @@ public class CrystallineSkyClientImpl {
 
 	@SubscribeEvent
 	public static void buildCreativeModeTabContents(BuildCreativeModeTabContentsEvent event) {
-		event.insertAfter();
+		CrystallineItems.onItemGroupRegistration(new ItemGroupRegistrationEventImpl(event));
 	}
 }
