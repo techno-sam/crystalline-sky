@@ -1,5 +1,6 @@
 {
   "parent": "minecraft:block/cube_all",
+  "render_type": "crystalline_sky:sky",
   "textures": {
     "all": "crystalline_sky:block/weeping_sky"
   }
