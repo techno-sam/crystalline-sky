@@ -22,9 +22,9 @@ dependencies {
 	neoForge(libs.nf)
 
 	modCompileOnly(libs.sodium.neoforge)
-	if (!inCI && "enable_sodium"().toBoolean()) {
+	/*if (!inCI && "enable_sodium"().toBoolean()) { // this doesn't work, because of jar-in-jar
 		modLocalRuntime(libs.sodium.neoforge)
-	}
+	}*/
 
 	compileOnly(annotationProcessor(libs.mixinextras.common.get())!!)!!
 	implementation(include(libs.mixinextras.neoforge.get())!!)!!
