@@ -30,10 +30,23 @@ public class DefaultMaterialsMixin {
 		false
 	);
 
+	@Unique
+	@SuppressWarnings("OptionalGetWithoutIsPresent")
+	private static final Material crystalline_sky$SKYBOX = new Material(
+		Arrays.stream(DefaultTerrainRenderPasses.ALL)
+			.filter(pass -> ((TerrainRenderPassAccessor) pass).crystalline_sky$getRenderLayer() == CrystallineRenderTypes.SKYBOX)
+			.findFirst()
+			.get(),
+		AlphaCutoffParameter.ZERO,
+		false
+	);
+
 	@Inject(method = "forRenderLayer", at = @At(value = "NEW", target = "(Ljava/lang/String;)Ljava/lang/IllegalArgumentException;"), cancellable = true)
 	private static void addCrystallineSkyMaterial(RenderType layer, CallbackInfoReturnable<Material> cir) {
 		if (layer == CrystallineRenderTypes.SKY) {
 			cir.setReturnValue(crystalline_sky$SKY);
+		} else if (layer == CrystallineRenderTypes.SKYBOX) {
+			cir.setReturnValue(crystalline_sky$SKYBOX);
 		}
 	}
 }

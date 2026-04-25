@@ -10,6 +10,7 @@
   "mixins": [
   ],
   "client": [
+    "client.ModelManagerMixin",
     "client.RenderTypeMixin",
     "client.compat.axiom.ChunkRenderOverrider_AxiomChunkOverrideLayerMixin"
   ],

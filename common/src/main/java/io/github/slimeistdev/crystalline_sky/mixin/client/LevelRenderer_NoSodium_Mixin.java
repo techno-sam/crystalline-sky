@@ -36,7 +36,7 @@ public class LevelRenderer_NoSodium_Mixin {
 							   RenderType renderLayer) {
 		original.call(instance, drawMode, viewMatrix, projectionMatrix, window);
 
-		if (renderLayer == CrystallineRenderTypes.SKY
+		if ((renderLayer == CrystallineRenderTypes.SKY || renderLayer == CrystallineRenderTypes.SKYBOX)
 			&& instance.COLOR_MODULATOR != null
 			&& minecraft.player != null
 			&& (CrystallineItems.isSky(minecraft.player.getMainHandItem())

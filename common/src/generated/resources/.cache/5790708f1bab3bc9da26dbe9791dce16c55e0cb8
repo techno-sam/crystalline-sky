@@ -1,4 +1,4 @@
-// 1.21.1	2026-04-16T11:05:11.823836864	Crystalline Sky/Model Definitions
+// 1.21.1	2026-04-25T02:02:19.160711408	Crystalline Sky/Model Definitions
 e832366c216102270b75085db7a7169881b853b3 assets/crystalline_sky/blockstates/sky.json
 0ac5351c3a01e0f9e76517452918e12770b3b54b assets/crystalline_sky/models/block/sky_light_14.json
 ee9cb7604922cdb2ad71d021a593ca82f0baf493 assets/crystalline_sky/models/block/sky_light_03.json
@@ -12,6 +12,8 @@ ef9e5aca345b59cb4692a7bcfaac539aed6f6889 assets/crystalline_sky/models/block/sky
 2ce612b8445da92c6cecd07bd5364a25bcfb127f assets/crystalline_sky/models/block/sky_light_05.json
 ef5afdbcc8401a27029b6f0a29fa1117761c620d assets/crystalline_sky/models/item/sky_light.json
 59463cef438e58b137e5ce27402acf42a3a0ae87 assets/crystalline_sky/models/block/sky_light_02.json
+2763952a1919802e34f0976b023fc7b486456b91 assets/crystalline_sky/models/item/skybox_test.json
+9f63a1dc282986e15f9b22bee0ab0a2eaf4f994d assets/crystalline_sky/models/block/skybox_test.json
 c0d693e4f78ce15c238909130382909abda4c922 assets/crystalline_sky/models/block/sky_light_08.json
 008a0d0a76a34d8f375fa355452a5d0f93f9af3b assets/crystalline_sky/models/item/sky.json
 508ffb97ee711b53767b9d33659596197f69ee20 assets/crystalline_sky/models/block/weeping_sky_light.json
@@ -31,14 +33,15 @@ fceb0c59b7f6d431200764ccf87596541bacb17f assets/crystalline_sky/models/block/sky
 e2c7bebd9eca446bb06fff866ec4d4996917e7e4 assets/crystalline_sky/models/block/sky_light_12.json
 04f1e4eba184b8e7b1669fc61006e3d00e09d164 assets/crystalline_sky/models/item/sky_light_11.json
 58349dc5dedb8016fb0bc958fcd4a9ccde13a1cd assets/crystalline_sky/models/item/sky_light_14.json
-03e2eb768bc34fbeaabffbff8ed3a2a3044a6db1 assets/crystalline_sky/blockstates/weeping_sky.json
 51fa40ff02afcec303e7a18478cbae5375dfb140 assets/crystalline_sky/models/item/sky_light_04.json
+03e2eb768bc34fbeaabffbff8ed3a2a3044a6db1 assets/crystalline_sky/blockstates/weeping_sky.json
 7c7d944714b5bcbee6a7e8014599ade8fbc5e804 assets/crystalline_sky/models/block/weeping_sky.json
 dff33a68a694de0f3ef177886c002204ffe49a8c assets/crystalline_sky/models/item/sky_light_07.json
 b29c14f77a08da7a6994cff4c6801d6f04b12ec0 assets/crystalline_sky/models/item/sky_light_03.json
 a87d8988452529a1f5af5662ad636223fdd98fec assets/crystalline_sky/models/block/sky_light_15.json
 be0be7e1d7ce1ccabed01ef09c6499a2a7f2b132 assets/crystalline_sky/models/item/weeping_sky_light.json
 d500e56057c0c2f3c948894694e2826f1726fd9e assets/crystalline_sky/models/item/sky_light_15.json
+662d2389357e6f00a3a59042d08aec47df9c2c10 assets/crystalline_sky/blockstates/skybox_test.json
 9f0d9fe5dfb05bbe18177db5c40e600c5b256858 assets/crystalline_sky/models/item/sky_light_00.json
 3183aeb9fff78d0c65f1ddd0dfb599420573e281 assets/crystalline_sky/models/block/sky_light_00.json
 04fb705807dd052f00ff861343ebe6fe0a78ca41 assets/crystalline_sky/models/block/sky.json

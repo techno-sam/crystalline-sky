@@ -22,8 +22,8 @@ public class SodiumWorldRendererMixin {
 
 	@Inject(method = "drawChunkLayer", at = @At("RETURN"))
 	private void drawCrystallineLayer(RenderType renderLayer, ChunkRenderMatrices matrices, double x, double y, double z, CallbackInfo ci) {
-		if (renderLayer != CrystallineRenderTypes.SKY) return;
+		if (renderLayer != CrystallineRenderTypes.SKY && renderLayer != CrystallineRenderTypes.SKYBOX) return;
 
-		renderSectionManager.renderLayer(matrices, DefaultMaterials.forRenderLayer(CrystallineRenderTypes.SKY).pass, x, y, z);
+		renderSectionManager.renderLayer(matrices, DefaultMaterials.forRenderLayer(renderLayer).pass, x, y, z);
 	}
 }

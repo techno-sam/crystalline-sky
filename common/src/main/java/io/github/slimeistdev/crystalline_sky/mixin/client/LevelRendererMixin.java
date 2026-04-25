@@ -134,5 +134,6 @@ public abstract class LevelRendererMixin implements LevelRenderer_Duck {
 									  Matrix4f matrix4f, Matrix4f positionMatrix, Operation<Void> original) {
 		original.call(instance, renderLayer, x, y, z, matrix4f, positionMatrix);
 		renderSectionLayer(CrystallineRenderTypes.SKY, x, y, z, matrix4f, positionMatrix);
+		renderSectionLayer(CrystallineRenderTypes.SKYBOX, x, y, z, matrix4f, positionMatrix);
 	}
 }

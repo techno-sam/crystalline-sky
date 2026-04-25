@@ -8,7 +8,14 @@ public class CrystallineShaderInstances {
 	@ApiStatus.Internal
 	public static @Nullable ShaderInstance renderTypeSkyProgram;
 
+	@ApiStatus.Internal
+	public static @Nullable ShaderInstance renderTypeSkyboxProgram;
+
 	public static @Nullable ShaderInstance getRenderTypeSkyProgram() {
 		return renderTypeSkyProgram;
+	}
+
+	public static @Nullable ShaderInstance getRenderTypeSkyboxProgram() {
+		return renderTypeSkyboxProgram;
 	}
 }

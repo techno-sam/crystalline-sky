@@ -4,6 +4,7 @@ import io.github.slimeistdev.crystalline_sky.CrystallineSky;
 import io.github.slimeistdev.crystalline_sky.CrystallineSkyClient;
 import io.github.slimeistdev.crystalline_sky.multiloader.neoforge.ItemGroupRegistrationEventImpl;
 import io.github.slimeistdev.crystalline_sky.registry.CrystallineItems;
+import io.github.slimeistdev.crystalline_sky.registry.client.CrystallineAtlases;
 import io.github.slimeistdev.crystalline_sky.registry.client.CrystallineRenderTypes;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.RenderType;
@@ -12,6 +13,7 @@ import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.client.event.ClientTickEvent;
 import net.neoforged.neoforge.client.event.RegisterKeyMappingsEvent;
+import net.neoforged.neoforge.client.event.RegisterMaterialAtlasesEvent;
 import net.neoforged.neoforge.client.event.RegisterNamedRenderTypesEvent;
 import net.neoforged.neoforge.event.BuildCreativeModeTabContentsEvent;
 
@@ -25,6 +27,7 @@ public class CrystallineSkyClientImpl {
 	public static void registerNamedRenderTypes(RegisterNamedRenderTypesEvent event) {
 		// NOTE: entity render type is just a placeholder, sky rendering isn't supported for entities
 		event.register(CrystallineSky.id("sky"), CrystallineRenderTypes.SKY, RenderType.entitySolid(CrystallineSky.id("sky")));
+		event.register(CrystallineSky.id("skybox"), CrystallineRenderTypes.SKYBOX, RenderType.entitySolid(CrystallineSky.id("skybox")));
 	}
 
 	@SubscribeEvent
@@ -40,5 +43,10 @@ public class CrystallineSkyClientImpl {
 	@SubscribeEvent
 	public static void buildCreativeModeTabContents(BuildCreativeModeTabContentsEvent event) {
 		CrystallineItems.onItemGroupRegistration(new ItemGroupRegistrationEventImpl(event));
+	}
+
+	@SubscribeEvent
+	public static void registerAtlases(RegisterMaterialAtlasesEvent event) {
+		CrystallineAtlases.register(event::register);
 	}
 }

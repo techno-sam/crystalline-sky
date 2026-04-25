@@ -23,9 +23,10 @@ public class DefaultTerrainRenderPassesMixin {
 
 	@Inject(method = "<clinit>", at = @At("RETURN"))
 	private static void addCrystallineSkyPass(CallbackInfo ci) {
-		var ALL$ = new TerrainRenderPass[ALL.length + 1];
+		var ALL$ = new TerrainRenderPass[ALL.length + 2];
 		System.arraycopy(ALL, 0, ALL$, 0, ALL.length);
 		ALL$[ALL.length] = new TerrainRenderPass(CrystallineRenderTypes.SKY, false, true);
+		ALL$[ALL.length + 1] = new TerrainRenderPass(CrystallineRenderTypes.SKYBOX, false, true);
 		ALL = ALL$;
 	}
 }

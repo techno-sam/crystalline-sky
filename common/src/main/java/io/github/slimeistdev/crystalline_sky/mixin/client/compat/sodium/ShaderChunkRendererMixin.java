@@ -25,6 +25,8 @@ public class ShaderChunkRendererMixin {
 	private GlProgram<ChunkShaderInterface> createSkyShader(ShaderChunkRenderer instance, String path, ChunkShaderOptions options, Operation<GlProgram<ChunkShaderInterface>> original) {
 		if (options.pass() == DefaultMaterials.forRenderLayer(CrystallineRenderTypes.SKY).pass) {
 			return original.call(instance, "sodium_compat/block_layer_sky", options);
+		} else if (options.pass() == DefaultMaterials.forRenderLayer(CrystallineRenderTypes.SKYBOX).pass) {
+			return original.call(instance, "sodium_compat/block_layer_skybox", options);
 		}
 
 		return original.call(instance, path, options);
@@ -32,7 +34,7 @@ public class ShaderChunkRendererMixin {
 
 	@WrapOperation(method = "createShader", at = @At(value = "INVOKE", target = "Lnet/minecraft/resources/ResourceLocation;fromNamespaceAndPath(Ljava/lang/String;Ljava/lang/String;)Lnet/minecraft/resources/ResourceLocation;"))
 	private ResourceLocation redirectShaderNamespace(String namespace, String path, Operation<ResourceLocation> original, String pathArg) {
-		if (pathArg.equals("sodium_compat/block_layer_sky")) {
+		if (pathArg.equals("sodium_compat/block_layer_sky") || pathArg.equals("sodium_compat/block_layer_skybox")) {
 			namespace = "crystalline_sky";
 		}
 
@@ -41,7 +43,7 @@ public class ShaderChunkRendererMixin {
 
 	@WrapOperation(method = "createShader", at = @At(value = "INVOKE", target = "Lnet/caffeinemc/mods/sodium/client/gl/shader/GlProgram$Builder;link(Ljava/util/function/Function;)Lnet/caffeinemc/mods/sodium/client/gl/shader/GlProgram;"), remap = false)
 	private static GlProgram<ChunkShaderInterface> useSkyShaderInterface(GlProgram.Builder instance, Function<ShaderBindingContext, ChunkShaderInterface> factory, Operation<GlProgram<ChunkShaderInterface>> original, String argPath, ChunkShaderOptions argOptions) {
-		if (argPath.equals("sodium_compat/block_layer_sky")) {
+		if (argPath.equals("sodium_compat/block_layer_sky") || argPath.equals("sodium_compat/block_layer_skybox")) {
 			factory = (shader) -> new SkyShaderInterface(shader, argOptions);
 		}
 

@@ -5,8 +5,10 @@ import com.google.gson.JsonObject;
 import io.github.slimeistdev.crystalline_sky.CrystallineSky;
 import io.github.slimeistdev.crystalline_sky.registry.CrystallineBlocks;
 import io.github.slimeistdev.crystalline_sky.registry.CrystallineItems;
+import io.github.slimeistdev.crystalline_sky.registry.client.CrystallineAtlases;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricModelProvider;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.data.models.BlockModelGenerators;
 import net.minecraft.data.models.ItemModelGenerators;
 import net.minecraft.data.models.blockstates.MultiVariantGenerator;
@@ -24,8 +26,20 @@ import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 
 import java.util.Locale;
 
+import static net.minecraft.data.models.model.TexturedModel.createDefault;
+
 @SuppressWarnings("SameParameterValue")
 public class CrystallineSkyModelProvider extends FabricModelProvider {
+	private static ResourceLocation getSkyboxBlockTexture(Block block) {
+		ResourceLocation resourceLocation = BuiltInRegistries.BLOCK.getKey(block);
+		return resourceLocation.withPrefix("crystalline_sky_skybox/");
+	}
+
+	private static final TexturedModel.Provider SKYBOX_CUBE = createDefault(
+		block -> TextureMapping.cube(getSkyboxBlockTexture(block)),
+		ModelTemplates.CUBE_ALL
+	);
+
 	public CrystallineSkyModelProvider(FabricDataOutput output) {
 		super(output);
 	}
@@ -38,6 +52,8 @@ public class CrystallineSkyModelProvider extends FabricModelProvider {
 
 		gen.createAirLikeBlock(CrystallineBlocks.WEEPING_SKY_LIGHT.value(), CrystallineItems.WEEPING_SKY_LIGHT.value());
 		gen.createSimpleFlatItemModel(CrystallineItems.WEEPING_SKY_LIGHT.value());
+
+		registerSkyboxBlock(gen, CrystallineBlocks.SKYBOX_TEST.value());
 	}
 
 	private void registerSkyBlock(BlockModelGenerators gen, Block block) {
@@ -47,6 +63,21 @@ public class CrystallineSkyModelProvider extends FabricModelProvider {
 				gen.modelOutput.accept(id, () -> {
 					JsonObject root = json.get().getAsJsonObject();
 					root.addProperty("render_type", CrystallineSky.id("sky").toString());
+					return root;
+				});
+			}
+		)));
+		gen.createSimpleFlatItemModel(block);
+	}
+
+	private void registerSkyboxBlock(BlockModelGenerators gen, Block block) {
+		gen.blockStateOutput.accept(BlockModelGenerators.createSimpleBlock(block, SKYBOX_CUBE.create(
+			block,
+			(id, json) -> {
+				gen.modelOutput.accept(id, () -> {
+					JsonObject root = json.get().getAsJsonObject();
+					root.addProperty("render_type", CrystallineSky.id("skybox").toString());
+					root.addProperty(CrystallineSky.id("atlas").toString(), CrystallineAtlases.SKYBOXES.texture.toString());
 					return root;
 				});
 			}

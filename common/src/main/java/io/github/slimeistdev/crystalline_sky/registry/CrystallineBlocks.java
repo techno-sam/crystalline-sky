@@ -48,6 +48,10 @@ public class CrystallineBlocks {
 		.initialProperties(SKY_LIGHT::value)
 		.register();
 
+	public static final BlockHolder<SkyBlock> SKYBOX_TEST = REGISTRY.block("skybox_test", SkyBlock::new)
+		.initialProperties(SKY::value)
+		.register();
+
 	public static void init() {}
 
 	public static boolean isCrystallineSky(BlockState state) {

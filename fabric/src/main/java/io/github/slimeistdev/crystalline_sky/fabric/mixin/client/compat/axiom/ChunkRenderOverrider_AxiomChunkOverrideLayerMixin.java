@@ -15,7 +15,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 public class ChunkRenderOverrider_AxiomChunkOverrideLayerMixin {
 	@Inject(method = "fromVanilla", at = @At("HEAD"), cancellable = true)
 	private static void unexplodeSky(RenderType layer, CallbackInfoReturnable<ChunkRenderOverrider.AxiomChunkOverrideLayer> cir) {
-		if (layer == CrystallineRenderTypes.SKY) {
+		if (layer == CrystallineRenderTypes.SKY || layer == CrystallineRenderTypes.SKYBOX) {
 			cir.setReturnValue(ChunkRenderOverrider.AxiomChunkOverrideLayer.CUTOUT_MIPPED);
 		}
 	}

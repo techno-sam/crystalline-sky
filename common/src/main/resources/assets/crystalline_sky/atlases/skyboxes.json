@@ -1,0 +1,9 @@
+{
+  "sources": [
+    {
+      "type": "directory",
+      "source": "crystalline_sky_skybox",
+      "prefix": "crystalline_sky_skybox/"
+    }
+  ]
+}

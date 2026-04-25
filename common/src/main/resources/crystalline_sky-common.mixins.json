@@ -16,6 +16,7 @@
     "SkyLightSectionStorageAccessor"
   ],
   "client": [
+    "client.BlockModelDeserializerMixin",
     "client.ClientLevelMixin",
     "client.DebugRendererMixin",
     "client.GameRendererMixin",
