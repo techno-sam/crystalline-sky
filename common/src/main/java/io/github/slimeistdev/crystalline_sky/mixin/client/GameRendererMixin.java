@@ -7,16 +7,13 @@ import com.mojang.datafixers.util.Pair;
 import io.github.slimeistdev.crystalline_sky.registry.client.CrystallineShaderInstances;
 import net.minecraft.client.Camera;
 import net.minecraft.client.DeltaTracker;
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.client.renderer.LevelRenderer;
 import net.minecraft.client.renderer.LightTexture;
 import net.minecraft.client.renderer.ShaderInstance;
 import net.minecraft.server.packs.resources.ResourceProvider;
 import org.joml.Matrix4f;
-import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 
@@ -28,13 +25,6 @@ import static io.github.slimeistdev.crystalline_sky.util.SharedRenderVariables.i
 
 @Mixin(GameRenderer.class)
 public abstract class GameRendererMixin {
-	@Shadow
-	@Final
-	Minecraft minecraft;
-
-	@Shadow
-	public abstract float getDepthFar();
-
 	@Unique
 	private static final Matrix4f crystalline_sky$scratch = new Matrix4f();
 
@@ -56,18 +46,6 @@ public abstract class GameRendererMixin {
 			DefaultVertexFormat.BLOCK
 		), (Consumer<ShaderInstance>) program -> CrystallineShaderInstances.renderTypeSkyboxProgram = program));
 		return original.call(instance, e);
-	}
-
-	@WrapOperation(method = "renderLevel", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/renderer/GameRenderer;getProjectionMatrix(D)Lorg/joml/Matrix4f;"))
-	private Matrix4f storeInverseProjectionMatrix(GameRenderer instance, double fov, Operation<Matrix4f> original) {
-		invSkyboxMat.setPerspective(
-			(float)(fov * (float) (Math.PI / 180.0)),
-			(float)this.minecraft.getWindow().getWidth() / this.minecraft.getWindow().getHeight(),
-			0.05F,
-			this.getDepthFar()
-		).invert();
-		// TODO: do we need inv view multiplied in here?
-		return original.call(instance, fov);
 	}
 
 	@WrapOperation(method = "renderLevel", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/renderer/LevelRenderer;renderLevel(Lnet/minecraft/client/DeltaTracker;ZLnet/minecraft/client/Camera;Lnet/minecraft/client/renderer/GameRenderer;Lnet/minecraft/client/renderer/LightTexture;Lorg/joml/Matrix4f;Lorg/joml/Matrix4f;)V"))
