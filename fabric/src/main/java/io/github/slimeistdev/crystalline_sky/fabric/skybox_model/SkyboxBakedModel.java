@@ -1,5 +1,6 @@
 package io.github.slimeistdev.crystalline_sky.fabric.skybox_model;
 
+import io.github.slimeistdev.crystalline_sky.util.SharedRenderVariables;
 import net.fabricmc.fabric.api.renderer.v1.Renderer;
 import net.fabricmc.fabric.api.renderer.v1.RendererAccess;
 import net.fabricmc.fabric.api.renderer.v1.material.RenderMaterial;
@@ -61,6 +62,7 @@ public class SkyboxBakedModel extends ForwardingBakedModel {
 	// copied from net.fabricmc.fabric.impl.renderer.VanillaModelEncoder.emitBlockQuads
 	@Override
 	public void emitBlockQuads(BlockAndTintGetter blockView, BlockState state, BlockPos pos, Supplier<RandomSource> randomSupplier, RenderContext context) {
+		SharedRenderVariables.pushShadeFullBright();
 		QuadEmitter emitter = context.getEmitter();
 
 		for (int i = 0; i <= ModelHelper.NULL_FACE_ID; i++) {
@@ -88,6 +90,7 @@ public class SkyboxBakedModel extends ForwardingBakedModel {
 				emitter.emit();
 			}
 		}
+		SharedRenderVariables.popShadeFullBright();
 	}
 
 	@Override

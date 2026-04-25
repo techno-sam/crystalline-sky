@@ -41,7 +41,7 @@ public class SkyShaderInterface implements ChunkShaderInterface {
 		this.uniformColorModulator = context.bindUniform("u_ColorModulator", GlUniformFloat4v::new);
 
 		this.uniformTextures = new EnumMap<>(ChunkShaderTextureSlot.class);
-		this.uniformTextures.put(ChunkShaderTextureSlot.BLOCK, context.bindUniform("u_BlockTex", GlUniformInt::new));
+		this.uniformTextures.put(ChunkShaderTextureSlot.BLOCK, context.bindUniformOptional("u_BlockTex", GlUniformInt::new));
 
 		this.fogShader = options.fog().getFactory().apply(context);
 	}
@@ -83,7 +83,8 @@ public class SkyShaderInterface implements ChunkShaderInterface {
 		GlStateManager._activeTexture(GL32C.GL_TEXTURE0 + slot.ordinal());
 		GlStateManager._bindTexture(textureId);
 		GlUniformInt uniform = this.uniformTextures.get(slot);
-		uniform.setInt(slot.ordinal());
+		if (uniform != null)
+			uniform.setInt(slot.ordinal());
 	}
 
 	@Override
