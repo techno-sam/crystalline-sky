@@ -26,6 +26,8 @@
     "client.ModelBlockRendererMixin",
     "client.RenderTargetMixin",
     "client.SimpleBakedModelMixin",
+    "client.compat.iris.SodiumProgramsMixin",
+    "client.compat.iris.WorldRenderingPhaseMixin",
     "client.compat.sodium.CompactChunkVertexMixin",
     "client.compat.sodium.DefaultMaterialsMixin",
     "client.compat.sodium.DefaultTerrainRenderPassesMixin",

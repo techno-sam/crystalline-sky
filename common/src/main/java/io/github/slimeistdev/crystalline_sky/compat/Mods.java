@@ -7,6 +7,7 @@ import java.util.function.Supplier;
 
 public enum Mods {
 	SODIUM("sodium"),
+	IRIS("iris"),
 	AXIOM("axiom");
 
 	public final String id;

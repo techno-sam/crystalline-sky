@@ -26,6 +26,14 @@ dependencies {
 		modLocalRuntime(libs.sodium.neoforge)
 	}*/
 
+	modCompileOnly(libs.iris.neoforge)
+	if (!inCI && "enable_iris"().toBoolean()) { // this doesn't work, because of jar-in-jar
+		modLocalRuntime(libs.iris.neoforge)
+		modLocalRuntime("org.antlr:antlr4-runtime:4.13.1")
+		modLocalRuntime("io.github.douira:glsl-transformer:2.0.1")
+		modLocalRuntime("org.anarres:jcpp:1.4.14")
+	}
+
 	compileOnly(annotationProcessor(libs.mixinextras.common.get())!!)!!
 	implementation(include(libs.mixinextras.neoforge.get())!!)!!
 }

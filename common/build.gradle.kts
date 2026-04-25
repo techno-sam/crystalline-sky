@@ -18,6 +18,7 @@ dependencies {
 	compileOnly(libs.jsr305)
 
 	modCompileOnly(libs.sodium.fabric)
+	modCompileOnly(libs.iris.fabric)
 
 	compileOnly(annotationProcessor(libs.mixinextras.common.get())!!)!!
 }

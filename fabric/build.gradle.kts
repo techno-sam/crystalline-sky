@@ -32,6 +32,14 @@ dependencies {
 		modLocalRuntime(libs.sodium.fabric)
 	}
 
+	modCompileOnly(libs.iris.fabric)
+	if (!inCI && "enable_iris"().toBoolean()) {
+		modLocalRuntime(libs.iris.fabric)
+		modLocalRuntime("org.antlr:antlr4-runtime:4.13.1")
+		modLocalRuntime("io.github.douira:glsl-transformer:2.0.1")
+		modLocalRuntime("org.anarres:jcpp:1.4.14")
+	}
+
 	modCompileOnly(libs.axiom)
 	if (!inCI && "enable_axiom"().toBoolean()) {
 		modLocalRuntime(libs.axiom)
