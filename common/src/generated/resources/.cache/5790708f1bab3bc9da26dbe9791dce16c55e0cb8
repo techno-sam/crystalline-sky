@@ -1,4 +1,4 @@
-// 1.21.1	2026-04-25T02:02:19.160711408	Crystalline Sky/Model Definitions
+// 1.21.1	2026-04-25T13:07:32.974736053	Crystalline Sky/Model Definitions
 e832366c216102270b75085db7a7169881b853b3 assets/crystalline_sky/blockstates/sky.json
 0ac5351c3a01e0f9e76517452918e12770b3b54b assets/crystalline_sky/models/block/sky_light_14.json
 ee9cb7604922cdb2ad71d021a593ca82f0baf493 assets/crystalline_sky/models/block/sky_light_03.json
@@ -13,7 +13,7 @@ ef9e5aca345b59cb4692a7bcfaac539aed6f6889 assets/crystalline_sky/models/block/sky
 ef5afdbcc8401a27029b6f0a29fa1117761c620d assets/crystalline_sky/models/item/sky_light.json
 59463cef438e58b137e5ce27402acf42a3a0ae87 assets/crystalline_sky/models/block/sky_light_02.json
 2763952a1919802e34f0976b023fc7b486456b91 assets/crystalline_sky/models/item/skybox_test.json
-9f63a1dc282986e15f9b22bee0ab0a2eaf4f994d assets/crystalline_sky/models/block/skybox_test.json
+e3a94ee688f28874452b8862359916adfdcf223e assets/crystalline_sky/models/block/skybox_test.json
 c0d693e4f78ce15c238909130382909abda4c922 assets/crystalline_sky/models/block/sky_light_08.json
 008a0d0a76a34d8f375fa355452a5d0f93f9af3b assets/crystalline_sky/models/item/sky.json
 508ffb97ee711b53767b9d33659596197f69ee20 assets/crystalline_sky/models/block/weeping_sky_light.json

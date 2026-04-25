@@ -2,7 +2,7 @@ package io.github.slimeistdev.crystalline_sky.fabric;
 
 import io.github.slimeistdev.crystalline_sky.CrystallineSkyClient;
 import io.github.slimeistdev.crystalline_sky.fabric.events.RegisterMaterialAtlasesEvent;
-import io.github.slimeistdev.crystalline_sky.fabric.render_tmp.SkyboxModelLoadingPlugin;
+import io.github.slimeistdev.crystalline_sky.fabric.skybox_model.SkyboxModelLoadingPlugin;
 import io.github.slimeistdev.crystalline_sky.multiloader.fabric.ItemGroupRegistrationEventImpl;
 import io.github.slimeistdev.crystalline_sky.registry.CrystallineBlocks;
 import io.github.slimeistdev.crystalline_sky.registry.client.CrystallineAtlases;

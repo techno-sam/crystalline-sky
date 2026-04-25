@@ -16,8 +16,10 @@ import net.minecraft.data.models.blockstates.PropertyDispatch;
 import net.minecraft.data.models.blockstates.Variant;
 import net.minecraft.data.models.blockstates.VariantProperties;
 import net.minecraft.data.models.model.ModelLocationUtils;
+import net.minecraft.data.models.model.ModelTemplate;
 import net.minecraft.data.models.model.ModelTemplates;
 import net.minecraft.data.models.model.TextureMapping;
+import net.minecraft.data.models.model.TextureSlot;
 import net.minecraft.data.models.model.TexturedModel;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Item;
@@ -25,7 +27,9 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 
 import java.util.Locale;
+import java.util.Optional;
 
+import static net.minecraft.data.models.model.TextureMapping.getBlockTexture;
 import static net.minecraft.data.models.model.TexturedModel.createDefault;
 
 @SuppressWarnings("SameParameterValue")
@@ -35,9 +39,16 @@ public class CrystallineSkyModelProvider extends FabricModelProvider {
 		return resourceLocation.withPrefix("crystalline_sky_skybox/");
 	}
 
+	private static ModelTemplate create(String blockModelLocation, TextureSlot... requiredSlots) {
+		return new ModelTemplate(Optional.of(ResourceLocation.withDefaultNamespace("block/" + blockModelLocation)), Optional.empty(), requiredSlots);
+	}
+
+	private static final ModelTemplate CUBE_ALL_PARTICLE = create("cube_all", TextureSlot.ALL, TextureSlot.PARTICLE);
+
 	private static final TexturedModel.Provider SKYBOX_CUBE = createDefault(
-		block -> TextureMapping.cube(getSkyboxBlockTexture(block)),
-		ModelTemplates.CUBE_ALL
+		block -> TextureMapping.cube(getSkyboxBlockTexture(block))
+			.put(TextureSlot.PARTICLE, getBlockTexture(block)),
+		CUBE_ALL_PARTICLE
 	);
 
 	public CrystallineSkyModelProvider(FabricDataOutput output) {

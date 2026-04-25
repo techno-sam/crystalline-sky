@@ -3,6 +3,7 @@
   "crystalline_sky:atlas": "crystalline_sky:textures/atlas/skyboxes.png",
   "render_type": "crystalline_sky:skybox",
   "textures": {
-    "all": "crystalline_sky:crystalline_sky_skybox/skybox_test"
+    "all": "crystalline_sky:crystalline_sky_skybox/skybox_test",
+    "particle": "crystalline_sky:block/skybox_test"
   }
 }
