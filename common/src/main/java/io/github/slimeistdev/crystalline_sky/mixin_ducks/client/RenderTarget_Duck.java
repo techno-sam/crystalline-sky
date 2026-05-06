@@ -4,4 +4,5 @@ import com.mojang.blaze3d.pipeline.RenderTarget;
 
 public interface RenderTarget_Duck {
 	void crystalline_sky$copyColorFrom(RenderTarget framebuffer);
+	void crystalline_sky$copyColorFrom(Runnable bindRead, Runnable bind, int width, int height);
 }

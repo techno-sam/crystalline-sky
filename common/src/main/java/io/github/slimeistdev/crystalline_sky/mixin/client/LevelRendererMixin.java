@@ -2,20 +2,27 @@ package io.github.slimeistdev.crystalline_sky.mixin.client;
 
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
+import com.mojang.blaze3d.pipeline.RenderTarget;
+import com.mojang.blaze3d.pipeline.TextureTarget;
+import com.mojang.blaze3d.vertex.PoseStack;
+import io.github.slimeistdev.crystalline_sky.compat.Mods;
+import io.github.slimeistdev.crystalline_sky.mixin.client.compat.iris.IrisRenderingPipelineAccessor;
+import io.github.slimeistdev.crystalline_sky.mixin_ducks.client.IrisRenderingPipeline_Duck;
 import io.github.slimeistdev.crystalline_sky.mixin_ducks.client.LevelRenderer_Duck;
 import io.github.slimeistdev.crystalline_sky.mixin_ducks.client.RenderTarget_Duck;
 import io.github.slimeistdev.crystalline_sky.registry.client.CrystallineRenderTypes;
-import net.minecraft.client.Minecraft;
-import com.mojang.blaze3d.pipeline.RenderTarget;
-import com.mojang.blaze3d.pipeline.TextureTarget;
-import net.minecraft.client.CloudStatus;
+import io.github.slimeistdev.crystalline_sky.util.SharedRenderVariables;
+import net.irisshaders.iris.Iris;
+import net.irisshaders.iris.pipeline.IrisRenderingPipeline;
+import net.irisshaders.iris.targets.RenderTargets;
 import net.minecraft.client.Camera;
+import net.minecraft.client.CloudStatus;
+import net.minecraft.client.DeltaTracker;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GameRenderer;
+import net.minecraft.client.renderer.LevelRenderer;
 import net.minecraft.client.renderer.LightTexture;
 import net.minecraft.client.renderer.RenderType;
-import net.minecraft.client.DeltaTracker;
-import net.minecraft.client.renderer.LevelRenderer;
-import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.Nullable;
 import org.joml.Matrix4f;
@@ -101,7 +108,23 @@ public abstract class LevelRendererMixin implements LevelRenderer_Duck {
 							  Matrix4f matrix4f, Matrix4f matrix4f2, CallbackInfo ci) {
 		var skyBuffer = crystalline_sky$getSkyFramebuffer();
 		skyBuffer.clear(Minecraft.ON_OSX);
-		((RenderTarget_Duck) skyBuffer).crystalline_sky$copyColorFrom(minecraft.getMainRenderTarget());
+		var copiedFromIris = Mods.IRIS.runIfInstalled(() -> () -> {
+			var pipeline = Iris.getPipelineManager().getPipelineNullable();
+			if (!(pipeline instanceof IrisRenderingPipeline irisPipeline)) return false;
+
+			IrisRenderingPipelineAccessor pipelineAccessor = ((IrisRenderingPipelineAccessor) irisPipeline);
+			RenderTargets targets = pipelineAccessor.crystalline_sky$getRenderTargets();
+			var defaultTarget = targets.get(pipelineAccessor.crystalline_sky$getPackDirectives().getFallbackTex());
+			((RenderTarget_Duck) skyBuffer).crystalline_sky$copyColorFrom(
+				((IrisRenderingPipeline_Duck) irisPipeline)::crystalline_sky$bindDefaultForRead,
+				irisPipeline::bindDefault,
+				defaultTarget.getWidth(), defaultTarget.getHeight()
+			);
+
+			return true;
+		});
+		if (!copiedFromIris.orElse(false))
+			((RenderTarget_Duck) skyBuffer).crystalline_sky$copyColorFrom(minecraft.getMainRenderTarget());
 
 		// render clouds
 		CloudStatus cloudRenderMode = this.minecraft.options.getCloudsType();
@@ -115,7 +138,9 @@ public abstract class LevelRendererMixin implements LevelRenderer_Duck {
 			var cloudsFramebuffer0 = this.cloudsTarget;
 			this.cloudsTarget = skyBuffer;
 			cloudsTarget.bindWrite(false);
+			SharedRenderVariables.pushBlockIrisShaderFramebufferBind();
 			this.renderClouds(new PoseStack(), matrix4f, matrix4f2, f, cx, cy, cz);
+			SharedRenderVariables.popBlockIrisShaderFramebufferBind();
 			minecraft.getMainRenderTarget().bindWrite(false);
 			this.cloudsTarget = cloudsFramebuffer0;
 		}

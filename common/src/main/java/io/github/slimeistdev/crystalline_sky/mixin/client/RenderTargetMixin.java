@@ -30,14 +30,28 @@ public class RenderTargetMixin implements RenderTarget_Duck {
 		} else if (framebuffer.getColorTextureId() == -1) {
 			throw new IllegalStateException("Trying to copy color texture from a RenderTarget without a color texture");
 		} else {
-			GlStateManager._glBindFramebuffer(GlConst.GL_READ_FRAMEBUFFER, framebuffer.frameBufferId);
+			crystalline_sky$copyColorFrom(
+				() -> GlStateManager._glBindFramebuffer(GlConst.GL_READ_FRAMEBUFFER, framebuffer.frameBufferId),
+				() -> GlStateManager._glBindFramebuffer(GlConst.GL_FRAMEBUFFER, framebuffer.frameBufferId),
+				framebuffer.width, framebuffer.height
+			);
+		}
+	}
+
+	@Override
+	public void crystalline_sky$copyColorFrom(Runnable bindRead, Runnable bind, int width, int height) {
+		RenderSystem.assertOnRenderThreadOrInit();
+		if (this.colorTextureId == -1) {
+			throw new IllegalStateException("Trying to copy color texture to a RenderTarget without a color texture");
+		} else {
+			bindRead.run();
 			GlStateManager._glBindFramebuffer(GlConst.GL_DRAW_FRAMEBUFFER, this.frameBufferId);
 			GlStateManager._glBlitFrameBuffer(
-				0, 0, framebuffer.width, framebuffer.height,
+				0, 0, width, height,
 				0, 0, this.width, this.height,
 				GlConst.GL_COLOR_BUFFER_BIT, GlConst.GL_NEAREST
 			);
-			GlStateManager._glBindFramebuffer(GlConst.GL_FRAMEBUFFER, framebuffer.frameBufferId);
+			bind.run();
 		}
 	}
 }
