@@ -1,3 +1,5 @@
-// 1.21.1	2026-04-25T13:07:32.974065609	Crystalline Sky/Tags for minecraft:block
+// 1.21.1	2026-05-12T13:54:12.565540347	Crystalline Sky/Tags for minecraft:block
+1f45861c594d9441dfe16f1c8b41a9f0013278ed data/crystalline_sky/tags/block/rendering/cubemap.json
 1389c0b812f7a6e4d5dd00edac1dc07beb5f9552 data/crystalline_sky/tags/block/sky_light_emitters.json
 606477607a09045ff2830cbc036e744d6a728bbd data/minecraft/tags/block/crystal_sound_blocks.json
+606477607a09045ff2830cbc036e744d6a728bbd data/crystalline_sky/tags/block/rendering/projection.json
