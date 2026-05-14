@@ -210,9 +210,7 @@ subprojects {
 	}
 
 	val isFabric = project.name == "fabric"
-	val description = providers.fileContents { rootProject.file("README.md") }.asText.map {
-		"<!--DO NOT EDIT MANUALLY: synced from gh readme-->\n${it}"
-	}
+	val description = "<!--DO NOT EDIT MANUALLY: synced from gh readme-->\n" + rootProject.file("README.md").readText()
 	configure<ModrinthExtension> {
 		token.set(providers.environmentVariable("MODRINTH_TOKEN"))
 		projectId = "slug"()
@@ -227,7 +225,7 @@ subprojects {
 			loaders.add("neoforge")
 		}
 		changelog.set(providers.environmentVariable("CHANGELOG"))
-		syncBodyFrom.set(description)
+		syncBodyFrom.set(description) // lazyness doesn't seem to work for this?
 		dependencies {
 			if (isFabric) {
 				required.version("fabric-api", libs.versions.fapi.get())
