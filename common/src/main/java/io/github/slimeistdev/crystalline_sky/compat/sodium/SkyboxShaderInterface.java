@@ -1,5 +1,6 @@
 package io.github.slimeistdev.crystalline_sky.compat.sodium;
 
+import io.github.slimeistdev.crystalline_sky.mixin.client.TextureAtlasAccessor;
 import io.github.slimeistdev.crystalline_sky.registry.client.CrystallineAtlases;
 import io.github.slimeistdev.crystalline_sky.util.SharedRenderVariables;
 import net.caffeinemc.mods.sodium.client.gl.device.GLRenderDevice;
@@ -7,7 +8,6 @@ import net.caffeinemc.mods.sodium.client.gl.shader.uniform.GlUniformFloat2v;
 import net.caffeinemc.mods.sodium.client.gl.shader.uniform.GlUniformMatrix4f;
 import net.caffeinemc.mods.sodium.client.render.chunk.shader.ChunkShaderOptions;
 import net.caffeinemc.mods.sodium.client.render.chunk.shader.ShaderBindingContext;
-import net.caffeinemc.mods.sodium.mixin.core.render.texture.TextureAtlasAccessor;
 import net.minecraft.client.Minecraft;
 
 public class SkyboxShaderInterface extends SkyShaderInterface {
@@ -29,8 +29,8 @@ public class SkyboxShaderInterface extends SkyShaderInterface {
 			double subTexelPrecision = 1 << GLRenderDevice.INSTANCE.getSubTexelPrecisionBits();
 			double subTexelOffset = 3.0517578E-5F;
 			this.uniformTexCoordShrink.set(
-				(float) (subTexelOffset - (double) 1.0F / (double) textureAtlas.getField_43113() / subTexelPrecision),
-				(float) (subTexelOffset - (double) 1.0F / (double) textureAtlas.getField_43114() / subTexelPrecision)
+				(float) (subTexelOffset - (double) 1.0F / (double) textureAtlas.crystalline_sky$getWidth() / subTexelPrecision),
+				(float) (subTexelOffset - (double) 1.0F / (double) textureAtlas.crystalline_sky$getHeight() / subTexelPrecision)
 			);
 		}
 	}

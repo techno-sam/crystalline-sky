@@ -16,15 +16,17 @@ repositories {
 		name = "NeoForged"
 		url = uri("https://maven.neoforged.net/releases")
 	}
+
 }
 
 dependencies {
 	neoForge(libs.nf)
 
+	modCompileOnly(libs.ffapi.renderer) // only for sodium compat
 	modCompileOnly(libs.sodium.neoforge)
-	/*if (!inCI && "enable_sodium"().toBoolean()) { // this doesn't work, because of jar-in-jar
+	if (!inCI && "enable_sodium"().toBoolean()) { // this doesn't work, because of jar-in-jar
 		modLocalRuntime(libs.sodium.neoforge)
-	}*/
+	}
 
 	modCompileOnly(libs.iris.neoforge)
 	if (!inCI && "enable_iris"().toBoolean()) { // this doesn't work, because of jar-in-jar

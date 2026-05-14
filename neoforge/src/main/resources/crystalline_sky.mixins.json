@@ -10,7 +10,9 @@
   "mixins": [
   ],
   "client": [
-    "client.RenderTypeMixin"
+    "client.RenderTypeMixin",
+    "client.compat.sodium.ShaderLoaderMixin",
+    "client.compat.sodium.SkyboxBakedModelMixin"
   ],
   "server": [
   ],

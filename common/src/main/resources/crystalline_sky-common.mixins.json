@@ -24,6 +24,7 @@
     "client.LevelRendererMixin",
     "client.ModelBlockRendererMixin",
     "client.RenderTargetMixin",
+    "client.TextureAtlasAccessor",
     "client.compat.iris.ExtendedShaderMixin",
     "client.compat.iris.IrisRenderingPipelineAccessor",
     "client.compat.iris.IrisRenderingPipelineMixin",

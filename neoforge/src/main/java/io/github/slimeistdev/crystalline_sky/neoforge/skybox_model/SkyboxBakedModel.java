@@ -1,6 +1,5 @@
 package io.github.slimeistdev.crystalline_sky.neoforge.skybox_model;
 
-import io.github.slimeistdev.crystalline_sky.util.SharedRenderVariables;
 import net.minecraft.MethodsReturnNonnullByDefault;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.block.model.BakedQuad;
@@ -84,13 +83,8 @@ public class SkyboxBakedModel<T extends BakedModel> extends BakedModelWrapper<T>
 	public List<BakedQuad> getQuads(@Nullable BlockState state, @Nullable Direction side, RandomSource rand) {
 		CacheKey key = new CacheKey(state, side);
 		return quadCache.computeIfAbsent(key, $ -> {
-			SharedRenderVariables.pushShadeFullBright();
-
 			List<BakedQuad> quads = super.getQuads(state, side, rand);
-			List<BakedQuad> out = process(quads);
-
-			SharedRenderVariables.popShadeFullBright();
-			return out;
+			return process(quads);
 		});
 	}
 
