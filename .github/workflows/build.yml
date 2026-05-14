@@ -64,8 +64,10 @@ jobs:
         with:
           name: Artifacts
           path: |
-            build/libs/*.jar
-            !build/libs/*-sources.jar
+            fabric/build/libs/*.jar
+            !fabric/build/libs/*-sources.jar
+            neoforge/build/libs/*.jar
+            !neoforge/build/libs/*-sources.jar
 
       - name: Maven Publish
         if: github.event_name == 'release' && github.event.action == 'published'
@@ -77,7 +79,7 @@ jobs:
         if: github.event_name == 'release' && github.event.action == 'published'
         uses: AButler/upload-release-assets@v2.0
         with:
-          files: 'build/libs/*.jar;!build/libs/*-sources.jar'
+          files: 'fabric/build/libs/*.jar;!fabric/build/libs/*-sources.jar;neoforge/build/libs/*.jar;!neoforge/build/libs/*-sources.jar'
           repo-token: ${{ secrets.GITHUB_TOKEN }}
 
       # set modrinth release type if tag matches v#.#.#-(alpha|beta).*
