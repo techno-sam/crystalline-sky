@@ -30,6 +30,7 @@ public class CrystallineSkyClientImpl implements ClientModInitializer {
 		CrystallineBlocks.SKY.onRegistered(makeSky);
 		CrystallineBlocks.WEEPING_SKY.onRegistered(makeSky);
 		CrystallineBlocks.SKYBOX_TEST.onRegistered(makeSkybox);
+		CrystallineBlocks.SKYBOX_SUNNY_DAY.onRegistered(makeSkybox);
 
 		ClientTickEvents.END_CLIENT_TICK.register(CrystallineSkyClient::onEndTick);
 

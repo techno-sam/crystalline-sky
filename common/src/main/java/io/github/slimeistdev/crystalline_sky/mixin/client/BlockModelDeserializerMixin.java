@@ -16,10 +16,11 @@ import java.util.Map;
 
 @Mixin(BlockModel.Deserializer.class)
 public class BlockModelDeserializerMixin {
+	@SuppressWarnings("LocalMayUseName")
 	@WrapOperation(method = "getTextureMap", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/renderer/block/model/BlockModel$Deserializer;parseTextureLocationOrReference(Lnet/minecraft/resources/ResourceLocation;Ljava/lang/String;)Lcom/mojang/datafixers/util/Either;"))
 	private Either<Material, String> modifyAtlas(ResourceLocation location, String name,
 												 Operation<Either<Material, String>> original, JsonObject json,
-												 @Local(name = "entry") Map.Entry<String, JsonElement> entry) {
+												 @Local Map.Entry<String, JsonElement> entry) {
 		if (!entry.getKey().equals("particle") && json.has("crystalline_sky:atlas")) {
 			location = ResourceLocation.parse(json.get("crystalline_sky:atlas").getAsString());
 		}
