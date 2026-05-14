@@ -32,9 +32,13 @@ public class ItemGroupRegistrationEventImpl implements ItemGroupRegistrationEven
 	public void addAfter(ItemLike reference, List<ItemStack> stacks) {
 		// WARN: this is sort of hacky, but it should do for our current use cases
 		ItemStack referenceStack = new ItemStack(reference.asItem());
+		addAfter(referenceStack, stacks);
+	}
 
-		for (ItemStack stack : stacks) {
-			event.insertAfter(referenceStack, stack, PARENT_AND_SEARCH_TABS);
+	@Override
+	public void addAfter(ItemStack reference, List<ItemStack> stacks) {
+		for (int i = stacks.size() - 1; i >= 0; i--) {
+			event.insertAfter(reference, stacks.get(i), PARENT_AND_SEARCH_TABS);
 		}
 	}
 }

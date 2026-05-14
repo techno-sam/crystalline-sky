@@ -11,4 +11,5 @@ public interface ItemGroupRegistrationEvent {
 	ResourceKey<CreativeModeTab> getTab();
 	boolean hasPermissions();
 	void addAfter(ItemLike reference, List<ItemStack> stacks);
+	void addAfter(ItemStack reference, List<ItemStack> stacks);
 }

@@ -70,7 +70,8 @@ public class CrystallineItems {
 
 			stacks.add(new ItemStack(WEEPING_SKY_LIGHT));
 
-			event.addAfter(Items.LIGHT, stacks);
+			ItemStack light0 = LightBlock.setLightOnStack(new ItemStack(Items.LIGHT), 0);
+			event.addAfter(light0, stacks);
 		}
 	}
 

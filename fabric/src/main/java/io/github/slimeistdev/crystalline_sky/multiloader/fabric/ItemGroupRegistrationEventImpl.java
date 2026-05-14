@@ -36,6 +36,11 @@ public class ItemGroupRegistrationEventImpl implements ItemGroupRegistrationEven
 		entries.addAfter(reference, stacks);
 	}
 
+	@Override
+	public void addAfter(ItemStack reference, List<ItemStack> stacks) {
+		entries.addAfter(reference, stacks);
+	}
+
 	public static void register() {
 		ItemGroupEvents.MODIFY_ENTRIES_ALL.register((tab, entries) -> {
 			CrystallineItems.onItemGroupRegistration(new ItemGroupRegistrationEventImpl(
