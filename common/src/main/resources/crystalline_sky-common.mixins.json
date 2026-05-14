@@ -17,7 +17,6 @@
   ],
   "client": [
     "client.BlockModelDeserializerMixin",
-    "client.BlockModelMixin",
     "client.ClientLevelMixin",
     "client.DebugRendererMixin",
     "client.GameRendererMixin",
@@ -25,7 +24,6 @@
     "client.LevelRendererMixin",
     "client.ModelBlockRendererMixin",
     "client.RenderTargetMixin",
-    "client.SimpleBakedModelMixin",
     "client.compat.iris.ExtendedShaderMixin",
     "client.compat.iris.IrisRenderingPipelineAccessor",
     "client.compat.iris.IrisRenderingPipelineMixin",

@@ -1,6 +1,6 @@
-package io.github.slimeistdev.crystalline_sky.mixin.client;
+package io.github.slimeistdev.crystalline_sky.fabric.mixin.client;
 
-import io.github.slimeistdev.crystalline_sky.mixin_ducks.client.SimpleBakedModel_Duck;
+import io.github.slimeistdev.crystalline_sky.fabric.mixin_ducks.client.SimpleBakedModel_Duck;
 import net.minecraft.client.resources.model.SimpleBakedModel;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;

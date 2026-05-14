@@ -1,6 +1,6 @@
 package io.github.slimeistdev.crystalline_sky.fabric.skybox_model;
 
-import io.github.slimeistdev.crystalline_sky.mixin_ducks.client.SimpleBakedModel_Duck;
+import io.github.slimeistdev.crystalline_sky.fabric.mixin_ducks.client.SimpleBakedModel_Duck;
 import net.fabricmc.fabric.api.client.model.loading.v1.ModelLoadingPlugin;
 
 public class SkyboxModelLoadingPlugin implements ModelLoadingPlugin {

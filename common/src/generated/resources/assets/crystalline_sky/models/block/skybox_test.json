@@ -1,6 +1,7 @@
 {
   "parent": "minecraft:block/cube_all",
   "crystalline_sky:atlas": "crystalline_sky:textures/atlas/skyboxes.png",
+  "loader": "crystalline_sky:skybox",
   "render_type": "crystalline_sky:skybox",
   "textures": {
     "all": "crystalline_sky:crystalline_sky_skybox/skybox_test",

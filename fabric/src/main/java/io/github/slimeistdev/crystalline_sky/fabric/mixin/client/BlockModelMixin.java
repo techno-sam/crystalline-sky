@@ -1,9 +1,9 @@
-package io.github.slimeistdev.crystalline_sky.mixin.client;
+package io.github.slimeistdev.crystalline_sky.fabric.mixin.client;
 
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
-import io.github.slimeistdev.crystalline_sky.mixin_ducks.client.BlockModel_Duck;
-import io.github.slimeistdev.crystalline_sky.mixin_ducks.client.SimpleBakedModel_Duck;
+import io.github.slimeistdev.crystalline_sky.fabric.mixin_ducks.client.BlockModel_Duck;
+import io.github.slimeistdev.crystalline_sky.fabric.mixin_ducks.client.SimpleBakedModel_Duck;
 import net.minecraft.client.renderer.block.model.BlockModel;
 import net.minecraft.client.resources.model.BakedModel;
 import net.minecraft.client.resources.model.SimpleBakedModel;

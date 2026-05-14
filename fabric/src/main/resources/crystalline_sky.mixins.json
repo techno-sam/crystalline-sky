@@ -10,8 +10,11 @@
   "mixins": [
   ],
   "client": [
+    "client.BlockModelDeserializerMixin",
+    "client.BlockModelMixin",
     "client.ModelManagerMixin",
     "client.RenderTypeMixin",
+    "client.SimpleBakedModelMixin",
     "client.compat.axiom.ChunkRenderOverrider_AxiomChunkOverrideLayerMixin"
   ],
   "server": [

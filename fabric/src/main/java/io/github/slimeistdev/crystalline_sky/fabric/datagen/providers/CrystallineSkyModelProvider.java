@@ -89,6 +89,7 @@ public class CrystallineSkyModelProvider extends FabricModelProvider {
 					JsonObject root = json.get().getAsJsonObject();
 					root.addProperty("render_type", CrystallineSky.id("skybox").toString());
 					root.addProperty(CrystallineSky.id("atlas").toString(), CrystallineAtlases.SKYBOXES.texture.toString());
+					root.addProperty("loader", CrystallineSky.id("skybox").toString());
 					return root;
 				});
 			}

@@ -6,15 +6,11 @@ import com.mojang.blaze3d.pipeline.RenderTarget;
 import com.mojang.blaze3d.pipeline.TextureTarget;
 import com.mojang.blaze3d.vertex.PoseStack;
 import io.github.slimeistdev.crystalline_sky.compat.Mods;
-import io.github.slimeistdev.crystalline_sky.mixin.client.compat.iris.IrisRenderingPipelineAccessor;
-import io.github.slimeistdev.crystalline_sky.mixin_ducks.client.IrisRenderingPipeline_Duck;
+import io.github.slimeistdev.crystalline_sky.compat.iris.IrisHelpers;
 import io.github.slimeistdev.crystalline_sky.mixin_ducks.client.LevelRenderer_Duck;
 import io.github.slimeistdev.crystalline_sky.mixin_ducks.client.RenderTarget_Duck;
 import io.github.slimeistdev.crystalline_sky.registry.client.CrystallineRenderTypes;
 import io.github.slimeistdev.crystalline_sky.util.SharedRenderVariables;
-import net.irisshaders.iris.Iris;
-import net.irisshaders.iris.pipeline.IrisRenderingPipeline;
-import net.irisshaders.iris.targets.RenderTargets;
 import net.minecraft.client.Camera;
 import net.minecraft.client.CloudStatus;
 import net.minecraft.client.DeltaTracker;
@@ -108,21 +104,7 @@ public abstract class LevelRendererMixin implements LevelRenderer_Duck {
 							  Matrix4f matrix4f, Matrix4f matrix4f2, CallbackInfo ci) {
 		var skyBuffer = crystalline_sky$getSkyFramebuffer();
 		skyBuffer.clear(Minecraft.ON_OSX);
-		var copiedFromIris = Mods.IRIS.runIfInstalled(() -> () -> {
-			var pipeline = Iris.getPipelineManager().getPipelineNullable();
-			if (!(pipeline instanceof IrisRenderingPipeline irisPipeline)) return false;
-
-			IrisRenderingPipelineAccessor pipelineAccessor = ((IrisRenderingPipelineAccessor) irisPipeline);
-			RenderTargets targets = pipelineAccessor.crystalline_sky$getRenderTargets();
-			var defaultTarget = targets.get(pipelineAccessor.crystalline_sky$getPackDirectives().getFallbackTex());
-			((RenderTarget_Duck) skyBuffer).crystalline_sky$copyColorFrom(
-				((IrisRenderingPipeline_Duck) irisPipeline)::crystalline_sky$bindDefaultForRead,
-				irisPipeline::bindDefault,
-				defaultTarget.getWidth(), defaultTarget.getHeight()
-			);
-
-			return true;
-		});
+		var copiedFromIris = Mods.IRIS.runIfInstalled(() -> () -> IrisHelpers.copySkyToBuffer(skyBuffer));
 		if (!copiedFromIris.orElse(false))
 			((RenderTarget_Duck) skyBuffer).crystalline_sky$copyColorFrom(minecraft.getMainRenderTarget());
 

@@ -13,9 +13,10 @@ import org.spongepowered.asm.mixin.injection.At;
 
 @Mixin(ModelBlockRenderer.class)
 public class ModelBlockRendererMixin {
+	// lucky us: fabric calls it bakedQuad, neoforge bakedquad
 	@WrapOperation(method = "renderModelFaceFlat", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/level/BlockAndTintGetter;getShade(Lnet/minecraft/core/Direction;Z)F"))
 	private float fullBrightSkybox(BlockAndTintGetter instance, Direction direction, boolean shade,
-								   Operation<Float> original, @Local(name = "bakedQuad") BakedQuad bakedQuad) {
+								   Operation<Float> original, @Local(name = {"bakedQuad", "bakedquad"}) BakedQuad bakedQuad) {
 		if (bakedQuad.getSprite().atlasLocation().equals(CrystallineAtlases.SKYBOXES.texture))
 			return 1.0f;
 		return original.call(instance, direction, shade);

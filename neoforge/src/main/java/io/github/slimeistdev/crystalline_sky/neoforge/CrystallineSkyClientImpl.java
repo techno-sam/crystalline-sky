@@ -3,6 +3,7 @@ package io.github.slimeistdev.crystalline_sky.neoforge;
 import io.github.slimeistdev.crystalline_sky.CrystallineSky;
 import io.github.slimeistdev.crystalline_sky.CrystallineSkyClient;
 import io.github.slimeistdev.crystalline_sky.multiloader.neoforge.ItemGroupRegistrationEventImpl;
+import io.github.slimeistdev.crystalline_sky.neoforge.skybox_model.SkyboxGeometryLoader;
 import io.github.slimeistdev.crystalline_sky.registry.CrystallineItems;
 import io.github.slimeistdev.crystalline_sky.registry.client.CrystallineAtlases;
 import io.github.slimeistdev.crystalline_sky.registry.client.CrystallineRenderTypes;
@@ -12,6 +13,7 @@ import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.client.event.ClientTickEvent;
+import net.neoforged.neoforge.client.event.ModelEvent.RegisterGeometryLoaders;
 import net.neoforged.neoforge.client.event.RegisterKeyMappingsEvent;
 import net.neoforged.neoforge.client.event.RegisterMaterialAtlasesEvent;
 import net.neoforged.neoforge.client.event.RegisterNamedRenderTypesEvent;
@@ -48,5 +50,10 @@ public class CrystallineSkyClientImpl {
 	@SubscribeEvent
 	public static void registerAtlases(RegisterMaterialAtlasesEvent event) {
 		CrystallineAtlases.register(event::register);
+	}
+
+	@SubscribeEvent
+	public static void registerGeometryLoaders(RegisterGeometryLoaders event) {
+		event.register(CrystallineSky.id("skybox"), new SkyboxGeometryLoader());
 	}
 }
