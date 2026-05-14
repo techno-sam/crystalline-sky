@@ -1,3 +1,11 @@
+import net.fabricmc.mappingio.adapter.MappingDstNsReorder
+import net.fabricmc.mappingio.adapter.MappingSourceNsSwitch
+import net.fabricmc.mappingio.format.tiny.Tiny2FileReader
+import net.fabricmc.mappingio.format.tiny.Tiny2FileWriter
+import net.fabricmc.mappingio.tree.MemoryMappingTree
+import java.io.FileReader
+import java.io.FileWriter
+
 architectury.neoForge()
 
 val inCI = rootProject.extra["inCI"] as Boolean
@@ -38,6 +46,36 @@ dependencies {
 
 	compileOnly(annotationProcessor(libs.mixinextras.common.get())!!)!!
 	implementation(include(libs.mixinextras.neoforge.get())!!)!!
+}
+
+tasks.register("updateStrippedMappings") {
+	group = "other"
+	description = "Convert official->[intermediary, named] custom_mappings.tiny to a intermediary->named version for neoforge"
+
+	val inputFile = rootProject.file("custom_mappings.tiny")
+	val outputFile = rootProject.file("custom_mappings_stripped.tiny")
+
+	inputs.file(inputFile)
+	outputs.file(outputFile)
+
+	doLast {
+		val tree = MemoryMappingTree()
+		val transformer = MappingSourceNsSwitch(
+			MappingDstNsReorder(
+				tree,
+				"named"
+			),
+			"intermediary"
+		)
+		FileReader(inputFile).use { reader ->
+			Tiny2FileReader.read(reader, transformer)
+		}
+
+		outputFile.parentFile.mkdirs()
+		FileWriter(outputFile).use { writer ->
+			tree.accept(Tiny2FileWriter(writer, false))
+		}
+	}
 }
 
 operator fun String.invoke(): String {

@@ -104,7 +104,10 @@ subprojects {
 			officialMojangMappings { nameSyntheticMembers = false }
 			parchment(variantOf(libs.parchment) { artifactType("zip") })
 			if (project.path == ":neoforge") {
-				mappings(rootProject.file("custom_mappings_stripped.tiny"))
+				val strippedMappings = rootProject.file("custom_mappings_stripped.tiny")
+				if (strippedMappings.exists()) {
+					mappings(strippedMappings)
+				}
 			} else {
 				mappings(rootProject.file("custom_mappings.tiny"))
 			}
