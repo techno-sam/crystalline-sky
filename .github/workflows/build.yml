@@ -103,4 +103,4 @@ jobs:
         if: ${{ github.event_name == 'release' && github.event.action == 'published' && env.MODRINTH_TOKEN != '' }}
         run: |
           ./gradlew --no-configuration-cache modrinth
-          ./gradlew --no-configuration-cache modrinthSyncBody
+          ./gradlew --no-configuration-cache :fabric:modrinthSyncBody
