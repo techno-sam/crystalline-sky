@@ -3,6 +3,8 @@
   "block.crystalline_sky.weeping_sky": "Weeping Sky",
   "block.crystalline_sky.sky_light": "Sky Light",
   "block.crystalline_sky.weeping_sky_light": "Weeping Sky Light",
+  "block.crystalline_sky.skybox_test": "Test Skybox",
+  "block.crystalline_sky.skybox_sunny_day": "Sunny Day Skybox",
 
   "crystalline_sky.key.toggle_weeping_sky_debug": "Toggle Weeping Sky Debug",
   "crystalline_sky.category.crystalline_sky": "Crystalline Sky",

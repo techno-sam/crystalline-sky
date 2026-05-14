@@ -48,9 +48,15 @@ public class CrystallineBlocks {
 		.initialProperties(SKY_LIGHT::value)
 		.register();
 
-	public static final BlockHolder<SkyBlock> SKYBOX_TEST = REGISTRY.block("skybox_test", SkyBlock::new)
-		.initialProperties(SKY::value)
-		.register();
+	private static BlockHolder<SkyBlock> skybox(String name) {
+		return REGISTRY.block("skybox_" + name, SkyBlock::new)
+			.initialProperties(SKY::value)
+			.register();
+	}
+
+	public static final BlockHolder<SkyBlock>
+		SKYBOX_TEST = skybox("test"),
+		SKYBOX_SUNNY_DAY = skybox("sunny_day");
 
 	public static void init() {}
 

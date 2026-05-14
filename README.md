@@ -22,3 +22,9 @@ Crystalline Sky adds several sky-light emitting blocks:
 ---
 
 ![weeping sky blocks illuminating a cave](https://cdn.modrinth.com/data/dhKWKlrK/images/5dc5430dd318361d12c962ac555d79f68aeac243.png)
+
+---
+
+**Additional Credits**
+
+`skybox_sunny_day.png` is a scaled down version of [KIIRA's asset](https://opengameart.org/content/sky-box-sunny-day) provided under CC-BY 3.0, CC-BY-SA 3.0, GPL 3.0, GPL 2.0, or OGA-BY 3.0 at your choice.

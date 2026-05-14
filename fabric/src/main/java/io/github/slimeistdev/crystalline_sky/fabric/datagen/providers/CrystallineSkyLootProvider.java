@@ -16,5 +16,7 @@ public class CrystallineSkyLootProvider extends FabricBlockLootTableProvider {
 	public void generate() {
 		dropWhenSilkTouch(CrystallineBlocks.SKY.value());
 		dropWhenSilkTouch(CrystallineBlocks.WEEPING_SKY.value());
+		dropWhenSilkTouch(CrystallineBlocks.SKYBOX_TEST.value());
+		dropWhenSilkTouch(CrystallineBlocks.SKYBOX_SUNNY_DAY.value());
 	}
 }

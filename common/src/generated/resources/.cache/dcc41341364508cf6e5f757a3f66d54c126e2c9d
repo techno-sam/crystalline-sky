@@ -1,3 +1,5 @@
-// 1.21.1	2026-05-13T16:34:33.411998073	Crystalline Sky/Block Loot Tables
+// 1.21.1	2026-05-14T20:11:05.2536566	Crystalline Sky/Block Loot Tables
+067d0b2196d6ce5905ce5af492a2a710947675a5 data/crystalline_sky/loot_table/blocks/skybox_sunny_day.json
 337de0acfc1b9b86adde0705e342ed1d4b5c9c4e data/crystalline_sky/loot_table/blocks/weeping_sky.json
+553f34591ac91c8bd174e24e3585e6a62490ff56 data/crystalline_sky/loot_table/blocks/skybox_test.json
 6a9b7a08424cbd3d699dfd3252d432517254aa45 data/crystalline_sky/loot_table/blocks/sky.json

@@ -65,6 +65,7 @@ public class CrystallineSkyModelProvider extends FabricModelProvider {
 		gen.createSimpleFlatItemModel(CrystallineItems.WEEPING_SKY_LIGHT.value());
 
 		registerSkyboxBlock(gen, CrystallineBlocks.SKYBOX_TEST.value());
+		registerSkyboxBlock(gen, CrystallineBlocks.SKYBOX_SUNNY_DAY.value());
 	}
 
 	private void registerSkyBlock(BlockModelGenerators gen, Block block) {

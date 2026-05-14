@@ -46,6 +46,10 @@ public class CrystallineItems {
 		.properties(p -> p.rarity(Rarity.EPIC))
 		.register();
 
+	public static final ItemHolder<BlockItem> SKYBOX_SUNNY_DAY = REGISTRY.item(CrystallineBlocks.SKYBOX_SUNNY_DAY)
+		.properties(p -> p.rarity(Rarity.EPIC))
+		.register();
+
 	@SuppressWarnings("SameParameterValue")
 	private static ResourceKey<CreativeModeTab> tabKey(String name) {
 		return ResourceKey.create(Registries.CREATIVE_MODE_TAB, ResourceLocation.withDefaultNamespace(name));
@@ -58,6 +62,7 @@ public class CrystallineItems {
 			stacks.add(new ItemStack(SKY));
 			stacks.add(new ItemStack(WEEPING_SKY));
 			stacks.add(new ItemStack(SKYBOX_TEST));
+			stacks.add(new ItemStack(SKYBOX_SUNNY_DAY));
 
 			for (int i = 15; i >= 0; i--) {
 				stacks.add(SkyLightBlock.setLightOnStack(new ItemStack(SKY_LIGHT), i));

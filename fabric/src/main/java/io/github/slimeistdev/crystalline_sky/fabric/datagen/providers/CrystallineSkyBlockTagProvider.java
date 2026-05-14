@@ -36,7 +36,8 @@ public class CrystallineSkyBlockTagProvider extends FabricTagProvider.BlockTagPr
 			.add(CrystallineBlocks.WEEPING_SKY);
 
 		builder(block("rendering/cubemap"))
-			.add(CrystallineBlocks.SKYBOX_TEST);
+			.add(CrystallineBlocks.SKYBOX_TEST)
+			.add(CrystallineBlocks.SKYBOX_SUNNY_DAY);
 
 		builder(BlockTags.CRYSTAL_SOUND_BLOCKS)
 			.add(CrystallineBlocks.SKY)
