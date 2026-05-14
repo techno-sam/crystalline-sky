@@ -214,7 +214,7 @@ subprojects {
 		"<!--DO NOT EDIT MANUALLY: synced from gh readme-->\n${it}"
 	}
 	configure<ModrinthExtension> {
-		token = providers.environmentVariable("MODRINTH_TOKEN")
+		token.set(providers.environmentVariable("MODRINTH_TOKEN"))
 		projectId = "slug"()
 		versionNumber.set(project.version.toString())
 		versionType.set(providers.environmentVariable("RELEASE_TYPE").orElse("release"))
@@ -226,8 +226,8 @@ subprojects {
 		} else {
 			loaders.add("neoforge")
 		}
-		changelog = providers.environmentVariable("CHANGELOG")
-		syncBodyFrom = description
+		changelog.set(providers.environmentVariable("CHANGELOG"))
+		syncBodyFrom.set(description)
 		dependencies {
 			if (isFabric) {
 				required.version("fabric-api", libs.versions.fapi.get())
