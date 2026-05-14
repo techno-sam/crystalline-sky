@@ -1,0 +1,75 @@
+tiny	2	0	intermediary	named
+c	net/minecraft/class_3572	net/minecraft/world/level/lighting/SkyLightEngine
+	m	(III)V	method_51590	updateSourcesInColumn
+		v	4	15	-1	_	minY
+	m	(IIII)V	method_51586	removeSourcesBelow
+		p	1		x
+		p	2		z
+		p	3		lowestSourceY
+		p	4		minY
+		v	5	13	-1	_	sectionX
+		v	6	19	-1	_	sectionZ
+		v	7	24	-1	_	topSolid
+		v	8	31	-1	_	sectionY
+		v	9	75	-1	_	minYInSection
+		v	10	82	-1	_	maxYInSection
+		v	11	91	-1	_	it_y
+		v	12	107	-1	_	it_pos
+	m	(IIII)V	method_51591	addSourcesAbove
+		p	1		x
+		p	2		z
+		p	3		lowestSourceY
+		p	4		minY
+		v	5	6	-1	_	sectionX
+		v	6	12	-1	_	sectionZ
+		v	7	63	-1	_	maxAdjacentLowestSourceY
+		v	8	71	-1	_	lowestRelevantY
+		v	9	85	-1	_	it_packedSection
+		v	11	125	-1	_	minYInSection
+		v	12	132	-1	_	maxYInSection
+		v	13	141	-1	_	it_y
+		v	14	157	-1	_	it_pos
+	m	(J)V	method_51529	checkNode
+		v	3	5	-1	_	x
+		v	4	11	-1	_	y
+		v	5	17	-1	_	z
+		v	6	23	-1	_	sectionPos
+		v	8	54	-1	_	lowestSourceY
+		v	9	100	-1	_	aboveLowest
+		v	10	137	-1	_	storedLightLevel
+	m	(JJI)V	method_51531	propagateIncrease
+		v	6	3	-1	_	blockState
+		v	7	10	-1	_	emptySectionsBelow
+		v	11	37	-1	_	direction
+		v	12	57	-1	_	targetPos
+		v	14	92	-1	_	storedLightLevel
+		v	15	98	-1	_	baseLevelToPropagate
+		v	16	128	-1	_	targetState
+		v	17	139	-1	_	trueLevelToPropagate
+	m	(Ldcd;)V	method_51471	propagateLightSources
+		v	2	12	-1	_	packedZeroPos
+		v	4	48	-1	_	sourcesO
+		v	5	74	-1	_	sourcesZN
+		v	6	100	-1	_	sourcesZP
+		v	7	126	-1	_	sourcesXN
+		v	8	152	-1	_	sourcesXP
+		v	9	165	-1	_	topSectionY
+		v	10	177	-1	_	bottomSectionY
+		v	11	186	-1	_	baseX
+		v	12	195	-1	_	baseZ
+		v	13	201	-1	_	sectionY
+		v	14	223	-1	_	packedSectionPos
+		v	16	237	-1	_	chunkNibbleArray
+		v	17	252	-1	_	sectionMinY
+		v	18	259	-1	_	sectionMaxY
+		v	19	262	-1	_	isMinBelowCurrent
+		v	20	265	-1	_	localZ
+		v	21	275	-1	_	localX
+		v	22	293	-1	_	minSourceY_O
+		v	23	333	-1	_	minSourceY_ZN
+		v	24	364	-1	_	minSourceY_ZP
+		v	25	394	-1	_	minSourceY_XN
+		v	26	425	-1	_	minSourceY_XP
+		v	27	444	-1	_	minSourceY_max
+		v	28	448	-1	_	it_y
+		v	29	507	-1	_	it_pos
