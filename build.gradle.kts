@@ -103,7 +103,9 @@ subprojects {
 		"mappings"(loom.layered {
 			officialMojangMappings { nameSyntheticMembers = false }
 			parchment(variantOf(libs.parchment) { artifactType("zip") })
-			mappings(rootProject.file("custom_mappings.tiny"))
+			if (project.path == ":common") { // neoforge likes to explode with these, and we only use them in common anyway
+				mappings(rootProject.file("custom_mappings.tiny"))
+			}
 		})
 	}
 
