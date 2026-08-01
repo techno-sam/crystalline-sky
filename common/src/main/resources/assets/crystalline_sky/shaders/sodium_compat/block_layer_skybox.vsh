@@ -59,7 +59,7 @@ void main() {
     v_uv0 = (vec2(1.0) * u_TexCoordShrink) + _vert_tex_diffuse_coord;  // FMA for precision
     v_uv1 = (vec2(-1.0) * u_TexCoordShrink) + ((_vert_color.ag * 255.0 / 256.0) + (_vert_color.rb / 256.0));
 
-    v_MaterialMipBias = _material_mip_bias(_material_params);
+    v_MaterialMipBias = _material_use_mips(_material_params) ? 0.0 : -4.0;
 #ifdef USE_FRAGMENT_DISCARD
     v_MaterialAlphaCutoff = _material_alpha_cutoff(_material_params);
 #endif
