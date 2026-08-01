@@ -236,7 +236,8 @@ subprojects {
 
 fun Project.setupRepositories() {
 	repositories {
-		exclusiveMaven("https://api.modrinth.com/maven", "maven.modrinth") // Axiom, Sodium
+		exclusiveMaven("https://maven.caffeinemc.net/releases", "net.caffeinemc") //Sodium
+		exclusiveMaven("https://api.modrinth.com/maven", "maven.modrinth") // Axiom
 		exclusiveMaven("https://maven.terraformersmc.com/", "com.terraformersmc") // Mod Menu
 		exclusiveMaven("https://maven.parchmentmc.org", "org.parchmentmc.data") // Parchment Mappings
 		exclusiveMaven("https://maven.su5ed.dev/releases", "org.sinytra.forgified-fabric-api") // FFAPI, for NeoForge Sodium compat

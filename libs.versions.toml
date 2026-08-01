@@ -13,10 +13,10 @@ nf = "21.1.215"
 jsr305 = "3.0.2"
 mixinextras = "0.5.0"
 mm = "11.0.4"
-sodium-fabric = "mc1.21.1-0.6.13-fabric"
-sodium-neoforge = "mc1.21.1-0.6.13-neoforge"
-iris-fabric = "1.8.8+1.21.1-fabric"
-iris-neoforge = "1.8.8+1.21.1-neoforge"
+sodium-fabric = "0.8.12+mc1.21.1"
+sodium-neoforge = "0.8.12+mc1.21.1"
+iris-fabric = "1.8.14-beta.1+1.21.1-fabric"
+iris-neoforge = "1.8.14-beta.1+1.21.1-neoforge"
 axiom = "jTdCyf2H"
 # these have to be manually extracted from the jar and put in the flatDir libs folder (only if the enable_axiom property is true)
 axiom-axiomclientapi = "1.0.0"
@@ -47,8 +47,8 @@ mixinextras-neoforge = { group = "io.github.llamalad7", name = "mixinextras-neof
 
 mm = { group = "com.terraformersmc", name = "modmenu", version.ref = "mm" }
 
-sodium-fabric = { group = "maven.modrinth", name = "sodium", version.ref = "sodium-fabric" }
-sodium-neoforge = { group = "maven.modrinth", name = "sodium", version.ref = "sodium-neoforge" }
+sodium-fabric = { group = "net.caffeinemc", name = "sodium-fabric", version.ref = "sodium-fabric" }
+sodium-neoforge = { group = "net.caffeinemc", name = "sodium-neoforge-mod", version.ref = "sodium-neoforge" }
 
 iris-fabric = { group = "maven.modrinth", name = "iris", version.ref = "iris-fabric" }
 iris-neoforge = { group = "maven.modrinth", name = "iris", version.ref = "iris-neoforge" }

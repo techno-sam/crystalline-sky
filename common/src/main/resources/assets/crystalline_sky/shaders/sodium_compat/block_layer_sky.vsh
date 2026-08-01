@@ -48,7 +48,7 @@ void main() {
     v_Color = _vert_color;
     v_TexProj = projection_from_position(gl_Position);
 
-    v_MaterialMipBias = _material_mip_bias(_material_params);
+    v_MaterialMipBias = _material_use_mips(_material_params) ? 0.0 : -4.0;
 #ifdef USE_FRAGMENT_DISCARD
     v_MaterialAlphaCutoff = _material_alpha_cutoff(_material_params);
 #endif
